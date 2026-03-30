@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - El Campamento</title>
+    <link rel="stylesheet" href="css/PrincipalUsuario.css">
+</head>
+
+<body>
+
+    <!-- VIDEO FONDO -->
+    <video autoplay muted loop class="video-bg">
+        <source src="Videos/FondoL.mp4" type="video/mp4">
+    </video>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img src="imagenes/Login.png" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=Juan+P" alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name">Juan Pérez</span>
+                        <span class="user-rank">⚪ Cinturón Blanco</span>
+                    </div>
+                    <a href="Login.html" class="logout-btn">🚪 Salir</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL CON MENÚ LATERAL -->
+    <div class="main-layout">
+        
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=Juan+P" alt="Avatar" class="sidebar-avatar">
+                    <h4>Juan Pérez</h4>
+                    <span class="sidebar-rank">⚪ Cinturón Blanco</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="PrincipalUsuario.html" class="nav-item active">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    
+                    <a href="clasesdisponibles.html" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                        <span class="nav-badge">CU-06, CU-07</span>
+                    </a>
+                    
+                    <a href="misreservas.html" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                        <span class="nav-badge">CU-08, CU-09, CU-10</span>
+                    </a>
+                    
+                    <a href="perfil.html" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                        <span class="nav-badge">CU-05</span>
+                    </a>
+                    
+                    <a href="paquetes.html" class="nav-item">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                        <span class="nav-badge">CU-11</span>
+                    </a>
+                    
+                    <a href="#estadisticas-section" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Mi Rendimiento</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong>8</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong>15/12/2024</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- SECCIÓN DASHBOARD (INICIAL) -->
+            <div id="dashboard-section" class="content-section active">
+                <div class="dashboard-grid">
+                    
+                    <!-- SECCIÓN 1: PLAN DE COMBATE (desde paquetes_clases) -->
+                    <div class="card-dashboard plan-card">
+                        <div class="card-header">
+                            <span class="card-icon">🛡️</span>
+                            <h2>Mi Plan de Combate</h2>
+                        </div>
+                        <div class="plan-content">
+                            <div class="classes-count">
+                                <span class="count-number">8</span>
+                                <span class="count-label">Clases Restantes</span>
+                            </div>
+                            <div class="expiry-date">
+                                <span>📅 Vence: 15 de Diciembre, 2024</span>
+                            </div>
+                            <div class="plan-name">
+                                <span>🏷️ Plan actual: Plan Semanal (8 clases)</span>
+                            </div>
+                            <a href="paquetes.html" class="btn-primary btn-full">
+                                🔄 Recargar Plan
+                            </a>
+                            <div class="attendance">
+                                <div class="attendance-header">
+                                    <span>📈 Asistencia</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="attendance-stats">12 de 14 clases tomadas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 2: MIS CLASES PRÓXIMAS (desde reservas) -->
+                    <div class="card-dashboard battles-card">
+                        <div class="card-header">
+                            <span class="card-icon">🥊</span>
+                            <h2>Mis Clases</h2>
+                        </div>
+                        <div class="battles-list">
+                            <!-- Clase 1 - Boxeo (más de 2 horas) -->
+                            <div class="battle-item">
+                                <div class="battle-icon">🥊</div>
+                                <div class="battle-info">
+                                    <h3>Boxeo</h3>
+                                    <p class="coach">Coach: Juan "Tormenta" Rodríguez</p>
+                                    <p class="datetime">📅 Hoy · 19:00 - 20:30 · Salón A</p>
+                                    <p class="clase-nivel">🎯 Nivel: Principiante</p>
+                                </div>
+                                <a href="misreservas.html" class="btn-detail">Ver Detalle</a>
+                            </div>
+                            <!-- Clase 2 - Muay Thai -->
+                            <div class="battle-item">
+                                <div class="battle-icon">🦵</div>
+                                <div class="battle-info">
+                                    <h3>Muay Thai</h3>
+                                    <p class="coach">Coach: Ana "Fénix" López</p>
+                                    <p class="datetime">📅 Mañana · 18:30 - 20:00 · Salón B</p>
+                                    <p class="clase-nivel">🎯 Nivel: Intermedio</p>
+                                </div>
+                                <a href="misreservas.html" class="btn-detail">Ver Detalle</a>
+                            </div>
+                            <!-- Clase 3 - Jiu-Jitsu (alerta por tiempo) -->
+                            <div class="battle-item warning-item">
+                                <div class="battle-icon">🟤</div>
+                                <div class="battle-info">
+                                    <h3>Jiu-Jitsu Brasileño</h3>
+                                    <p class="coach">Coach: Carlos "Caveira" Silva</p>
+                                    <p class="datetime">📅 Hoy · 20:00 - 21:30 · Salón C</p>
+                                    <p class="clase-nivel">🎯 Nivel: Principiante</p>
+                                    <p class="alerta-tiempo">⚠️ Solo 45 min para cancelar</p>
+                                </div>
+                                <a href="misreservas.html" class="btn-detail">Ver Detalle</a>
+                            </div>
+                        </div>
+                        <a href="misreservas.html" class="link-view-all">Ver todo mi historial →</a>
+                    </div>
+
+                    <!-- SECCIÓN 3: ACCESO RÁPIDO -->
+                    <div class="card-dashboard quick-card">
+                        <div class="card-header">
+                            <span class="card-icon">⚡</span>
+                            <h2>Acceso Rápido</h2>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="clasesdisponibles.html" class="quick-btn">
+                                🔍 Buscar Clases
+                                <span>Clases Disponibles</span>
+                            </a>
+                            <a href="perfil.html" class="quick-btn">
+                                👤 Mi Perfil
+                                <span>Editar Perfil</span>
+                            </a>
+                            <a href="#estadisticas-section" class="quick-btn">
+                                📊 Mi Rendimiento
+                                <span>Estadísticas</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 4: PRÓXIMO HITO (desde rangos) -->
+                    <div class="card-dashboard milestone-card">
+                        <div class="card-header">
+                            <span class="card-icon">🏆</span>
+                            <h2>Próximo Hito</h2>
+                        </div>
+                        <div class="milestone-content">
+                            <h3 class="next-belt">🟦 Cinturón Azul</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 44%"></div>
+                            </div>
+                            <div class="milestone-stats">
+                                <span>14 / 32 clases completadas</span>
+                                <span class="remaining">Faltan 18 clases para ascender</span>
+                            </div>
+                            <a href="#" class="link-view">Ver todos los rangos →</a>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 5: EVENTOS ESPECIALES (desde eventos_especiales) -->
+                    <div class="card-dashboard events-card">
+                        <div class="card-header">
+                            <span class="card-icon">🎯</span>
+                            <h2>Eventos Especiales</h2>
+                        </div>
+                        <div class="event-banner">
+                            <div class="event-item">
+                                <div class="event-icon">🥋</div>
+                                <div class="event-info">
+                                    <h3>MASTERCLASS CON INVITADO ESPECIAL</h3>
+                                    <p>"El Fantasma" llega a la academia</p>
+                                    <p class="event-datetime">📅 Sábado 20 de Noviembre · 10:00 AM</p>
+                                    <p class="event-note">⚠️ Cupos limitados · No consume tu plan</p>
+                                </div>
+                                <a href="#" class="btn-event">✨ Quiero asistir</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SECCIÓN ESTADÍSTICAS (dentro del mismo HTML) -->
+            <div id="estadisticas-section" class="content-section">
+                <div class="section-header">
+                    <h1>📊 Mi Rendimiento</h1>
+                    <p>Analiza tu progreso en la academia</p>
+                </div>
+                
+                <div class="estadisticas-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-number">32</div>
+                        <div class="stat-label">Clases totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-number">27</div>
+                        <div class="stat-label">Asistencias</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-number">84%</div>
+                        <div class="stat-label">Asistencia</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-number">14</div>
+                        <div class="stat-label">Clases este mes</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Asistencia por mes</h3>
+                    <div class="chart-bars">
+                        <div class="chart-bar" style="height: 40%"><span>Ene</span></div>
+                        <div class="chart-bar" style="height: 55%"><span>Feb</span></div>
+                        <div class="chart-bar" style="height: 70%"><span>Mar</span></div>
+                        <div class="chart-bar" style="height: 65%"><span>Abr</span></div>
+                        <div class="chart-bar" style="height: 80%"><span>May</span></div>
+                        <div class="chart-bar" style="height: 75%"><span>Jun</span></div>
+                        <div class="chart-bar" style="height: 85%"><span>Jul</span></div>
+                        <div class="chart-bar" style="height: 82%"><span>Ago</span></div>
+                        <div class="chart-bar" style="height: 88%"><span>Sep</span></div>
+                        <div class="chart-bar" style="height: 85%"><span>Oct</span></div>
+                    </div>
+                </div>
+                
+                <div class="recomendaciones-card">
+                    <h3>💡 Recomendaciones</h3>
+                    <p>¡Vas excelente! Para alcanzar tu próximo rango (Cinturón Azul), te recomendamos:</p>
+                    <ul>
+                        <li>✅ Completa al menos 4 clases por semana</li>
+                        <li>✅ Asiste a las clases de Boxeo y Muay Thai para mejorar tu técnica</li>
+                        <li>✅ No olvides reservar con anticipación para asegurar tu cupo</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

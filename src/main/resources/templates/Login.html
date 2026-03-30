@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Login</title>
+
+<link rel="stylesheet" href="css/Login.css">
+
+</head>
+
+<body>
+
+<!-- VIDEO FONDO -->
+<video autoplay muted loop class="video-bg">
+<source src="Videos/FondoL.mp4" type="video/mp4">
+</video>
+
+<div class="container">
+
+<!-- LOGO -->
+<div class="logo">
+<img src="imagenes/Login.png" alt="Nexus Logo">
+</div>
+
+<!-- SWITCH -->
+<div class="switch">
+
+<span>Iniciar sesión</span>
+
+<label class="toggle">
+<input type="checkbox" id="toggleForm">
+<span class="slider"></span>
+</label>
+
+<span>Registrarse</span>
+
+</div>
+
+<!-- TARJETA -->
+<div class="card">
+
+<!-- LOGIN -->
+<form class="form login-form">
+
+<h2>Iniciar sesión Admin</h2>
+<br>
+
+<input type="text" placeholder="Numero de documento" required>
+<input type="password" placeholder="Contraseña" required>
+
+<br>
+
+<button type="submit">Iniciar sesión</button>
+
+<a href="#">¿Olvidaste tu contraseña?</a>
+
+<hr>
+<br>
+
+<p>Eres usuario y deseas acceder a tu cuenta?</p>
+<br>
+<button type="button">Ingresar usuario</button>
+
+
+
+</form>
+
+<!-- REGISTER -->
+<form class="form register-form">
+
+<h2>Crea una cuenta</h2>
+<p class="sub">Es rápido y fácil.</p>
+
+<div class="row">
+<input type="text" placeholder="Nombre" required>
+<input type="text" placeholder="Apellido" required>
+</div>
+
+<label>Fecha de nacimiento</label>
+<input type="date" required>
+
+<label>Género</label>
+
+<div class="gender">
+
+<label class="gender-option">
+<input type="radio" name="gender">
+<span>Mujer</span>
+</label>
+
+<label class="gender-option">
+<input type="radio" name="gender">
+<span>Hombre</span>
+</label>
+
+<label class="gender-option">
+<input type="radio" name="gender">
+<span>Personalizado</span>
+</label>
+
+</div>
+
+<input type="text" placeholder="Cédula">
+<input type="tel" placeholder="Número de celular">
+<input type="email" placeholder="Correo electrónico">
+<input type="password" placeholder="Contraseña">
+<input type="text " placeholder="Confirmar contraseña">
+<input type="text" placeholder="Nombre del gym ">
+
+<button type="submit">Registrarte</button>
+
+</form>
+
+</div>
+
+</div>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<p>
+© 2026 <strong>Nexus</strong>. Todos los derechos reservados.
+</p>
+
+<div class="footer-links">
+<a href="#">Términos de uso</a>
+<a href="#">Política de privacidad</a>
+</div>
+
+<div class="footer-social">
+<span>Síguenos:</span>
+<a href="#">Instagram</a>
+<a href="#">Facebook</a>
+<a href="#">TikTok</a>
+</div>
+
+</div>
+
+</footer>
+
+<script>
+
+const toggle = document.getElementById("toggleForm");
+const card = document.querySelector(".card");
+
+toggle.addEventListener("change", () => {
+card.classList.toggle("active");
+});
+
+</script>
+
+</body>
+</html>

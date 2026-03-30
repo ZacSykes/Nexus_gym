@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Mis Reservas</title>
+    <link rel="stylesheet" href="css/MisReservas.css">
+</head>
+
+<body>
+
+    <!-- VIDEO FONDO -->
+    <video autoplay muted loop class="video-bg">
+        <source src="Videos/FondoL.mp4" type="video/mp4">
+    </video>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img src="imagenes/Login.png" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=Juan+P" alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name">Juan Pérez</span>
+                        <span class="user-rank">⚪ Cinturón Blanco</span>
+                    </div>
+                    <a href="Login.html" class="logout-btn">🚪 Salir</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL CON MENÚ LATERAL -->
+    <div class="main-layout">
+        
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=Juan+P" alt="Avatar" class="sidebar-avatar">
+                    <h4>Juan Pérez</h4>
+                    <span class="sidebar-rank">⚪ Cinturón Blanco</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="PrincipalUsuario.html" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    
+                    <a href="clasesdisponibles.html" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                        <span class="nav-badge">CU-06, CU-07</span>
+                    </a>
+                    
+                    <a href="misreservas.html" class="nav-item active">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                        <span class="nav-badge">CU-08, CU-09, CU-10</span>
+                    </a>
+                    
+                    <a href="perfil.html" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                        <span class="nav-badge">CU-05</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#paquetes-section" class="nav-item">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                        <span class="nav-badge">CU-11</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#estadisticas-section" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Mi Rendimiento</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong>8</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong>15/12/2024</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- TÍTULO DE SECCIÓN -->
+            <div class="section-header">
+                <h1>📋 Mis Reservas</h1>
+                <p>Gestiona tus clases agendadas, reprograma o cancela según tus necesidades</p>
+            </div>
+
+            <!-- TARJETA DE RESUMEN (datos desde BD) -->
+            <div class="resumen-card">
+                <div class="resumen-item">
+                    <span class="resumen-icon">📅</span>
+                    <div class="resumen-info">
+                        <span class="resumen-numero">2</span>
+                        <span class="resumen-label">Clases próximas</span>
+                    </div>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-icon">✅</span>
+                    <div class="resumen-info">
+                        <span class="resumen-numero">27</span>
+                        <span class="resumen-label">Clases asistidas</span>
+                    </div>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-icon">❌</span>
+                    <div class="resumen-info">
+                        <span class="resumen-numero">3</span>
+                        <span class="resumen-label">Canceladas</span>
+                    </div>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-icon">🎯</span>
+                    <div class="resumen-info">
+                        <span class="resumen-numero">84%</span>
+                        <span class="resumen-label">Asistencia</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑAS DE NAVEGACIÓN -->
+            <div class="reservas-tabs">
+                <a href="#proximas" class="tab-btn active" data-tab="proximas">
+                    🗓️ Próximas
+                    <span class="tab-count">2</span>
+                </a>
+                <a href="#historial" class="tab-btn" data-tab="historial">
+                    📜 Historial
+                    <span class="tab-count">27</span>
+                </a>
+                <a href="#canceladas" class="tab-btn" data-tab="canceladas">
+                    🚫 Canceladas
+                    <span class="tab-count">3</span>
+                </a>
+            </div>
+
+            <!-- ========== RESERVAS PRÓXIMAS (estado: Confirmada, Pendiente) ========== -->
+            <div id="proximas" class="reservas-section active">
+                
+                <!-- Regla de tiempo - Advertencia (política de negocio: 2 horas) -->
+                <div class="warning-banner">
+                    <span>⏰</span>
+                    <p>Política de cancelación: Puedes cancelar o reprogramar hasta <strong>2 horas antes</strong> de la clase. Después de ese tiempo, la clase <strong>se contará como usada</strong> y no será devuelta a tu paquete.</p>
+                </div>
+
+                <!-- Reserva 1 - Boxeo (más de 2 horas, se puede cancelar) -->
+                <div class="reserva-card">
+                    <div class="reserva-status status-confirmado">
+                        <span>✅ Confirmada</span>
+                    </div>
+                    <div class="reserva-icon">🥊</div>
+                    <div class="reserva-info">
+                        <h3>Boxeo</h3>
+                        <p class="coach">Coach: Juan "Tormenta" Rodríguez</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Hoy · 19:00 - 20:30</span>
+                            <span>📍 Salón A</span>
+                            <span>🎯 Nivel: Principiante</span>
+                            <span>🎟️ Clase #12 de tu paquete</span>
+                        </div>
+                        <div class="reserva-timer">
+                            ⏱️ Tiempo para cancelar: <strong>5 horas 30 min</strong>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="clasesdisponibles.html" class="btn-reprogramar">🔄 Reprogramar</a>
+                        <a href="#" class="btn-cancelar">❌ Cancelar</a>
+                    </div>
+                </div>
+
+                <!-- Reserva 2 - Muay Thai (más de 2 horas) -->
+                <div class="reserva-card">
+                    <div class="reserva-status status-confirmado">
+                        <span>✅ Confirmada</span>
+                    </div>
+                    <div class="reserva-icon">🦵</div>
+                    <div class="reserva-info">
+                        <h3>Muay Thai</h3>
+                        <p class="coach">Coach: Ana "Fénix" López</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Mañana · 18:30 - 20:00</span>
+                            <span>📍 Salón B</span>
+                            <span>🎯 Nivel: Intermedio</span>
+                            <span>🎟️ Clase #8 de tu paquete</span>
+                        </div>
+                        <div class="reserva-timer">
+                            ⏱️ Tiempo para cancelar: <strong>1 día 2 horas</strong>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="clasesdisponibles.html" class="btn-reprogramar">🔄 Reprogramar</a>
+                        <a href="#" class="btn-cancelar">❌ Cancelar</a>
+                    </div>
+                </div>
+
+                <!-- Reserva 3 - Jiu-Jitsu (menos de 2 horas - ALERTA) -->
+                <div class="reserva-card warning-card">
+                    <div class="reserva-status status-alerta">
+                        <span>⚠️ Límite próximo</span>
+                    </div>
+                    <div class="reserva-icon">🟤</div>
+                    <div class="reserva-info">
+                        <h3>Jiu-Jitsu Brasileño</h3>
+                        <p class="coach">Coach: Carlos "Caveira" Silva</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Hoy · 20:00 - 21:30</span>
+                            <span>📍 Salón C</span>
+                            <span>🎯 Nivel: Principiante</span>
+                            <span>🎟️ Clase #5 de tu paquete</span>
+                        </div>
+                        <div class="reserva-timer alerta">
+                            ⚠️ Solo <strong>45 minutos</strong> para cancelar o reprogramar
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="clasesdisponibles.html" class="btn-reprogramar">🔄 Reprogramar</a>
+                        <a href="#" class="btn-cancelar">❌ Cancelar</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ========== HISTORIAL DE RESERVAS (estado: Completada, Consumida) ========== -->
+            <div id="historial" class="reservas-section">
+                
+                <!-- Filtros de historial -->
+                <div class="historial-filters">
+                    <select class="filter-select">
+                        <option>Todos los meses</option>
+                        <option>Marzo 2024</option>
+                        <option>Febrero 2024</option>
+                        <option>Enero 2024</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Todas las disciplinas</option>
+                        <option>🥊 Boxeo</option>
+                        <option>🦵 Muay Thai</option>
+                        <option>🟤 Jiu-Jitsu</option>
+                        <option>🤼 Lucha</option>
+                        <option>🏋️ Acondicionamiento</option>
+                    </select>
+                </div>
+
+                <!-- Reserva historial 1 - Asistida (Completada) -->
+                <div class="reserva-card historial">
+                    <div class="reserva-status status-asistida">
+                        <span>✅ Asistida</span>
+                    </div>
+                    <div class="reserva-icon">🥊</div>
+                    <div class="reserva-info">
+                        <h3>Boxeo</h3>
+                        <p class="coach">Coach: Juan "Tormenta" Rodríguez</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Lunes 25 de Marzo, 2024 · 19:00 - 20:30</span>
+                            <span>📍 Salón A</span>
+                            <span>🎟️ Clase consumida de tu paquete</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="#" class="btn-resenar">⭐ Dejar reseña</a>
+                    </div>
+                </div>
+
+                <!-- Reserva historial 2 - Asistida -->
+                <div class="reserva-card historial">
+                    <div class="reserva-status status-asistida">
+                        <span>✅ Asistida</span>
+                    </div>
+                    <div class="reserva-icon">🦵</div>
+                    <div class="reserva-info">
+                        <h3>Muay Thai</h3>
+                        <p class="coach">Coach: Ana "Fénix" López</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Martes 19 de Marzo, 2024 · 18:30 - 20:00</span>
+                            <span>📍 Salón B</span>
+                            <span>🎟️ Clase consumida de tu paquete</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="#" class="btn-resenar">⭐ Dejar reseña</a>
+                    </div>
+                </div>
+
+                <!-- Reserva historial 3 - Asistida -->
+                <div class="reserva-card historial">
+                    <div class="reserva-status status-asistida">
+                        <span>✅ Asistida</span>
+                    </div>
+                    <div class="reserva-icon">🟤</div>
+                    <div class="reserva-info">
+                        <h3>Jiu-Jitsu Brasileño</h3>
+                        <p class="coach">Coach: Carlos "Caveira" Silva</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Miércoles 28 de Febrero, 2024 · 20:00 - 21:30</span>
+                            <span>📍 Salón C</span>
+                            <span>🎟️ Clase consumida de tu paquete</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="#" class="btn-resenar">⭐ Dejar reseña</a>
+                    </div>
+                </div>
+
+                <!-- Reserva historial 4 - No Asistió (Consumida por no cancelar a tiempo) -->
+                <div class="reserva-card historial consumida">
+                    <div class="reserva-status status-consumida">
+                        <span>⚠️ No asistió</span>
+                    </div>
+                    <div class="reserva-icon">🏋️</div>
+                    <div class="reserva-info">
+                        <h3>Acondicionamiento</h3>
+                        <p class="coach">Coach: Laura "Fuerza" Méndez</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Viernes 23 de Febrero, 2024 · 17:00 - 18:30</span>
+                            <span>📍 Salón Fitness</span>
+                        </div>
+                        <div class="cancelacion-motivo">
+                            <span>🔹 No canceló a tiempo (menos de 2 horas de anticipación)</span>
+                            <span class="clase-perdida">⚠️ Clase consumida - No devuelta al paquete</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="#" class="btn-resenar">⭐ Dejar reseña</a>
+                    </div>
+                </div>
+
+                <div class="load-more">
+                    <a href="#" class="btn-load">Cargar más reservas ↓</a>
+                </div>
+
+            </div>
+
+            <!-- ========== RESERVAS CANCELADAS (estado: Cancelada, Cancelada_Tarde) ========== -->
+            <div id="canceladas" class="reservas-section">
+                
+                <!-- Reserva cancelada 1 - Cancelada a tiempo (clase devuelta) -->
+                <div class="reserva-card cancelada">
+                    <div class="reserva-status status-cancelada">
+                        <span>❌ Cancelada</span>
+                    </div>
+                    <div class="reserva-icon">🥊</div>
+                    <div class="reserva-info">
+                        <h3>Boxeo</h3>
+                        <p class="coach">Coach: Juan "Tormenta" Rodríguez</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Lunes 18 de Marzo, 2024 · 19:00 - 20:30</span>
+                            <span>📍 Salón A</span>
+                        </div>
+                        <div class="cancelacion-motivo">
+                            <span>🔹 Cancelada por usuario · 2 días antes</span>
+                            <span class="clase-devuelta">✅ Clase devuelta al paquete</span>
+                            <span class="cancelacion-fecha">📅 Cancelada el: 16/03/2024 15:30</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="clasesdisponibles.html" class="btn-reservar-nuevamente">🔄 Reservar nuevamente</a>
+                    </div>
+                </div>
+
+                <!-- Reserva cancelada 2 - Cancelada tarde (clase NO devuelta) -->
+                <div class="reserva-card cancelada">
+                    <div class="reserva-status status-cancelada-tarde">
+                        <span>❌ Cancelada (Tarde)</span>
+                    </div>
+                    <div class="reserva-icon">🦵</div>
+                    <div class="reserva-info">
+                        <h3>Muay Thai</h3>
+                        <p class="coach">Coach: Ana "Fénix" López</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Jueves 14 de Marzo, 2024 · 18:30 - 20:00</span>
+                            <span>📍 Salón B</span>
+                        </div>
+                        <div class="cancelacion-motivo">
+                            <span>🔹 Cancelada por usuario · 30 minutos antes</span>
+                            <span class="clase-perdida">⚠️ Clase NO devuelta (menos de 2 horas de anticipación)</span>
+                            <span class="cancelacion-fecha">📅 Cancelada el: 14/03/2024 18:00</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="clasesdisponibles.html" class="btn-reservar-nuevamente">🔄 Reservar nuevamente</a>
+                    </div>
+                </div>
+
+                <!-- Reserva cancelada 3 - Cancelada por sistema (reprogramación del coach) -->
+                <div class="reserva-card cancelada">
+                    <div class="reserva-status status-cancelada-sistema">
+                        <span>📢 Cancelada (Sistema)</span>
+                    </div>
+                    <div class="reserva-icon">🏋️</div>
+                    <div class="reserva-info">
+                        <h3>Acondicionamiento</h3>
+                        <p class="coach">Coach: Laura "Fuerza" Méndez</p>
+                        <div class="reserva-detalles">
+                            <span>📅 Viernes 8 de Marzo, 2024 · 17:00 - 18:30</span>
+                            <span>📍 Salón Fitness</span>
+                        </div>
+                        <div class="cancelacion-motivo">
+                            <span>🔹 Cancelada por el sistema · Clase reprogramada por coach</span>
+                            <span class="clase-devuelta">✅ Clase devuelta al paquete automáticamente</span>
+                            <span class="cancelacion-fecha">📅 Cancelada el: 07/03/2024 10:00</span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <a href="clasesdisponibles.html" class="btn-reservar-nuevamente">🔄 Reservar nuevamente</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

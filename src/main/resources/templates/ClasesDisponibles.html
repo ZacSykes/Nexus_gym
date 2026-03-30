@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Clases Disponibles</title>
+    <link rel="stylesheet" href="css/ClasesDisponibles.css">
+</head>
+
+<body>
+
+    <!-- VIDEO FONDO -->
+    <video autoplay muted loop class="video-bg">
+        <source src="Videos/FondoL.mp4" type="video/mp4">
+    </video>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img src="imagenes/Login.png" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=Juan+P" alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name">Juan Pérez</span>
+                        <span class="user-rank">⚪ Cinturón Blanco</span>
+                    </div>
+                    <a href="Login.html" class="logout-btn">🚪 Salir</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL CON MENÚ LATERAL -->
+    <div class="main-layout">
+        
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=Juan+P" alt="Avatar" class="sidebar-avatar">
+                    <h4>Juan Pérez</h4>
+                    <span class="sidebar-rank">⚪ Cinturón Blanco</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="PrincipalUsuario.html" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    
+                    <a href="clasesdisponibles.html" class="nav-item active">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                        <span class="nav-badge">CU-06, CU-07</span>
+                    </a>
+                    
+                    <a href="misreservas.html" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                        <span class="nav-badge">CU-08, CU-09, CU-10</span>
+                    </a>
+                    
+                    <a href="perfil.html" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                        <span class="nav-badge">CU-05</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#paquetes-section" class="nav-item">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                        <span class="nav-badge">CU-11</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#estadisticas-section" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Mi Rendimiento</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong>8</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong>15/12/2024</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- TÍTULO DE SECCIÓN -->
+            <div class="section-header">
+                <h1>🥊 Clases Disponibles</h1>
+                <p>Encuentra tu próxima clase y reserva tu lugar</p>
+            </div>
+
+            <!-- RESUMEN DEL PAQUETE ACTIVO -->
+            <div class="paquete-resumen">
+                <div class="paquete-info">
+                    <span class="paquete-icon">🛡️</span>
+                    <div class="paquete-detalle">
+                        <span class="paquete-label">Tu plan actual</span>
+                        <span class="paquete-nombre">Plan Semanal (8 clases)</span>
+                    </div>
+                </div>
+                <div class="clases-restantes">
+                    <span class="restantes-numero">8</span>
+                    <span class="restantes-label">clases restantes</span>
+                </div>
+                <div class="vencimiento">
+                    <span>📅 Vence: <strong>15/12/2024</strong></span>
+                </div>
+                <a href="PrincipalUsuario.html#paquetes-section" class="btn-comprar">🔄 Recargar plan</a>
+            </div>
+
+            <!-- FILTROS (CU-06) -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label>📅 Fecha</label>
+                    <input type="date" class="filter-date" value="2024-03-28">
+                </div>
+                <div class="filter-group">
+                    <label>🥋 Disciplina</label>
+                    <select class="filter-select">
+                        <option value="todas">Todas las disciplinas</option>
+                        <option value="Boxeo">🥊 Boxeo</option>
+                        <option value="Muay Thai">🦵 Muay Thai</option>
+                        <option value="Jiu-Jitsu Brasileño">🟤 Jiu-Jitsu Brasileño</option>
+                        <option value="Lucha Olímpica">🤼 Lucha Olímpica</option>
+                        <option value="Acondicionamiento">🏋️ Acondicionamiento</option>
+                        <option value="MMA">🔥 MMA</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>📊 Nivel</label>
+                    <select class="filter-select">
+                        <option value="todos">Todos los niveles</option>
+                        <option value="Principiante">Principiante</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
+                        <option value="Todos">Todos</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>👨‍🏫 Coach</label>
+                    <select class="filter-select">
+                        <option value="todos">Todos los coaches</option>
+                        <option value="Juan Tormenta">Juan "Tormenta" Rodríguez</option>
+                        <option value="Ana Fénix">Ana "Fénix" López</option>
+                        <option value="Carlos Caveira">Carlos "Caveira" Silva</option>
+                        <option value="Miguel Furia">Miguel "Furia" Rojas</option>
+                        <option value="Laura Fuerza">Laura "Fuerza" Méndez</option>
+                        <option value="Diego Gladiador">Diego "El Gladiador" Torres</option>
+                    </select>
+                </div>
+                <button class="btn-limpiar-filtros">🗑️ Limpiar filtros</button>
+            </div>
+
+            <!-- RESULTADOS DE BÚSQUEDA -->
+            <div class="resultados-header">
+                <span class="resultados-count">Mostrando 8 clases disponibles</span>
+                <div class="ordenar">
+                    <label>Ordenar por:</label>
+                    <select class="ordenar-select">
+                        <option>Fecha (más cercana)</option>
+                        <option>Fecha (más lejana)</option>
+                        <option>Disciplina (A-Z)</option>
+                        <option>Cupo disponible</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- GRID DE CLASES -->
+            <div class="clases-grid">
+                
+                <!-- Clase 1 - Boxeo (Lunes) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🥊</span>
+                        <span class="clase-nivel principiante">Principiante</span>
+                    </div>
+                    <h3 class="clase-nombre">Boxeo</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Juan "Tormenta" Rodríguez</p>
+                    <div class="clase-horario">
+                        <span>📅 Lunes 28 Marzo, 2024</span>
+                        <span>⏰ 19:00 - 20:30</span>
+                        <span>📍 Salón A</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 53%"></div>
+                        </div>
+                        <span class="cupo-text">8/15 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+                <!-- Clase 2 - Muay Thai (Martes) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🦵</span>
+                        <span class="clase-nivel intermedio">Intermedio</span>
+                    </div>
+                    <h3 class="clase-nombre">Muay Thai</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Ana "Fénix" López</p>
+                    <div class="clase-horario">
+                        <span>📅 Martes 29 Marzo, 2024</span>
+                        <span>⏰ 18:30 - 20:00</span>
+                        <span>📍 Salón B</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 42%"></div>
+                        </div>
+                        <span class="cupo-text">5/12 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+                <!-- Clase 3 - Jiu-Jitsu (Miércoles) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🟤</span>
+                        <span class="clase-nivel principiante">Principiante</span>
+                    </div>
+                    <h3 class="clase-nombre">Jiu-Jitsu Brasileño</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Carlos "Caveira" Silva</p>
+                    <div class="clase-horario">
+                        <span>📅 Miércoles 30 Marzo, 2024</span>
+                        <span>⏰ 20:00 - 21:30</span>
+                        <span>📍 Salón C</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 80%"></div>
+                        </div>
+                        <span class="cupo-text">12/15 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+                <!-- Clase 4 - Lucha Olímpica (Jueves) - SIN CUPO -->
+                <div class="clase-card sin-cupo">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🤼</span>
+                        <span class="clase-nivel avanzado">Avanzado</span>
+                    </div>
+                    <h3 class="clase-nombre">Lucha Olímpica</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Miguel "Furia" Rojas</p>
+                    <div class="clase-horario">
+                        <span>📅 Jueves 31 Marzo, 2024</span>
+                        <span>⏰ 19:00 - 20:30</span>
+                        <span>📍 Salón D</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 100%"></div>
+                        </div>
+                        <span class="cupo-text lleno">0/10 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar disabled" disabled>❌ Sin cupo disponible</button>
+                    </div>
+                </div>
+
+                <!-- Clase 5 - Acondicionamiento (Viernes) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🏋️</span>
+                        <span class="clase-nivel todos">Todos los niveles</span>
+                    </div>
+                    <h3 class="clase-nombre">Acondicionamiento</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Laura "Fuerza" Méndez</p>
+                    <div class="clase-horario">
+                        <span>📅 Viernes 1 Abril, 2024</span>
+                        <span>⏰ 17:00 - 18:30</span>
+                        <span>📍 Salón Fitness</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 30%"></div>
+                        </div>
+                        <span class="cupo-text">6/20 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+                <!-- Clase 6 - MMA (Sábado) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🔥</span>
+                        <span class="clase-nivel intermedio">Intermedio</span>
+                    </div>
+                    <h3 class="clase-nombre">MMA (Artes Marciales Mixtas)</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Diego "El Gladiador" Torres</p>
+                    <div class="clase-horario">
+                        <span>📅 Sábado 2 Abril, 2024</span>
+                        <span>⏰ 10:00 - 12:00</span>
+                        <span>📍 Salón Principal</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 25%"></div>
+                        </div>
+                        <span class="cupo-text">3/12 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+                <!-- Clase 7 - Boxeo (Sábado) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🥊</span>
+                        <span class="clase-nivel avanzado">Avanzado</span>
+                    </div>
+                    <h3 class="clase-nombre">Boxeo</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Juan "Tormenta" Rodríguez</p>
+                    <div class="clase-horario">
+                        <span>📅 Sábado 2 Abril, 2024</span>
+                        <span>⏰ 12:00 - 13:30</span>
+                        <span>📍 Salón A</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 58%"></div>
+                        </div>
+                        <span class="cupo-text">7/12 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+                <!-- Clase 8 - Muay Thai (Domingo) -->
+                <div class="clase-card">
+                    <div class="clase-header">
+                        <span class="clase-disciplina">🦵</span>
+                        <span class="clase-nivel principiante">Principiante</span>
+                    </div>
+                    <h3 class="clase-nombre">Muay Thai</h3>
+                    <p class="clase-coach">👨‍🏫 Coach: Ana "Fénix" López</p>
+                    <div class="clase-horario">
+                        <span>📅 Domingo 3 Abril, 2024</span>
+                        <span>⏰ 09:00 - 10:30</span>
+                        <span>📍 Salón B</span>
+                    </div>
+                    <div class="clase-cupo">
+                        <div class="cupo-bar">
+                            <div class="cupo-fill" style="width: 67%"></div>
+                        </div>
+                        <span class="cupo-text">8/12 cupos disponibles</span>
+                    </div>
+                    <div class="clase-actions">
+                        <button class="btn-reservar">📝 Reservar clase</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MENSAJE DE NO RESULTADOS (oculto por defecto) -->
+            <div class="no-resultados" style="display: none;">
+                <span class="no-resultados-icon">📭</span>
+                <h3>No hay clases disponibles</h3>
+                <p>No encontramos clases con los filtros seleccionados. Intenta con otros criterios.</p>
+                <button class="btn-limpiar-filtros">Limpiar filtros</button>
+            </div>
+
+            <!-- BOTÓN CARGAR MÁS -->
+            <div class="load-more">
+                <a href="#" class="btn-load">Cargar más clases ↓</a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

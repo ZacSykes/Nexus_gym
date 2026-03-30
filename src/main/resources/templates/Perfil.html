@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Mi Perfil</title>
+    <link rel="stylesheet" href="css/Perfil.css">
+</head>
+
+<body>
+
+    <!-- VIDEO FONDO -->
+    <video autoplay muted loop class="video-bg">
+        <source src="Videos/FondoL.mp4" type="video/mp4">
+    </video>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img src="imagenes/Login.png" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=Juan+P" alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name">Juan Pérez</span>
+                        <span class="user-rank">⚪ Cinturón Blanco</span>
+                    </div>
+                    <a href="Login.html" class="logout-btn">🚪 Salir</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL CON MENÚ LATERAL -->
+    <div class="main-layout">
+        
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=Juan+P" alt="Avatar" class="sidebar-avatar">
+                    <h4>Juan Pérez</h4>
+                    <span class="sidebar-rank">⚪ Cinturón Blanco</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="PrincipalUsuario.html" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    
+                    <a href="clasesdisponibles.html" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                        <span class="nav-badge">CU-06, CU-07</span>
+                    </a>
+                    
+                    <a href="misreservas.html" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                        <span class="nav-badge">CU-08, CU-09, CU-10</span>
+                    </a>
+                    
+                    <a href="perfil.html" class="nav-item active">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                        <span class="nav-badge">CU-05</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#paquetes-section" class="nav-item">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                        <span class="nav-badge">CU-11</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#estadisticas-section" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Mi Rendimiento</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong>8</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong>15/12/2024</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- TÍTULO DE SECCIÓN -->
+            <div class="section-header">
+                <h1>👤 Mi Perfil</h1>
+                <p>Administra tu información personal y preferencias de entrenamiento</p>
+            </div>
+
+            <!-- TARJETA PRINCIPAL DEL PERFIL -->
+            <div class="perfil-card">
+                
+                <!-- COLUMNA IZQUIERDA: AVATAR Y ESTADÍSTICAS RÁPIDAS -->
+                <div class="perfil-left">
+                    <div class="avatar-section">
+                        <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=150&name=Juan+P" alt="Avatar" class="avatar-large">
+                        <a href="#" class="btn-cambiar-foto">📷 Cambiar foto</a>
+                        <p class="avatar-note">Formatos: JPG, PNG. Máx 2MB</p>
+                    </div>
+
+                    <div class="stats-mini">
+                        <h3>📊 Mi Progreso</h3>
+                        <div class="stat-mini-item">
+                            <span>🏆 Clases totales:</span>
+                            <strong>32</strong>
+                        </div>
+                        <div class="stat-mini-item">
+                            <span>✅ Asistencias:</span>
+                            <strong>27</strong>
+                        </div>
+                        <div class="stat-mini-item">
+                            <span>📈 Porcentaje:</span>
+                            <strong>84%</strong>
+                        </div>
+                        <div class="stat-mini-item">
+                            <span>🥋 Rango actual:</span>
+                            <strong>Cinturón Blanco</strong>
+                        </div>
+                        <div class="stat-mini-item">
+                            <span>🎯 Próximo rango:</span>
+                            <strong>Cinturón Azul (18 clases más)</strong>
+                        </div>
+                        <div class="progress-mini">
+                            <div class="progress-bar-mini">
+                                <div class="progress-fill-mini" style="width: 44%"></div>
+                            </div>
+                            <span class="progress-text">14/32 clases para Cinturón Azul</span>
+                        </div>
+                    </div>
+
+                    <div class="info-adicional">
+                        <h3>ℹ️ Datos de Cuenta</h3>
+                        <div class="info-item">
+                            <span>📅 Miembro desde:</span>
+                            <strong>15 de Enero, 2024</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>🆔 ID de usuario:</span>
+                            <strong>#NEX-1001</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>🛡️ Plan actual:</span>
+                            <strong>Plan Semanal (8 clases)</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>📅 Vence:</span>
+                            <strong>15 de Diciembre, 2024</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>🎟️ Clases restantes:</span>
+                            <strong>8</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: FORMULARIO EDITABLE -->
+                <div class="perfil-right">
+                    <form class="perfil-form">
+                        <h2>Datos Personales</h2>
+                        <p class="form-subtitle">Información básica de tu cuenta</p>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombres *</label>
+                                <input type="text" value="Juan" class="form-input" placeholder="Tu nombre">
+                            </div>
+                            <div class="form-group">
+                                <label>Apellidos *</label>
+                                <input type="text" value="Pérez García" class="form-input" placeholder="Tus apellidos">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cédula / Documento *</label>
+                            <input type="text" value="1001094766" class="form-input" placeholder="Número de documento" readonly>
+                            <span class="field-note">Este campo no se puede modificar</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Correo electrónico *</label>
+                                <input type="email" value="juan.perez@email.com" class="form-input" placeholder="tu@email.com">
+                                <span class="field-note">Este será tu usuario para iniciar sesión</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono / WhatsApp</label>
+                                <input type="tel" value="+57 300 123 4567" class="form-input" placeholder="+57 300 000 0000">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Teléfono de emergencia</label>
+                                <input type="tel" value="+57 300 765 4321" class="form-input" placeholder="Contacto de emergencia">
+                            </div>
+                            <div class="form-group">
+                                <label>Dirección</label>
+                                <input type="text" value="Calle 123 #45-67, Bogotá" class="form-input" placeholder="Tu dirección">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Fecha de nacimiento</label>
+                                <input type="date" value="1995-05-15" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label>Género</label>
+                                <select class="form-input">
+                                    <option>Masculino</option>
+                                    <option>Femenino</option>
+                                    <option>Prefiero no decirlo</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="separator">
+                            <span>Información Deportiva</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Peso (kg)</label>
+                                <input type="number" value="75" class="form-input" placeholder="Tu peso en kg">
+                            </div>
+                            <div class="form-group">
+                                <label>Altura (cm)</label>
+                                <input type="number" value="175" class="form-input" placeholder="Tu altura en cm">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nivel de experiencia</label>
+                                <select class="form-input">
+                                    <option>Sin experiencia</option>
+                                    <option selected>Algo de base</option>
+                                    <option>Luchador amateur</option>
+                                    <option>Luchador experimentado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Objetivo principal</label>
+                                <select class="form-input">
+                                    <option>Condición física</option>
+                                    <option selected>Perder peso</option>
+                                    <option>Competir en torneos</option>
+                                    <option>Defensa personal</option>
+                                    <option>Desarrollo profesional</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Disciplinas de interés</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> 🥊 Boxeo
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> 🦵 Muay Thai
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"> 🟤 Jiu-Jitsu Brasileño
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"> 🤼 Lucha Olímpica
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> 🏋️ Acondicionamiento
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"> 🔥 MMA
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Notas adicionales para coaches</label>
+                            <textarea class="form-input" rows="3" placeholder="Lesiones, condiciones especiales, objetivos específicos...">Practicante con 6 meses de experiencia. Interés en competir en el futuro. Sin lesiones previas.</textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="#" class="btn-primary">💾 Guardar cambios</a>
+                            <a href="#" class="btn-secondary">🔐 Cambiar contraseña</a>
+                            <a href="#" class="btn-danger">🗑️ Desactivar cuenta</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE PREFERENCIAS Y NOTIFICACIONES -->
+            <div class="preferencias-card">
+                <h2>🔔 Preferencias de Notificaciones</h2>
+                <p class="card-subtitle">Elige cómo quieres recibir alertas y recordatorios</p>
+                <div class="preferencias-grid">
+                    <label class="preferencia-item">
+                        <input type="checkbox" checked> 📧 Notificaciones por correo
+                    </label>
+                    <label class="preferencia-item">
+                        <input type="checkbox" checked> 💬 Notificaciones por WhatsApp
+                    </label>
+                    <label class="preferencia-item">
+                        <input type="checkbox" checked> 📱 Recordatorios de clases (2h antes)
+                    </label>
+                    <label class="preferencia-item">
+                        <input type="checkbox"> 🎯 Promociones y eventos especiales
+                    </label>
+                    <label class="preferencia-item">
+                        <input type="checkbox" checked> 🏆 Logros y progresos
+                    </label>
+                    <label class="preferencia-item">
+                        <input type="checkbox"> 📢 Novedades de la academia
+                    </label>
+                    <label class="preferencia-item">
+                        <input type="checkbox" checked> ⏰ Recordatorio de vencimiento de paquete
+                    </label>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE CONDICIONES MÉDICAS -->
+            <div class="condiciones-card">
+                <h2>🏥 Información Médica</h2>
+                <p class="card-subtitle">Información importante para los coaches (opcional y confidencial)</p>
+                <div class="condiciones-grid">
+                    <div class="form-group">
+                        <label>¿Tienes alguna condición médica?</label>
+                        <select class="form-input">
+                            <option>Ninguna</option>
+                            <option>Asma</option>
+                            <option>Problemas cardíacos</option>
+                            <option>Hipertensión</option>
+                            <option>Diabetes</option>
+                            <option>Lesiones articulares</option>
+                            <option>Epilepsia</option>
+                            <option>Otra</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Alergias?</label>
+                        <input type="text" class="form-input" placeholder="Ej: Polen, medicamentos, látex, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label>Lesiones previas</label>
+                        <input type="text" class="form-input" placeholder="Ej: Esguince de tobillo (2023), fractura de muñeca (2022)">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Medicamentos actuales</label>
+                        <input type="text" class="form-input" placeholder="Medicamentos que estás tomando actualmente">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Información adicional para coaches</label>
+                        <textarea class="form-input" rows="2" placeholder="Cualquier información que los coaches deban saber antes de entrenar contigo..."></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="btn-primary">💾 Guardar información médica</a>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE HISTORIAL DE PAQUETES -->
+            <div class="historial-paquetes-card">
+                <h2>📦 Historial de Planes</h2>
+                <p class="card-subtitle">Planes que has adquirido anteriormente</p>
+                <div class="historial-table">
+                    <div class="table-header">
+                        <span>Plan</span>
+                        <span>Clases</span>
+                        <span>Fecha inicio</span>
+                        <span>Fecha vencimiento</span>
+                        <span>Estado</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Plan Semanal</span>
+                        <span>8 clases</span>
+                        <span>15/11/2024</span>
+                        <span>15/12/2024</span>
+                        <span class="estado-activo">Activo</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Plan Amateur</span>
+                        <span>4 clases</span>
+                        <span>15/10/2024</span>
+                        <span>30/10/2024</span>
+                        <span class="estado-vencido">Vencido</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Plan Amateur</span>
+                        <span>4 clases</span>
+                        <span>15/09/2024</span>
+                        <span>30/09/2024</span>
+                        <span class="estado-vencido">Vencido</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

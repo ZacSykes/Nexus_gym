@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" xmlns:th="http://www.thymeleaf.org">
+    <title>Nexus Admin - Gestión de Usuarios</title>
+
+    <!-- ✅ CORRECCIÓN IMPORTANTE -->
+    <link rel="stylesheet" th:href="@{/admin.css}">
+</head>
+<body>
+
+<!-- BOTÓN HAMBURGUESA -->
+<label class="hamburger">
+    <input type="checkbox" id="menuToggle">
+    <svg viewBox="0 0 32 32">
+        <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+        <path class="line" d="M7 16 27 16"></path>
+    </svg>
+</label>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="logo">Nexus</div>
+    <ul>
+        <li><a th:href="@{/dashboardAdmin}">Inicio</a></li>
+        <li><a th:href="@{/interfazAdmin}">Gimnasios</a></li>
+        <li class="active"><a th:href="@{/interfazAdmin}">Usuarios</a></li>
+        <li><a th:href="@{/clas}">Clases</a></li>
+        <li><a th:href="@{/reservas}">Reservas</a></li>
+        <li><a th:href="@{/pagos}">Pagos</a></li>
+        <li><a th:href="@{/ajustes}">Ajustes</a></li>
+        <li><a th:href="@{/logout}">Cerrar sesión</a></li>
+    </ul>
+</aside>
+
+<!-- CONTENIDO -->
+<main class="main" id="main">
+
+ <div class="header-top">
+    <h1 class="titulo-centrado">Gestión de Usuarios</h1>
+
+    <div class="acciones-header">
+       <a  href="javascript:void(0)" class="btn-crear"  onclick="abrirModalCrear()">
+    <span> Crear Usuario</span>
+</a>
+        </a>
+    </div>
+</div>
+
+    <!-- BOTÓN DEMO -->
+    <a th:href="@{/guardarDemo}" class="btn btn-primary">Agregar Demo</a>
+
+    <!-- FILTRO -->
+    <div class="filtro">
+        <div class="filtro-wrapper">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, apellido, gimnasio o documento..." autocomplete="off">
+            <button class="btn-buscar" id="searchButton">Buscar</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Gimnasio</th>
+                    <th>Email</th>
+                    <th>Documento</th>
+                    <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td class="id" th:text="${usuario.idUsuarios}"></td>
+                    <td th:text="${usuario.nombre}"></td>
+                    <td th:text="${usuario.apellido}"></td>
+                    <td th:text="${usuario.edad}"></td>
+                    <td th:text="${usuario.gimnasio}"></td>
+                    <td th:text="${usuario.email}"></td>
+                    <td th:text="${usuario.documento}"></td>
+                    <td th:text="${usuario.telefono}"></td>
+                    <td>
+                        <span class="rol"
+                              th:text="${usuario.rol.name()}"
+                              th:classappend="${usuario.rol.name() == 'ADMIN'} ? 'rol-admin' : 'rol-alumno'">
+                        </span>
+                    </td>
+                    <td class="acciones">
+                        <button class="btn-editar" onclick="abrirModalEditar(this)" title="Editar">✏️</button>
+                        <button class="btn-ver" onclick="abrirModal(this)" title="Ver detalles">🔍</button>
+                        <form th:action="@{/eliminarUsuario/{id}(id=${usuario.idUsuarios})}" method="post" style="display: inline;" onsubmit="return confirm('¿Eliminar usuario?')">
+                            <button type="submit" class="btn-eliminar" title="Eliminar">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<!-- MODAL CREAR/EDITAR -->
+<div id="modalUsuario" class="modal">
+    <div class="modal-content modal-form">
+        <div class="modal-header">
+            <h2 id="modal-title">Crear Usuario</h2>
+            <span class="modal-close" onclick="cerrarModalUsuario()">&times;</span>
+        </div>
+
+        <form id="usuarioForm" th:action="@{/guardarUsuario}" method="post">
+            <input type="hidden" id="usuarioId" name="idUsuarios" value="">
+
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" id="apellido" name="apellido" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edad">Edad:</label>
+                        <input type="number" id="edad" name="edad" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rol">Rol:</label>
+                        <select id="rol" name="rol" required>
+                            <option value="USUARIO">Usuario</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="ALUMNO">Alumno</option>
+                            <option value="INSTRUCTOR">Instructor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gimnasio">Gimnasio:</label>
+                    <input type="text" id="gimnasio" name="gimnasio" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="documento">Documento:</label>
+                        <input type="text" id="documento" name="documento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono:</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cerrar" onclick="cerrarModalUsuario()">Cancelar</button>
+                <button type="submit" class="btn-guardar">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DETALLES (solo lectura) -->
+<div id="modalDetalles" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detalles del Usuario</h2>
+            <span class="modal-close" onclick="cerrarModal()">&times;</span>
+        </div>
+
+        <div class="modal-body">
+            <div class="detalle-item"><span class="detalle-label">ID:</span><span id="detalle-id" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Nombre:</span><span id="detalle-nombre" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Apellido:</span><span id="detalle-apellido" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Edad:</span><span id="detalle-edad" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Email:</span><span id="detalle-email" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Documento:</span><span id="detalle-documento" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Teléfono:</span><span id="detalle-telefono" class="detalle-valor">-</span></div>
+            <div class="detalle-item"><span class="detalle-label">Rol:</span><span id="detalle-rol" class="detalle-valor">-</span></div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const toggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
+const main = document.getElementById("main");
+
+toggle.addEventListener("change", () => {
+    sidebar.classList.toggle("open");
+    main.classList.toggle("shift");
+});
+
+function abrirModal(boton) {
+    const fila = boton.closest('tr');
+
+    document.getElementById('detalle-id').textContent = fila.cells[0].textContent;
+    document.getElementById('detalle-nombre').textContent = fila.cells[1].textContent;
+    document.getElementById('detalle-apellido').textContent = fila.cells[2].textContent;
+    document.getElementById('detalle-edad').textContent = fila.cells[3].textContent;
+    document.getElementById('detalle-email').textContent = fila.cells[5].textContent;
+    document.getElementById('detalle-documento').textContent = fila.cells[6].textContent;
+    document.getElementById('detalle-telefono').textContent = fila.cells[7].textContent;
+
+    const rol = fila.cells[8].textContent.trim();
+    const detalleRol = document.getElementById('detalle-rol');
+
+    detalleRol.textContent = rol;
+    detalleRol.className = 'detalle-valor';
+
+    if (rol === 'ADMIN') {
+        detalleRol.classList.add('rol-admin');
+    } else {
+        detalleRol.classList.add('rol-alumno');
+    }
+
+    document.getElementById('modalDetalles').classList.add('mostrar');
+}
+
+function cerrarModal() {
+    document.getElementById('modalDetalles').classList.remove('mostrar');
+}
+
+// FUNCIONES PARA MODAL CREAR/EDITAR
+function abrirModalCrear() {
+    document.getElementById('modal-title').textContent = 'Crear Usuario';
+    document.getElementById('usuarioForm').action = '/guardarUsuario';
+
+    // Limpiar formulario
+    document.getElementById('usuarioId').value = '';
+    document.getElementById('nombre').value = '';
+    document.getElementById('apellido').value = '';
+    document.getElementById('edad').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('gimnasio').value = '';
+    document.getElementById('documento').value = '';
+    document.getElementById('telefono').value = '';
+    document.getElementById('rol').value = 'USUARIO';
+
+    document.getElementById('modalUsuario').classList.add('mostrar');
+}
+
+function abrirModalEditar(boton) {
+    const fila = boton.closest('tr');
+
+    document.getElementById('modal-title').textContent = 'Editar Usuario';
+    document.getElementById('usuarioForm').action = '/editarUsuario';
+
+    // Llenar formulario con datos de la fila
+    document.getElementById('usuarioId').value = fila.cells[0].textContent;
+    document.getElementById('nombre').value = fila.cells[1].textContent;
+    document.getElementById('apellido').value = fila.cells[2].textContent;
+    document.getElementById('edad').value = fila.cells[3].textContent;
+    document.getElementById('gimnasio').value = fila.cells[4].textContent;
+    document.getElementById('email').value = fila.cells[5].textContent;
+    document.getElementById('documento').value = fila.cells[6].textContent;
+    document.getElementById('telefono').value = fila.cells[7].textContent;
+
+    // El rol está en la celda 8 (índice 8)
+    const rolText = fila.cells[8].textContent.trim();
+    document.getElementById('rol').value = rolText;
+
+    document.getElementById('modalUsuario').classList.add('mostrar');
+}
+
+function cerrarModalUsuario() {
+    document.getElementById('modalUsuario').classList.remove('mostrar');
+}
+
+// FILTRO
+document.getElementById('searchButton').addEventListener('click', () => {
+    const searchValue = document.getElementById('searchInput').value.trim();
+    if (searchValue) {
+        window.location.href = '/interfazAdmin?fil=' + encodeURIComponent(searchValue);
+    } else {
+        window.location.href = '/interfazAdmin';
+    }
+});
+
+// Para que funcione también con Enter
+document.getElementById('searchInput').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        document.getElementById('searchButton').click();
+    }
+});
+</script>
+
+<script>
+function abrirModalCrear() {
+    document.getElementById('modalCrearUsuario').classList.add('mostrar');
+}
+
+function cerrarModalCrear() {
+    document.getElementById('modalCrearUsuario').classList.remove('mostrar');
+}
+</script>
+
+<!-- MODAL CREAR USUARIO -->
+<div th:action="@{/guardarUsuario}" id="modalCrearUsuario" class="modal">
+    <div class="modal-content modal-crear">
+        
+        <div class="modal-header">
+            <h2>Crear Usuario</h2>
+            <span class="modal-close" onclick="cerrarModalCrear()">&times;</span>
+        </div>
+
+        <form class="form-crear">
+            <div class="form-grid">
+
+                <input type="text" placeholder="Nombre" required>
+                <input type="text" placeholder="Apellido" required>
+
+                <input type="number" placeholder="Edad" required>
+                <input type="text" placeholder="Gimnasio" required>
+                <input type="email" placeholder="Email" required>
+
+                <input type="text" placeholder="Documento" required>
+                <input type="text" placeholder="Teléfono" required>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cerrar" onclick="cerrarModalCrear()">Cancelar</button>
+                <button type="submit" class="btn-guardar" th:href="@{/guardarUsuario}">Guardar</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

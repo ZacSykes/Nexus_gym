@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Comprar Paquetes</title>
+    <link rel="stylesheet" href="css/Paquetes.css">
+</head>
+
+<body>
+
+    <!-- VIDEO FONDO -->
+    <video autoplay muted loop class="video-bg">
+        <source src="Videos/FondoL.mp4" type="video/mp4">
+    </video>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img src="imagenes/Login.png" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=Juan+P" alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name">Juan Pérez</span>
+                        <span class="user-rank">⚪ Cinturón Blanco</span>
+                    </div>
+                    <a href="Login.html" class="logout-btn">🚪 Salir</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL CON MENÚ LATERAL -->
+    <div class="main-layout">
+        
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img src="https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=Juan+P" alt="Avatar" class="sidebar-avatar">
+                    <h4>Juan Pérez</h4>
+                    <span class="sidebar-rank">⚪ Cinturón Blanco</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="PrincipalUsuario.html" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    
+                    <a href="clasesdisponibles.html" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                        <span class="nav-badge">CU-06, CU-07</span>
+                    </a>
+                    
+                    <a href="misreservas.html" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                        <span class="nav-badge">CU-08, CU-09, CU-10</span>
+                    </a>
+                    
+                    <a href="perfil.html" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                        <span class="nav-badge">CU-05</span>
+                    </a>
+                    
+                    <a href="paquetes.html" class="nav-item active">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                        <span class="nav-badge">CU-11</span>
+                    </a>
+                    
+                    <a href="PrincipalUsuario.html#estadisticas-section" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Mi Rendimiento</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong>8</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong>15/12/2024</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- TÍTULO DE SECCIÓN -->
+            <div class="section-header">
+                <h1>🛡️ Planes de Combate</h1>
+                <p>Elige el plan que mejor se adapte a tu ritmo de entrenamiento</p>
+            </div>
+
+            <!-- RESÚMEN DEL PAQUETE ACTUAL -->
+            <div class="paquete-actual-card">
+                <div class="paquete-actual-info">
+                    <span class="paquete-actual-icon">📦</span>
+                    <div class="paquete-actual-detalle">
+                        <span class="paquete-actual-label">Tu plan actual</span>
+                        <span class="paquete-actual-nombre">Plan Semanal (8 clases)</span>
+                        <span class="paquete-actual-vence">Vence: 15 de Diciembre, 2024</span>
+                    </div>
+                </div>
+                <div class="paquete-actual-estado">
+                    <span class="clases-restantes-badge">8 clases restantes</span>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA: PLANES INDIVIDUALES -->
+            <div class="categoria-planes">
+                <h2>🥋 Planes Individuales</h2>
+                <p class="categoria-descripcion">Perfectos para entrenamiento personalizado</p>
+            </div>
+
+            <div class="paquetes-grid">
+                <!-- Plan Individual - Prueba 1 día (id_planes = 1) -->
+                <div class="paquete-card">
+                    <div class="paquete-badge">PRUEBA</div>
+                    <h3>Plan Prueba</h3>
+                    <div class="paquete-clases">1 Clase</div>
+                    <div class="paquete-precio">$25.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $25.000 por clase</span>
+                        <span>📅 Válido por 1 día</span>
+                        <span>🎯 Ideal para probar</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan Individual - 12 clases (id_planes = 2) -->
+                <div class="paquete-card popular">
+                    <div class="popular-badge">MÁS POPULAR</div>
+                    <h3>Plan Amateur</h3>
+                    <div class="paquete-clases">12 Clases</div>
+                    <div class="paquete-precio">$180.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $15.000 por clase</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>🎯 Ahorro del 28%</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan Individual - 16 clases (id_planes = 3) -->
+                <div class="paquete-card">
+                    <h3>Plan Intermedio</h3>
+                    <div class="paquete-clases">16 Clases</div>
+                    <div class="paquete-precio">$224.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $14.000 por clase</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>🎯 Ahorro del 30%</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan Individual - 20 clases (id_planes = 4) -->
+                <div class="paquete-card">
+                    <h3>Plan Avanzado</h3>
+                    <div class="paquete-clases">20 Clases</div>
+                    <div class="paquete-precio">$260.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $13.000 por clase</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>🎯 Ahorro del 35%</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA: PLANES PAREJA -->
+            <div class="categoria-planes">
+                <h2>👥 Planes Pareja</h2>
+                <p class="categoria-descripcion">Entrena con tu compañero/a y ahorra</p>
+            </div>
+
+            <div class="paquetes-grid">
+                <!-- Plan Pareja - Prueba 1 día (id_planes = 5) -->
+                <div class="paquete-card">
+                    <div class="paquete-badge">PAREJA</div>
+                    <h3>Plan Pareja Prueba</h3>
+                    <div class="paquete-clases">1 Clase c/u</div>
+                    <div class="paquete-precio">$40.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $20.000 por persona</span>
+                        <span>📅 Válido por 1 día</span>
+                        <span>👥 2 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan Pareja - 12 clases (id_planes = 6) -->
+                <div class="paquete-card">
+                    <h3>Plan Pareja Amateur</h3>
+                    <div class="paquete-clases">12 Clases c/u</div>
+                    <div class="paquete-precio">$288.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $12.000 por clase/persona</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>👥 2 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan Pareja - 16 clases (id_planes = 7) -->
+                <div class="paquete-card">
+                    <h3>Plan Pareja Intermedio</h3>
+                    <div class="paquete-clases">16 Clases c/u</div>
+                    <div class="paquete-precio">$352.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $11.000 por clase/persona</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>👥 2 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan Pareja - 20 clases (id_planes = 8) -->
+                <div class="paquete-card">
+                    <h3>Plan Pareja Avanzado</h3>
+                    <div class="paquete-clases">20 Clases c/u</div>
+                    <div class="paquete-precio">$400.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $10.000 por clase/persona</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>👥 2 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA: PLANES 4 PERSONAS -->
+            <div class="categoria-planes">
+                <h2>👥👥 Planes 4 Personas</h2>
+                <p class="categoria-descripcion">Ideal para grupos de amigos o familia</p>
+            </div>
+
+            <div class="paquetes-grid">
+                <!-- Plan 4 Personas - Prueba 1 día (id_planes = 9) -->
+                <div class="paquete-card">
+                    <div class="paquete-badge">GRUPAL</div>
+                    <h3>Plan Grupal Prueba</h3>
+                    <div class="paquete-clases">1 Clase c/u</div>
+                    <div class="paquete-precio">$45.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $11.250 por persona</span>
+                        <span>📅 Válido por 1 día</span>
+                        <span>👥 4 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan 4 Personas - 12 clases (id_planes = 10) -->
+                <div class="paquete-card popular">
+                    <div class="popular-badge">MEJOR VALOR</div>
+                    <h3>Plan Grupal Amateur</h3>
+                    <div class="paquete-clases">12 Clases c/u</div>
+                    <div class="paquete-precio">$360.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $7.500 por clase/persona</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>👥 4 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan 4 Personas - 16 clases (id_planes = 11) -->
+                <div class="paquete-card">
+                    <h3>Plan Grupal Intermedio</h3>
+                    <div class="paquete-clases">16 Clases c/u</div>
+                    <div class="paquete-precio">$432.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $6.750 por clase/persona</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>👥 4 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+
+                <!-- Plan 4 Personas - 20 clases (id_planes = 12) -->
+                <div class="paquete-card">
+                    <h3>Plan Grupal Avanzado</h3>
+                    <div class="paquete-clases">20 Clases c/u</div>
+                    <div class="paquete-precio">$480.000</div>
+                    <div class="paquete-detalle">
+                        <span>💰 $6.000 por clase/persona</span>
+                        <span>📅 Válido por 30 días</span>
+                        <span>👥 4 personas</span>
+                    </div>
+                    <a href="#" class="btn-seleccionar">Seleccionar plan</a>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE MÉTODOS DE PAGO -->
+            <div class="metodos-pago-card">
+                <h2>💳 Métodos de Pago</h2>
+                <div class="metodos-grid">
+                    <div class="metodo-item">
+                        <span class="metodo-icon">💳</span>
+                        <span>Tarjeta de crédito/débito</span>
+                    </div>
+                    <div class="metodo-item">
+                        <span class="metodo-icon">🏦</span>
+                        <span>Transferencia bancaria</span>
+                    </div>
+                    <div class="metodo-item">
+                        <span class="metodo-icon">📱</span>
+                        <span>Nequi / Daviplata</span>
+                    </div>
+                    <div class="metodo-item">
+                        <span class="metodo-icon">💵</span>
+                        <span>Efectivo en academia</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE PREGUNTAS FRECUENTES -->
+            <div class="faq-card">
+                <h2>❓ Preguntas Frecuentes</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h4>¿Cómo se activa el plan?</h4>
+                        <p>Al confirmar tu compra, las clases se añaden automáticamente a tu cuenta. Puedes empezar a reservar de inmediato.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>¿Puedo combinar planes?</h4>
+                        <p>Sí, si tienes un plan activo y compras otro, las clases se suman y la vigencia se extiende desde la fecha de compra.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>¿Qué pasa si no uso todas las clases?</h4>
+                        <p>Las clases no utilizadas al vencimiento del plan expiran. Te recomendamos planificar tu entrenamiento.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>¿Puedo compartir mi plan?</h4>
+                        <p>Los planes son personales e intransferibles. Si quieres entrenar con amigos, te recomendamos los planes grupales.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
