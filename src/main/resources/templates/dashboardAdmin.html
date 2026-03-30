@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" xmlns:th="http://www.thymeleaf.org">
+<title>Panel Nexus</title>
+
+<link rel="stylesheet" th:href="@{/css/dashboardAdmin.css}">
+
+</head>
+
+<body>
+
+<!-- DASHBOARD -->
+<section class="dashboard">
+
+    <h1 class="title">Panel de Administración</h1>
+
+    <div class="cards">
+
+        <a th:href="@{/interfazAdmin}" class="card-link">
+            <article class="card">
+                <img src="imagenes/gimnasia.png" class="icon">
+                <h3>Gestión de Usuarios</h3>
+                <p>Administra los usuarios registrados y sus perfiles.</p>
+            </article>
+        </a>
+
+        <a th:href="@{/GestionGimnasios}" class="card-link">
+            <article class="card">
+                <img src="imagenes/pesa.png" class="icon">
+                <h3>Gestión de gimnasios</h3>
+                <p>Administra los gimnasios y sus instalaciones.</p>
+            </article>
+        </a>
+
+        <a href="#" class="card-link">
+            <article class="card">
+                <img src="imagenes/reserva.png" class="icon">
+                <h3>Gestión de Usuarios</h3>
+                <p>Administra los usuarios registrados y sus perfiles.</p>
+            </article>
+        </a>
+
+        <a href="#" class="card-link">
+            <article class="card logout-card">
+                <img src="imagenes/logout.svg" class="icon">
+                <h3>Pagos</h3>
+                <p>Administra los pagos y transacciones.</p>
+            </article>
+        </a>
+
+         <a href="#" class="card-link">
+            <article class="card logout-card">
+                <img src="imagenes/logout.svg" class="icon">
+                <h3>Ajustes</h3>
+                <p>Administra los ajustes del sistema.</p>
+            </article>
+        </a>
+
+            <a href="#" class="card-link">
+                <article class="card logout-card">
+                    <img src="imagenes/logout.svg" class="icon">
+                    <h3>Cerrar sesión</h3>
+                    <p>Finaliza tu sesión de forma segura.</p>
+                </article>
+        
+
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>© 2026 Nexus. Todos los derechos reservados.</p>
+</footer>
+
+</body>
+</html>

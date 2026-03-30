@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Mi Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/Perfil.css}">
+</head>
+
+<body>
+
+    <video autoplay muted loop class="video-bg">
+        <source th:src="@{/Videos/FondoL.mp4}" type="video/mp4">
+    </video>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu" th:if="${usuario != null}">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</span>
+                        <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Rango</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="display:inline">
+                        <button type="submit" class="logout-btn">🚪 Salir</button>
+                    </form>
+                </div>
+                <div th:unless="${usuario != null}" class="alert-error">Error cargando perfil</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout" th:if="${usuario != null}">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="sidebar-avatar">
+                    <h4 th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</h4>
+                    <span class="sidebar-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : ''}"></span>
+                </div>
+                <nav class="sidebar-nav">
+                    <a th:href="@{/principalUsuario}" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    <a th:href="@{/clases}" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                    </a>
+                    <a th:href="@{/reservas}" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                    </a>
+                    <a th:href="@{/perfil}" class="nav-item active">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                    </a>
+                    <a th:href="@{/paquetes}" class="nav-item">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer" th:if="${paquete != null}">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong th:text="${paquete.clasesRestantes}">0</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}">-</strong>
+                    </div>
+                </div>
+                <div class="sidebar-footer" th:unless="${paquete != null}">
+                    <div class="plan-info-sidebar">
+                        <span>No tienes un plan activo</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <!-- MENSAJE -->
+            <div th:if="${mensaje}"
+                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
+                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center; background:rgba(0,200,0,0.15);">
+                <span th:text="${mensaje}"></span>
+            </div>
+
+            <div class="section-header">
+                <h1>👤 Mi Perfil</h1>
+                <p>Administra tu información personal y preferencias de entrenamiento</p>
+            </div>
+
+            <!-- TARJETA PRINCIPAL -->
+            <div class="perfil-card">
+
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="perfil-left">
+                    <div class="avatar-section">
+                        <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=150&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                             alt="Avatar" class="avatar-large">
+                        <p class="avatar-note">Foto generada automáticamente</p>
+                    </div>
+
+                    <div class="stats-mini">
+                        <h3>📊 Mi Progreso</h3>
+                        <div class="stat-mini-item">
+                            <span>🏆 Clases totales:</span>
+                            <strong th:text="${usuario.clasesTotales != null ? usuario.clasesTotales : 0}">0</strong>
+                        </div>
+                        <div class="stat-mini-item">
+                            <span>🥋 Rango actual:</span>
+                            <strong th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">-</strong>
+                        </div>
+                    </div>
+
+                    <div class="info-adicional">
+                        <h3>ℹ️ Datos de Cuenta</h3>
+                        <div class="info-item">
+                            <span>📅 Miembro desde:</span>
+                            <strong th:if="${usuario.fechaRegistro != null}" th:text="${#temporals.format(usuario.fechaRegistro, 'dd/MM/yyyy')}">-</strong>
+                            <strong th:unless="${usuario.fechaRegistro != null}">-</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>🆔 Cédula:</span>
+                            <strong th:text="${usuario.cedula}">-</strong>
+                        </div>
+                        <div th:if="${paquete != null}">
+                            <div class="info-item">
+                                <span>🛡️ Plan actual:</span>
+                                <strong th:text="${paquete.totalClases + ' clases'}">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>🎟️ Clases restantes:</span>
+                                <strong th:text="${paquete.clasesRestantes}">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA - FORMULARIO -->
+                <div class="perfil-right">
+                    <form th:action="@{/perfil/actualizar}" method="post" class="perfil-form">
+
+                        <h2>Datos Personales</h2>
+                        <p class="form-subtitle">Información básica de tu cuenta</p>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombres *</label>
+                                <input type="text" name="nombre" class="form-input"
+                                       th:value="${usuario.nombre}" placeholder="Tu nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Apellidos *</label>
+                                <input type="text" name="apellido" class="form-input"
+                                       th:value="${usuario.apellido}" placeholder="Tus apellidos" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cédula / Documento *</label>
+                            <input type="text" class="form-input"
+                                   th:value="${usuario.cedula}" readonly>
+                            <span class="field-note">Este campo no se puede modificar</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Correo electrónico *</label>
+                                <input type="email" name="correo" class="form-input"
+                                       th:value="${usuario.correo}" placeholder="tu@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono / WhatsApp</label>
+                                <input type="tel" name="telefono" class="form-input"
+                                       th:value="${usuario.telefono}" placeholder="+57 300 000 0000">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Dirección</label>
+                                <input type="text" name="direccion" class="form-input"
+                                       th:value="${usuario.direccion}" placeholder="Tu dirección">
+                            </div>
+                            <div class="form-group">
+                                <label>Género</label>
+                                <select name="genero" class="form-input">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Masculino" th:selected="${usuario.genero == 'Masculino'}">Masculino</option>
+                                    <option value="Femenino" th:selected="${usuario.genero == 'Femenino'}">Femenino</option>
+                                    <option value="Prefiero no decirlo" th:selected="${usuario.genero == 'Prefiero no decirlo'}">Prefiero no decirlo</option>
+                                    <option value="Otro" th:selected="${usuario.genero == 'Otro'}">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="separator"><span>Información Médica</span></div>
+
+                        <div class="form-group">
+                            <label>Condiciones médicas</label>
+                            <textarea name="condicionesMedicas" class="form-input" rows="2"
+                                      placeholder="Asma, diabetes, lesiones..."
+                                      th:text="${usuario.condicionesMedicas}"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Alergias</label>
+                                <input type="text" name="alergias" class="form-input"
+                                       th:value="${usuario.alergias}" placeholder="Polen, medicamentos...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Notas adicionales para coaches</label>
+                            <textarea name="notasAdicionales" class="form-input" rows="3"
+                                      placeholder="Lesiones, objetivos específicos..."
+                                      th:text="${usuario.notasAdicionales}"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Guardar cambios</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div th:unless="${usuario != null}" class="main-content">
+        <div class="alert-error">No se pudo cargar la información del perfil. Por favor, inicia sesión nuevamente.</div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

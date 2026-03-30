@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Mis Reservas</title>
+    <link rel="stylesheet" th:href="@{/css/MisReservas.css}">
+</head>
+
+<body>
+
+    <video autoplay muted loop class="video-bg">
+        <source th:src="@{/Videos/FondoL.mp4}" type="video/mp4">
+    </video>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu" th:if="${usuario != null}">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</span>
+                        <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Rango</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="display:inline">
+                        <button type="submit" class="logout-btn">🚪 Salir</button>
+                    </form>
+                </div>
+                <div th:unless="${usuario != null}" class="alert-error">Error cargando perfil</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout" th:if="${usuario != null}">
+
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="sidebar-avatar">
+                    <h4 th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</h4>
+                    <span class="sidebar-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : ''}"></span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a th:href="@{/principalUsuario}" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    <a th:href="@{/clases}" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                    </a>
+                    <a th:href="@{/reservas}" class="nav-item active">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                    </a>
+                    <a th:href="@{/perfil}" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                    </a>
+                    <a th:href="@{/paquetes}" class="nav-item">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-footer" th:if="${paquete != null}">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong th:text="${paquete.clasesRestantes}">0</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}">-</strong>
+                    </div>
+                </div>
+                <div class="sidebar-footer" th:unless="${paquete != null}">
+                    <div class="plan-info-sidebar">
+                        <span>No tienes un plan activo</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+
+            <!-- MENSAJES FLASH -->
+            <div th:if="${mensaje}" 
+                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
+                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+                <span th:text="${mensaje}"></span>
+            </div>
+
+            <div class="section-header">
+                <h1>📋 Mis Reservas</h1>
+                <p>Gestiona tus clases agendadas</p>
+            </div>
+
+            <!-- TARJETA DE RESUMEN (simplificada) -->
+            <div class="resumen-card">
+                <div class="resumen-item">
+                    <span class="resumen-icon">📅</span>
+                    <div class="resumen-info">
+                        <span class="resumen-numero" th:text="${#lists.size(reservas)}">0</span>
+                        <span class="resumen-label">Total reservas</span>
+                    </div>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-icon">✅</span>
+                    <div class="resumen-info">
+                        <span class="resumen-numero" th:text="${#lists.size(reservas)}">0</span>
+                        <span class="resumen-label">Activas</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WARNING BANNER -->
+            <div class="warning-banner">
+                <span>⏰</span>
+                <p>Política de cancelación: Puedes cancelar hasta <strong>2 horas antes</strong> de la clase.</p>
+            </div>
+
+            <!-- LISTADO DE RESERVAS -->
+            <div th:if="${not #lists.isEmpty(reservas)}">
+                <div th:each="reserva : ${reservas}" class="reserva-card">
+                    <div class="reserva-status" th:classappend="${reserva.estado == 'Confirmada'} ? 'status-confirmado' : 'status-pendiente'">
+                        <span th:text="${reserva.estado}"></span>
+                    </div>
+                    <div class="reserva-icon" th:text="${reserva.clase.disciplina == 'Boxeo'} ? '🥊' : 
+                                                               (${reserva.clase.disciplina == 'Muay Thai'} ? '🦵' :
+                                                               (${reserva.clase.disciplina == 'Jiu-Jitsu Brasileño'} ? '🟤' :
+                                                               (${reserva.clase.disciplina == 'Lucha Olímpica'} ? '🤼' :
+                                                               (${reserva.clase.disciplina == 'Acondicionamiento'} ? '🏋️' : '🔥'))))">
+                    </div>
+                    <div class="reserva-info">
+                        <h3 th:text="${reserva.clase.nombre}">Clase</h3>
+                        <p class="coach" th:text="'Coach: ' + ${reserva.clase.profesor.nombre} + ' ' + ${reserva.clase.profesor.apellido}">Coach</p>
+                        <div class="reserva-detalles">
+                            <span th:text="'📅 ' + ${#temporals.format(reserva.fechaClase, 'dd/MM/yyyy')} + ' · ' + ${reserva.horaInicio} + ' - ' + ${reserva.clase.horaFin}"></span>
+                            <span th:text="'📍 ' + ${reserva.clase.salon}"></span>
+                            <span th:text="'🎯 Nivel: ' + ${reserva.clase.nivel}"></span>
+                        </div>
+                    </div>
+                    <div class="reserva-actions">
+                        <form th:action="@{/cancelarReserva}" method="post" th:if="${reserva.estado == 'Confirmada'}">
+                            <input type="hidden" name="idReserva" th:value="${reserva.idReservas}">
+                            <button type="submit" class="btn-cancelar">❌ Cancelar</button>
+                        </form>
+                        <span th:unless="${reserva.estado == 'Confirmada'}" class="estado-pendiente-text" th:text="'Estado: ' + ${reserva.estado}"></span>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(reservas)}" class="no-resultados">
+                <span class="no-resultados-icon">📭</span>
+                <h3>No tienes reservas</h3>
+                <p>Reserva tu primera clase desde la sección de Clases Disponibles.</p>
+                <a th:href="@{/clases}" class="btn-limpiar-filtros">Ver clases disponibles</a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>CD

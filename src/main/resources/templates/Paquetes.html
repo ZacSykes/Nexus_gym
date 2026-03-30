@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Comprar Paquetes</title>
+    <link rel="stylesheet" th:href="@{/css/Paquetes.css}">
+</head>
+
+<body>
+
+    <video autoplay muted loop class="video-bg">
+        <source th:src="@{/Videos/FondoL.mp4}" type="video/mp4">
+    </video>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle">☰</button>
+                <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn notif-btn">🔔</button>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</span>
+                        <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Rango</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="display:inline">
+                        <button type="submit" class="logout-btn">🚪 Salir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-user">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="sidebar-avatar">
+                    <h4 th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</h4>
+                    <span class="sidebar-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : ''}"></span>
+                </div>
+                <nav class="sidebar-nav">
+                    <a th:href="@{/principalUsuario}" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Nexus</span>
+                    </a>
+                    <a th:href="@{/clases}" class="nav-item">
+                        <span class="nav-icon">🥊</span>
+                        <span class="nav-text">Clases Disponibles</span>
+                    </a>
+                    <a th:href="@{/reservas}" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Mis Reservas</span>
+                    </a>
+                    <a th:href="@{/perfil}" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Mi Perfil</span>
+                    </a>
+                    <a th:href="@{/paquetes}" class="nav-item active">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-text">Comprar Paquetes</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer" th:if="${paquete != null}">
+                    <div class="plan-info-sidebar">
+                        <span>Clases restantes:</span>
+                        <strong th:text="${paquete.clasesRestantes}">0</strong>
+                    </div>
+                    <div class="plan-info-sidebar">
+                        <span>Vence:</span>
+                        <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}">-</strong>
+                    </div>
+                </div>
+                <div class="sidebar-footer" th:if="${paquete == null}">
+                    <div class="plan-info-sidebar">
+                        <span>No tienes un plan activo</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div th:if="${mensaje}" 
+                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
+                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+                <span th:text="${mensaje}"></span>
+            </div>
+
+            <div class="section-header">
+                <h1>🛡️ Planes de Combate</h1>
+                <p>Elige el plan que mejor se adapte a tu ritmo de entrenamiento</p>
+            </div>
+
+            <div class="paquete-actual-card" th:if="${paquete != null}">
+                <div class="paquete-actual-info">
+                    <span class="paquete-actual-icon">📦</span>
+                    <div class="paquete-actual-detalle">
+                        <span class="paquete-actual-label">Tu plan actual</span>
+                        <span class="paquete-actual-nombre" th:text="|Plan de ${paquete.totalClases} clases|">Plan Semanal (8 clases)</span>
+                        <span class="paquete-actual-vence" th:text="'Vence: ' + ${#temporals.format(paquete.fechaVencimiento, 'dd ''de'' MMMM, yyyy')}">Vence: 15 de Diciembre, 2024</span>
+                    </div>
+                </div>
+                <div class="paquete-actual-estado">
+                    <span class="clases-restantes-badge" th:text="|${paquete.clasesRestantes} clases restantes|">8 clases restantes</span>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA: INDIVIDUAL -->
+            <div class="categoria-planes">
+                <h2>🥋 Planes Individuales</h2>
+                <p class="categoria-descripcion">Perfectos para entrenamiento personalizado</p>
+            </div>
+            <div class="paquetes-grid">
+                <div th:each="plan : ${planes}" th:if="${plan.tipo == 'INDIVIDUAL'}" class="paquete-card" th:classappend="${plan.totalClases == 12 ? 'popular' : ''}">
+                    <div class="paquete-badge" th:if="${plan.totalClases == 1}">PRUEBA</div>
+                    <div class="popular-badge" th:if="${plan.totalClases == 12}">MÁS POPULAR</div>
+                    <h3 th:text="${plan.nombre}">Plan Amateur</h3>
+                    <div class="paquete-clases" th:text="${plan.totalClases} + ' Clase' + (${plan.totalClases} != 1 ? 's' : '')">12 Clases</div>
+                    <div class="paquete-precio" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT')}">$180.000</div>
+                    <div class="paquete-detalle">
+                        <span th:text="'💰 $' + ${#numbers.formatDecimal(plan.precio / plan.totalClases, 0, 'COMMA', 0, 'POINT')} + ' por clase'">💰 $15.000 por clase</span>
+                        <span th:text="'📅 Válido por ' + ${plan.duracionDias} + ' días'">📅 Válido por 30 días</span>
+                        <span th:if="${plan.totalClases > 1}" th:text="'🎯 Ahorro por volumen'">🎯 Ahorro por volumen</span>
+                        <span th:if="${plan.totalClases == 1}" th:text="'🎯 Ideal para probar'">🎯 Ideal para probar</span>
+                    </div>
+                    <form th:action="@{/paquetes/comprar}" method="post">
+                        <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
+                        <button type="submit" class="btn-seleccionar">Seleccionar plan</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA: PAREJA -->
+            <div class="categoria-planes">
+                <h2>👥 Planes Pareja</h2>
+                <p class="categoria-descripcion">Entrena con tu compañero/a y ahorra</p>
+            </div>
+            <div class="paquetes-grid">
+                <div th:each="plan : ${planes}" th:if="${plan.tipo == 'PAREJA'}" class="paquete-card">
+                    <div class="paquete-badge" th:if="${plan.totalClases == 1}">PAREJA</div>
+                    <div class="popular-badge" th:if="${plan.totalClases == 12}">MÁS POPULAR</div>
+                    <h3 th:text="${plan.nombre}">Plan Pareja Amateur</h3>
+                    <div class="paquete-clases" th:text="${plan.totalClases} + ' Clase' + (${plan.totalClases} != 1 ? 's' : '') + ' c/u'">12 Clases c/u</div>
+                    <div class="paquete-precio" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT')}">$288.000</div>
+                    <div class="paquete-detalle">
+                        <span th:text="'💰 $' + ${#numbers.formatDecimal(plan.precio / (plan.totalClases * plan.personas), 0, 'COMMA', 0, 'POINT')} + ' por clase/persona'">💰 $12.000 por clase/persona</span>
+                        <span th:text="'📅 Válido por ' + ${plan.duracionDias} + ' días'">📅 Válido por 30 días</span>
+                        <span th:text="'👥 ' + ${plan.personas} + ' persona' + (${plan.personas} != 1 ? 's' : '')">👥 2 personas</span>
+                    </div>
+                    <form th:action="@{/paquetes/comprar}" method="post">
+                        <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
+                        <button type="submit" class="btn-seleccionar">Seleccionar plan</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA: GRUPAL 4 PERSONAS -->
+            <div class="categoria-planes">
+                <h2>👥👥 Planes 4 Personas</h2>
+                <p class="categoria-descripcion">Ideal para grupos de amigos o familia</p>
+            </div>
+            <div class="paquetes-grid">
+                <div th:each="plan : ${planes}" th:if="${plan.tipo == 'GRUPAL'}" class="paquete-card" th:classappend="${plan.totalClases == 12 ? 'popular' : ''}">
+                    <div class="paquete-badge" th:if="${plan.totalClases == 1}">GRUPAL</div>
+                    <div class="popular-badge" th:if="${plan.totalClases == 12}">MEJOR VALOR</div>
+                    <h3 th:text="${plan.nombre}">Plan Grupal Amateur</h3>
+                    <div class="paquete-clases" th:text="${plan.totalClases} + ' Clase' + (${plan.totalClases} != 1 ? 's' : '') + ' c/u'">12 Clases c/u</div>
+                    <div class="paquete-precio" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT')}">$360.000</div>
+                    <div class="paquete-detalle">
+                        <span th:text="'💰 $' + ${#numbers.formatDecimal(plan.precio / (plan.totalClases * plan.personas), 0, 'COMMA', 0, 'POINT')} + ' por clase/persona'">💰 $7.500 por clase/persona</span>
+                        <span th:text="'📅 Válido por ' + ${plan.duracionDias} + ' días'">📅 Válido por 30 días</span>
+                        <span th:text="'👥 ' + ${plan.personas} + ' persona' + (${plan.personas} != 1 ? 's' : '')">👥 4 personas</span>
+                    </div>
+                    <form th:action="@{/paquetes/comprar}" method="post">
+                        <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
+                        <button type="submit" class="btn-seleccionar">Seleccionar plan</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MÉTODOS DE PAGO y FAQ (estáticos) -->
+            <div class="metodos-pago-card">
+                <h2>💳 Métodos de Pago</h2>
+                <div class="metodos-grid">
+                    <div class="metodo-item"><span class="metodo-icon">💳</span><span>Tarjeta de crédito/débito</span></div>
+                    <div class="metodo-item"><span class="metodo-icon">🏦</span><span>Transferencia bancaria</span></div>
+                    <div class="metodo-item"><span class="metodo-icon">📱</span><span>Nequi / Daviplata</span></div>
+                    <div class="metodo-item"><span class="metodo-icon">💵</span><span>Efectivo en academia</span></div>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <h2>❓ Preguntas Frecuentes</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h4>¿Cómo se activa el plan?</h4>
+                        <p>Al confirmar tu compra, las clases se añaden automáticamente a tu cuenta. Puedes empezar a reservar de inmediato.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>¿Puedo combinar planes?</h4>
+                        <p>Sí, si tienes un plan activo y compras otro, las clases se suman y la vigencia se extiende desde la fecha de compra.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>¿Qué pasa si no uso todas las clases?</h4>
+                        <p>Las clases no utilizadas al vencimiento del plan expiran. Te recomendamos planificar tu entrenamiento.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>¿Puedo compartir mi plan?</h4>
+                        <p>Los planes son personales e intransferibles. Si quieres entrenar con amigos, te recomendamos los planes grupales.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2026 <strong>Nexus</strong>. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos de uso</a>
+                <a href="#">Política de privacidad</a>
+            </div>
+            <div class="footer-social">
+                <span>Síguenos:</span>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
