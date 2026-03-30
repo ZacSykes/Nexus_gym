@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class HomeController {
@@ -78,10 +80,12 @@ public class HomeController {
 }
 
     @PostMapping("/guardarUsuario")
-    public String guardarUsuario(@ModelAttribute Usuarios usuario) {
+    public String guardarUsuario(Usuarios usuario) {
         usuarioService.guardarUsuario(usuario);
         return "redirect:/interfazAdmin";
     }
+    
+
 
     @PostMapping("/editarUsuario")
     public String editarUsuarioSubmit(@ModelAttribute Usuarios usuario) {

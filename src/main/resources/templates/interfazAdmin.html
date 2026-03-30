@@ -2,10 +2,8 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" xmlns:th="http://www.thymeleaf.org">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Admin - Gestión de Usuarios</title>
-
-    <!-- ✅ CORRECCIÓN IMPORTANTE -->
     <link rel="stylesheet" th:href="@{/admin.css}">
 </head>
 <body>
@@ -37,16 +35,12 @@
 <!-- CONTENIDO -->
 <main class="main" id="main">
 
- <div class="header-top">
-    <h1 class="titulo-centrado">Gestión de Usuarios</h1>
-
-    <div class="acciones-header">
-       <a  href="javascript:void(0)" class="btn-crear"  onclick="abrirModalCrear()">
-    <span> Crear Usuario</span>
-</a>
-        </a>
+    <div class="header-top">
+        <h1 class="titulo-centrado">Gestión de Usuarios</h1>
+        <div class="acciones-header">
+            <button type="button" class="btn-crear" onclick="abrirModalCrear()">Crear Usuario</button>
+        </div>
     </div>
-</div>
 
     <!-- BOTÓN DEMO -->
     <a th:href="@{/guardarDemo}" class="btn btn-primary">Agregar Demo</a>
@@ -105,7 +99,7 @@
     </div>
 </main>
 
-<!-- MODAL CREAR/EDITAR -->
+<!-- MODAL CREAR/EDITAR (ÚNICO MODAL) -->
 <div id="modalUsuario" class="modal">
     <div class="modal-content modal-form">
         <div class="modal-header">
@@ -136,10 +130,7 @@
                     <div class="form-group">
                         <label for="rol">Rol:</label>
                         <select id="rol" name="rol" required>
-                            <option value="USUARIO">Usuario</option>
-                            <option value="ADMIN">Admin</option>
-                            <option value="ALUMNO">Alumno</option>
-                            <option value="INSTRUCTOR">Instructor</option>
+                            <option value="ADMIN_GYM">Admin Gym</option>
                         </select>
                     </div>
                 </div>
@@ -302,50 +293,6 @@ document.getElementById('searchInput').addEventListener('keypress', (event) => {
     }
 });
 </script>
-
-<script>
-function abrirModalCrear() {
-    document.getElementById('modalCrearUsuario').classList.add('mostrar');
-}
-
-function cerrarModalCrear() {
-    document.getElementById('modalCrearUsuario').classList.remove('mostrar');
-}
-</script>
-
-<!-- MODAL CREAR USUARIO -->
-<div th:action="@{/guardarUsuario}" id="modalCrearUsuario" class="modal">
-    <div class="modal-content modal-crear">
-        
-        <div class="modal-header">
-            <h2>Crear Usuario</h2>
-            <span class="modal-close" onclick="cerrarModalCrear()">&times;</span>
-        </div>
-
-        <form class="form-crear">
-            <div class="form-grid">
-
-                <input type="text" placeholder="Nombre" required>
-                <input type="text" placeholder="Apellido" required>
-
-                <input type="number" placeholder="Edad" required>
-                <input type="text" placeholder="Gimnasio" required>
-                <input type="email" placeholder="Email" required>
-
-                <input type="text" placeholder="Documento" required>
-                <input type="text" placeholder="Teléfono" required>
-
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn-cerrar" onclick="cerrarModalCrear()">Cancelar</button>
-                <button type="submit" class="btn-guardar" th:href="@{/guardarUsuario}">Guardar</button>
-            </div>
-        </form>
-
-    </div>
-</div>
 
 </body>
 </html>

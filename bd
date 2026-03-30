@@ -1,0 +1,43 @@
+CREATE DATABASE Nexus;
+USE Nexus;
+
+CREATE TABLE usuarios (
+    id_usuarios BIGINT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    edad INT,
+    gimnasio VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    documento VARCHAR(20) UNIQUE,
+    telefono VARCHAR(20),
+    rol ENUM('ADMIN_GYM', 'USUARIO', 'ADMIN') NOT NULL
+);
+
+INSERT INTO usuarios 
+VALUES (
+    NULL,
+    "Juanchito",
+    "Mendoza",
+    50,
+    "Gimnasio del Juan",
+    "juanel@gmail.com",
+    "11413158545",
+    "3503351008",
+    "ADMIN"
+);
+
+INSERT INTO usuarios  values 
+(null,
+"Zugeire",
+"Luque",
+50,
+"El zoo de zu",
+"Zugeire@gmail.com",
+"52236660",
+"3133047805",
+"ADMIN_GYM");
+
+INSERT INTO usuarios  values (
+null,"Stefy","Conde",23,"Spinig girl kitty","Stefy@gmail.com","1000271405","351561651","ADMIN");
+
+SELECT * FROM usuarios;
