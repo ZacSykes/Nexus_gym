@@ -5,37 +5,17 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* BODY */
+/* BODY con fondo gradiente (sin video) */
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     color: white;
+    background: radial-gradient(circle at 10% 20%, #0a0015, #0d001a, #12002a);
+    background-attachment: fixed;
 }
 
-/* VIDEO FONDO */
-.video-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
-}
-
-/* OSCURECER VIDEO */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: -1;
-    pointer-events: none;
-}
+/* Se eliminan las reglas de .video-bg y body::after */
 
 /* ========== BARRA SUPERIOR ========== */
 .navbar {
@@ -634,6 +614,28 @@ body::after {
     color: #ff6699;
 }
 
+/* SELECTOR DE FECHA */
+.clase-fecha {
+    margin: 15px 0 10px 0;
+}
+
+.fecha-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.fecha-input:focus {
+    outline: none;
+    border-color: #b300ff;
+    box-shadow: 0 0 5px rgba(179, 0, 255, 0.5);
+}
+
 /* BOTONES */
 .clase-actions {
     margin-top: 10px;
@@ -661,6 +663,17 @@ body::after {
     background: rgba(100, 100, 100, 0.5);
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+.sin-paquete-warning {
+    background: rgba(255, 51, 102, 0.2);
+    border: 1px solid #ff3366;
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 12px;
+    color: #ff6699;
+    margin-top: 8px;
 }
 
 /* ========== NO RESULTADOS ========== */
@@ -713,7 +726,7 @@ body::after {
     transform: scale(1.02);
 }
 
-/* ========== FOOTER ========== */
+/* FOOTER */
 .footer {
     position: relative;
     z-index: 5;
@@ -867,42 +880,4 @@ body::after {
         flex-direction: column;
         gap: 5px;
     }
-}
-/* ========== SELECTOR DE FECHA ========== */
-.clase-fecha {
-    margin: 15px 0 10px 0;
-}
-
-.fecha-input {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    padding: 10px 12px;
-    color: white;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.fecha-input:focus {
-    outline: none;
-    border-color: #b300ff;
-    box-shadow: 0 0 5px rgba(179, 0, 255, 0.5);
-}
-
-/* ========== ADVERTENCIA SIN PLAN ========== */
-.sin-paquete-warning {
-    background: rgba(255, 51, 102, 0.2);
-    border: 1px solid #ff3366;
-    border-radius: 8px;
-    padding: 8px 12px;
-    text-align: center;
-    font-size: 12px;
-    color: #ff6699;
-    margin-top: 8px;
-}
-
-/* Campo oculto (no necesita estilo visible) */
-.fecha-hidden {
-    display: none;
 }

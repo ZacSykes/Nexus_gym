@@ -24,11 +24,11 @@ public class SecurityConfig {
 
     @Autowired
     private UsuarioDetailsService usuarioDetailsService;
-            
-   @Bean
-public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -72,6 +72,7 @@ public PasswordEncoder passwordEncoder() {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/recuperar",
+                                 "/auth/registrar",   // <-- AGREGAR ESTA LÍNEA
                                  "/css/**", "/imagenes/**",
                                  "/Videos/**", "/js/**").permitAll()
                 .requestMatchers("/dashboardAdmin/**").hasRole("ADMINISTRADOR")

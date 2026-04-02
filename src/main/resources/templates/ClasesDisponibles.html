@@ -10,10 +10,6 @@
 
 <body>
 
-    <video autoplay muted loop class="video-bg">
-        <source th:src="@{/Videos/FondoL.mp4}" type="video/mp4">
-    </video>
-
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
@@ -246,11 +242,10 @@
             if (this.value) {
                 // Parsear la fecha en la zona horaria local
                 const [year, month, day] = this.value.split('-');
-                const selectedDate = new Date(year, month - 1, day); // ¡importante: month-1!
+                const selectedDate = new Date(year, month - 1, day);
                 const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
                 const diaSemanaSeleccionado = diasSemana[selectedDate.getDay()];
 
-                // Normalizar para comparación (minúsculas, sin tildes)
                 const normalizar = (str) => {
                     return str.trim().toLowerCase()
                         .replace(/á/g, 'a')

@@ -67,8 +67,8 @@ public class ClaseService {
     }
     
     public PaqueteClase guardarPaquete(PaqueteClase paquete) {
-    return paqueteClaseRepository.save(paquete);
-}
+        return paqueteClaseRepository.save(paquete);
+    }
 
     public List<Plan> obtenerPlanesActivos() {
         return planRepository.findByEstado("ACTIVO");
@@ -142,6 +142,11 @@ public class ClaseService {
             return "error: No hay cupo disponible en esta clase para la fecha seleccionada";
         }
 
+        // 5.5 Validar que el usuario no tenga ya una reserva activa para esta clase y fecha
+        if (reservaRepository.existsByUsuarioAndClaseAndFechaClaseAndEstadoNotCancelada(usuario, clase, fechaClase)) {
+            return "error: Ya tienes una reserva para esta clase en esta fecha";
+        }
+
         // 6. Crear la reserva
         Reserva reserva = new Reserva();
         reserva.setUsuario(usuario);
@@ -162,8 +167,6 @@ public class ClaseService {
         paqueteClaseRepository.save(paquete);
 
         // 8. Ya no se actualiza cupoDisponible en clase porque se usa countReservasActivas
-        // (Opcional: si se mantiene, podríamos no actualizarlo)
-
         return "ok";
     }
 
@@ -195,7 +198,6 @@ public class ClaseService {
             paquete.setClasesRestantes(paquete.getClasesRestantes() + 1);
             paqueteClaseRepository.save(paquete);
             reserva.setClaseDevuelta(true);
-            // Ya no se modifica cupo de clase porque el cupo se basa en reservas activas
         }
 
         reservaRepository.save(reserva);

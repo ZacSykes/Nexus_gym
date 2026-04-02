@@ -16,7 +16,11 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
     List<Reserva> findByUsuarioOrderByFechaReservaDesc(DatosUsuario usuario);
 
-    // Método para contar reservas activas (Confirmada o Pendiente) para una clase en una fecha
     @Query("SELECT COUNT(r) FROM Reserva r WHERE r.clase = :clase AND r.fechaClase = :fechaClase AND r.estado IN ('Confirmada', 'Pendiente')")
     long countReservasActivasByClaseAndFecha(@Param("clase") Clase clase, @Param("fechaClase") LocalDate fechaClase);
+
+    @Query("SELECT COUNT(r) > 0 FROM Reserva r WHERE r.usuario = :usuario AND r.clase = :clase AND r.fechaClase = :fechaClase AND r.estado != 'Cancelada'")
+    boolean existsByUsuarioAndClaseAndFechaClaseAndEstadoNotCancelada(@Param("usuario") DatosUsuario usuario,
+                                                                       @Param("clase") Clase clase,
+                                                                       @Param("fechaClase") LocalDate fechaClase);
 }

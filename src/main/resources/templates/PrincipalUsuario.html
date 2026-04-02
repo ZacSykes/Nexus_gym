@@ -10,10 +10,6 @@
 
 <body>
 
-    <video autoplay muted loop class="video-bg">
-        <source th:src="@{/Videos/FondoL.mp4}" type="video/mp4">
-    </video>
-
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
@@ -108,8 +104,7 @@
 
             <div id="dashboard-section" class="content-section active">
                 <div class="dashboard-grid">
-
-                    <!-- PLAN DE COMBATE (dinámico) -->
+                    <!-- PLAN DE COMBATE -->
                     <div class="card-dashboard plan-card">
                         <div class="card-header">
                             <span class="card-icon">🛡️</span>
@@ -128,9 +123,7 @@
                                 <span th:if="${paquete != null}" th:text="'🏷️ Plan actual: ' + ${paquete.totalClases} + ' clases'">🏷️ Plan actual: Plan Semanal (8 clases)</span>
                                 <span th:unless="${paquete != null}">🏷️ Sin plan activo</span>
                             </div>
-                            <a th:href="@{/paquetes}" class="btn-primary btn-full">
-                                🔄 Recargar Plan
-                            </a>
+                            <a th:href="@{/paquetes}" class="btn-primary btn-full">🔄 Recargar Plan</a>
                             <div class="attendance">
                                 <div class="attendance-header">
                                     <span>📈 Asistencia</span>
@@ -180,22 +173,13 @@
                             <h2>Acceso Rápido</h2>
                         </div>
                         <div class="quick-actions">
-                            <a th:href="@{/clases}" class="quick-btn">
-                                🔍 Buscar Clases
-                                <span>Clases Disponibles</span>
-                            </a>
-                            <a th:href="@{/perfil}" class="quick-btn">
-                                👤 Mi Perfil
-                                <span>Editar Perfil</span>
-                            </a>
-                            <a href="#estadisticas-section" class="quick-btn">
-                                📊 Mi Rendimiento
-                                <span>Estadísticas</span>
-                            </a>
+                            <a th:href="@{/clases}" class="quick-btn">🔍 Buscar Clases<span>Clases Disponibles</span></a>
+                            <a th:href="@{/perfil}" class="quick-btn">👤 Mi Perfil<span>Editar Perfil</span></a>
+                            <a href="#estadisticas-section" class="quick-btn">📊 Mi Rendimiento<span>Estadísticas</span></a>
                         </div>
                     </div>
 
-                    <!-- PRÓXIMO HITO (estático por ahora) -->
+                    <!-- PRÓXIMO HITO -->
                     <div class="card-dashboard milestone-card">
                         <div class="card-header">
                             <span class="card-icon">🏆</span>
@@ -214,7 +198,7 @@
                         </div>
                     </div>
 
-                    <!-- EVENTOS ESPECIALES (estático) -->
+                    <!-- EVENTOS ESPECIALES -->
                     <div class="card-dashboard events-card">
                         <div class="card-header">
                             <span class="card-icon">🎯</span>
@@ -233,37 +217,20 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- ESTADÍSTICAS (estático) -->
+            <!-- ESTADÍSTICAS -->
             <div id="estadisticas-section" class="content-section">
                 <div class="section-header">
                     <h1>📊 Mi Rendimiento</h1>
                     <p>Analiza tu progreso en la academia</p>
                 </div>
                 <div class="estadisticas-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">📅</div>
-                        <div class="stat-number">32</div>
-                        <div class="stat-label">Clases totales</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-number">27</div>
-                        <div class="stat-label">Asistencias</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">📈</div>
-                        <div class="stat-number">84%</div>
-                        <div class="stat-label">Asistencia</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🏆</div>
-                        <div class="stat-number">14</div>
-                        <div class="stat-label">Clases este mes</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-number">32</div><div class="stat-label">Clases totales</div></div>
+                    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-number">27</div><div class="stat-label">Asistencias</div></div>
+                    <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-number">84%</div><div class="stat-label">Asistencia</div></div>
+                    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-number">14</div><div class="stat-label">Clases este mes</div></div>
                 </div>
                 <div class="chart-container">
                     <h3>Asistencia por mes</h3>
@@ -290,7 +257,6 @@
                     </ul>
                 </div>
             </div>
-
         </main>
     </div>
 
