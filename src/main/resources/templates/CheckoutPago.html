@@ -14,7 +14,7 @@
         <source th:src="@{/Videos/FondoL.mp4}" type="video/mp4">
     </video>
 
-    <!-- BARRA SUPERIOR -->
+    <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
             <div class="logo-nav">
@@ -22,16 +22,29 @@
                 <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
                 <span class="logo-text">NEXUS</span>
             </div>
+
             <div class="nav-actions">
                 <div class="user-menu">
-                    <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
-                         alt="Avatar" class="avatar">
+
+                    <!-- AVATAR SEGURO -->
+                    <img 
+                    th:src="${usuario != null} ? 
+                    @{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + usuario.nombre + '+' + usuario.apellido} 
+                    : @{'/imagenes/default.png'}"
+                    alt="Avatar" class="avatar">
+
                     <div class="user-info">
-                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</span>
+                        <span class="user-name"
+                        th:text="${usuario != null ? usuario.nombre + ' ' + usuario.apellido : 'Usuario'}">
+                        </span>
                     </div>
+
+                    <!-- LOGOUT SEGURO -->
                     <form th:action="@{/logout}" method="post" style="display:inline">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <button type="submit" class="logout-btn">🚪 Salir</button>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -39,63 +52,102 @@
 
     <div class="main-layout">
         <main class="main-content">
-            <div class="section-header">
-                <h1>💳 Finalizar Compra</h1>
-                <p>Revisa los detalles y elige tu método de pago</p>
+
+            <!-- VALIDACIÓN PLAN -->
+            <div th:if="${plan == null}" class="alert-error">
+                <p>Error: No se encontró el plan seleccionado.</p>
+                <a th:href="@{/paquetes}">Volver</a>
             </div>
 
-            <div class="checkout-container">
-                <div class="resumen-pedido">
-                    <h2>Resumen del pedido</h2>
-                    <div class="plan-detalle">
-                        <span class="plan-nombre" th:text="${plan.nombre}">Plan</span>
-                        <span class="plan-precio" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT')}">$0</span>
-                    </div>
-                    <div class="plan-info">
-                        <span th:text="${plan.totalClases} + ' clases'"></span>
-                        <span th:text="'Válido por ' + ${plan.duracionDias} + ' días'"></span>
-                        <span th:text="'Para ' + ${plan.personas} + ' persona(s)'"></span>
-                    </div>
-                    <div class="total">
-                        <strong>Total a pagar:</strong>
-                        <strong th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT')}">$0</strong>
-                    </div>
+            <div th:if="${plan != null}">
+
+                <div class="section-header">
+                    <h1>💳 Finalizar Compra</h1>
+                    <p>Revisa los detalles y elige tu método de pago</p>
                 </div>
 
-                <form th:action="@{/pago/procesar}" method="post" class="form-pago">
-                    <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
+                <div class="checkout-container">
 
-                    <div class="metodos-pago">
-                        <h2>Método de pago</h2>
-                        <div class="metodo-option">
-                            <input type="radio" name="metodoPago" id="tarjeta" value="Tarjeta" required>
-                            <label for="tarjeta">💳 Tarjeta de crédito/débito</label>
+                    <!-- RESUMEN -->
+                    <div class="resumen-pedido">
+                        <h2>Resumen del pedido</h2>
+
+                        <div class="plan-detalle">
+                            <span class="plan-nombre"
+                            th:text="${plan.nombre != null ? plan.nombre : 'Plan'}"></span>
+
+                            <span class="plan-precio"
+                            th:text="${plan.precio != null ? '$' + #numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT') : '$0'}">
+                            </span>
                         </div>
-                        <div class="metodo-option">
-                            <input type="radio" name="metodoPago" id="transferencia" value="Transferencia">
-                            <label for="transferencia">🏦 Transferencia bancaria</label>
+
+                        <div class="plan-info">
+                            <span th:text="${plan.totalClases != null ? plan.totalClases + ' clases' : ''}"></span>
+                            <span th:text="${plan.duracionDias != null ? 'Válido por ' + plan.duracionDias + ' días' : ''}"></span>
+                            <span th:text="${plan.personas != null ? 'Para ' + plan.personas + ' persona(s)' : ''}"></span>
                         </div>
-                        <div class="metodo-option">
-                            <input type="radio" name="metodoPago" id="nequi" value="Nequi">
-                            <label for="nequi">📱 Nequi / Daviplata</label>
-                        </div>
-                        <div class="metodo-option">
-                            <input type="radio" name="metodoPago" id="efectivo" value="Efectivo">
-                            <label for="efectivo">💵 Efectivo en academia</label>
+
+                        <div class="total">
+                            <strong>Total a pagar:</strong>
+                            <strong th:text="${plan.precio != null ? '$' + #numbers.formatDecimal(plan.precio, 0, 'COMMA', 0, 'POINT') : '$0'}"></strong>
                         </div>
                     </div>
 
-                    <div class="campo-referencia">
-                        <label for="referencia">Número de referencia / comprobante (opcional):</label>
-                        <input type="text" name="referencia" id="referencia" placeholder="Ej: Nequi 311xxx, consignación #1234">
-                    </div>
+                    <!-- FORMULARIO -->
+                    <form th:action="@{/pago/procesar}" method="post" class="form-pago">
 
-                    <div class="botones">
-                        <button type="submit" class="btn-pagar">✅ Confirmar y pagar</button>
-                        <a th:href="@{/paquetes}" class="btn-cancelar">Cancelar</a>
-                    </div>
-                </form>
+                        <!-- 🔐 CSRF -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <!-- 🔥 ID SEGURO -->
+                        <input type="hidden" name="idPlan" 
+                               th:value="${plan.idPlanes != null ? plan.idPlanes : 0}">
+
+                        <!-- MÉTODOS -->
+                        <div class="metodos-pago">
+                            <h2>Método de pago</h2>
+
+                            <div class="metodo-option">
+                                <input type="radio" name="metodoPago" value="Tarjeta" required>
+                                <label>💳 Tarjeta de crédito/débito</label>
+                            </div>
+
+                            <div class="metodo-option">
+                                <input type="radio" name="metodoPago" value="Transferencia">
+                                <label>🏦 Transferencia bancaria</label>
+                            </div>
+
+                            <div class="metodo-option">
+                                <input type="radio" name="metodoPago" value="Nequi">
+                                <label>📱 Nequi / Daviplata</label>
+                            </div>
+
+                            <div class="metodo-option">
+                                <input type="radio" name="metodoPago" value="Efectivo">
+                                <label>💵 Efectivo en academia</label>
+                            </div>
+
+                        </div>
+
+                        <!-- REFERENCIA -->
+                        <div class="campo-referencia">
+                            <label>Referencia (opcional):</label>
+                            <input type="text" name="referencia"
+                                   placeholder="Ej: Nequi 311xxx, consignación #1234">
+                        </div>
+
+                        <!-- BOTONES -->
+                        <div class="botones">
+                            <button type="submit" class="btn-pagar">✅ Confirmar y pagar</button>
+                            <a th:href="@{/paquetes}" class="btn-cancelar">Cancelar</a>
+                        </div>
+
+                    </form>
+
+                </div>
+
             </div>
+
         </main>
     </div>
 

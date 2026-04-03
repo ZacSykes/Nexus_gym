@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
@@ -14,36 +14,51 @@
 
 <!-- VIDEO FONDO -->
 <video autoplay muted loop class="video-bg">
-<source src="videos/FondoL.mp4" type="video/mp4">
+    <source th:src="@{/videos/FondoL.mp4}" type="video/mp4">
 </video>
-
 
 <div class="container">
 
-<div class="card">
+    <div class="card">
 
-<h2>Recuperar contraseña</h2>
+        <h2>Recuperar contraseña</h2>
 
-<p class="descripcion">
-Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
-</p>
+        <p class="descripcion">
+            Si los datos son correctos, recibirás un enlace para restablecer tu contraseña.
+        </p>
 
-<form>
+        <!-- MENSAJES -->
+        <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+        <div th:if="${mensaje}" class="alert-success" th:text="${mensaje}"></div>
 
-<input type="email" placeholder="Correo electrónico" required>
+        <!-- FORMULARIO -->
+        <form th:action="@{/recuperar-password}" method="post" autocomplete="off">
 
-<button type="submit">Enviar enlace</button>
+            <input type="email"
+                name="email"
+                placeholder="Correo electrónico"
+                required>
 
-</form>
+            <input type="text"
+                name="cedula"
+                placeholder="Cédula"
+                pattern="[0-9]+"
+                title="Solo números"
+                required>
 
-<a href="login.html" class="volver">← Volver al login</a>
+            <button type="submit"
+                    onclick="this.disabled=true; this.form.submit();">
+                Enviar enlace
+            </button>
+
+        </form>
+
+        <!-- VOLVER -->
+        <a th:href="@{/login}" class="volver">← Volver al login</a>
+
+    </div>
 
 </div>
-
-</div>
-
-
 
 </body>
-
 </html>
