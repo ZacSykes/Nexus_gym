@@ -31,7 +31,7 @@ public class ClaseController {
 
     // ==================== CLASES DISPONIBLES ====================
 
-    @GetMapping("/clases")
+    @GetMapping("/usuario/clases")
     public String clases(Model model,
                          @RequestParam(required = false) String disciplina,
                          @RequestParam(required = false) String nivel,
@@ -66,12 +66,12 @@ public class ClaseController {
         model.addAttribute("disciplinaSeleccionada", disciplina);
         model.addAttribute("nivelSeleccionado", nivel);
 
-        return "ClasesDisponibles";
+        return "usuario/clases";
     }
 
     // ==================== RESERVAR ====================
 
-    @PostMapping("/reservar")
+    @PostMapping("/usuario/reservar")
     public String reservar(@RequestParam Integer idClase,
                            @RequestParam String fechaClase,
                            Authentication auth,
@@ -97,18 +97,19 @@ public class ClaseController {
             redirectAttributes.addFlashAttribute("tipo", "error");
         }
 
-        return "redirect:/clases";
+        return "redirect:/usuario/clases";
+
     }
 
     // ==================== MIS RESERVAS ====================
 
-    @GetMapping("/reservas")
+    @GetMapping("/usuario/reservas")
     public String reservas(Model model, Authentication auth) {
 
         Long cedula = obtenerCedula(auth);
 
         if (cedula == null) {
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
 
         Optional<DatosUsuario> usuarioOpt =
@@ -124,12 +125,12 @@ public class ClaseController {
                     .ifPresent(paquete -> model.addAttribute("paquete", paquete));
         });
 
-        return "MisReservas";
+        return "usuario/reservas";
     }
 
     // ==================== CANCELAR ====================
 
-    @PostMapping("/cancelarReserva")
+    @PostMapping("/usuario/cancelarReserva")
     public String cancelar(@RequestParam Integer idReserva,
                            Authentication auth,
                            RedirectAttributes redirectAttributes) {
@@ -146,7 +147,7 @@ public class ClaseController {
             redirectAttributes.addFlashAttribute("tipo", "error");
         }
 
-        return "redirect:/reservas";
+        return "redirect:/usuario/reservas";
     }
 
     // ==================== MÉTODO PRIVADO ====================
@@ -158,4 +159,4 @@ public class ClaseController {
             return null;
         }
     }
-}
+}   

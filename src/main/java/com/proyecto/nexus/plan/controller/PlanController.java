@@ -17,7 +17,7 @@ import com.proyecto.nexus.usuario.model.DatosUsuario;
 import com.proyecto.nexus.usuario.repository.DatosUsuarioRepository;
 
 @Controller
-@RequestMapping("/paquetes")
+@RequestMapping("/usuario")
 public class PlanController {
 
     @Autowired
@@ -26,22 +26,39 @@ public class PlanController {
     @Autowired
     private DatosUsuarioRepository datosUsuarioRepository;
 
-    @GetMapping
+    @GetMapping("/paquetes")
     public String listarPlanes(Model model, Authentication auth) {
+
+        if (auth == null) {
+            return "redirect:/auth/login";
+        }
+
         String cedula = auth.getName();
-        Optional<DatosUsuario> usuarioOpt = datosUsuarioRepository.findByCedula(Long.parseLong(cedula));
+
+        Optional<DatosUsuario> usuarioOpt =
+                datosUsuarioRepository.findByCedula(Long.parseLong(cedula));
+
         usuarioOpt.ifPresent(usuario -> {
             model.addAttribute("usuario", usuario);
-            claseService.obtenerPaqueteActivo(usuario).ifPresent(paquete -> model.addAttribute("paquete", paquete));
+
+            claseService.obtenerPaqueteActivo(usuario)
+                    .ifPresent(paquete -> model.addAttribute("paquete", paquete));
         });
+
         model.addAttribute("planes", claseService.obtenerPlanesActivos());
-        return "Paquetes";
+
+        return "usuario/paquetes";
     }
 
-   @PostMapping("/comprar")
-public String comprar(@RequestParam Integer idPlan,
-                      Authentication auth,
-                      RedirectAttributes redirectAttributes) {
-    return "redirect:/pago/checkout?idPlan=" + idPlan;
-}
+    @PostMapping("/comprar")
+    public String comprar(@RequestParam Integer idPlan,
+                          Authentication auth,
+                          RedirectAttributes redirectAttributes) {
+
+        if (auth == null) {
+            return "redirect:/auth/login";
+        }
+
+        return "redirect:/usuario/checkout?idPlan=" + idPlan;
+    }
 }

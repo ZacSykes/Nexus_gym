@@ -39,11 +39,17 @@ public class AuthController {
         this.rolRepository = rolRepository;
         this.passwordEncoder = passwordEncoder;
     }
+    
+    @GetMapping("/login")
+    public String mostrarLogin() {
+        return "auth/login";
+    }
 
     @GetMapping("/registro")
     public String mostrarRegistro() {
-        return "registro";
+        return "auth/registro"; // ✅ corregido
     }
+
 
     @PostMapping("/registrar")
     @Transactional
@@ -58,7 +64,7 @@ public class AuthController {
 
             if (registro.getCedula() == null || registro.getCedula().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "La cédula es obligatoria");
-                return "redirect:/login";
+                return "redirect:/auth/login";
             }
 
             Long cedula;
@@ -67,22 +73,22 @@ public class AuthController {
                 cedula = Long.parseLong(registro.getCedula());
             } catch (NumberFormatException e) {
                 redirectAttributes.addFlashAttribute("error", "La cédula debe ser numérica");
-                return "redirect:/login";
+                return "redirect:/auth/login";
             }
 
             if (!registro.getPassword().equals(registro.getConfirmarPassword())) {
                 redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden");
-                return "redirect:/login";
+                return "redirect:/auth/login";
             }
 
             if (datosUsuarioRepository.findByCedula(cedula).isPresent()) {
                 redirectAttributes.addFlashAttribute("error", "Ya existe un usuario con esta cédula");
-                return "redirect:/login";
+                return "redirect:/auth/login";
             }
 
             if (datosUsuarioRepository.findByCorreo(registro.getCorreo()).isPresent()) {
                 redirectAttributes.addFlashAttribute("error", "El correo ya está registrado");
-                return "redirect:/login";
+                return "redirect:/auth/login";
             }
 
             // ===== CREAR USUARIO =====
@@ -104,7 +110,6 @@ public class AuthController {
             usuario.setFechaRegistro(LocalDateTime.now());
             usuario.setEstado("ACTIVO");
 
-            // 🔥 IMPORTANTE: reasignar usuario guardado
             usuario = datosUsuarioRepository.save(usuario);
 
             System.out.println("✅ Usuario guardado con ID: " + usuario.getIdUsuario());
@@ -116,7 +121,7 @@ public class AuthController {
 
             Perfil perfil = new Perfil();
             perfil.setNombreUsuario(registro.getCedula());
-            perfil.setContrasena(passwordEncoder.encode(registro.getPassword())); // ⚠️ cambia esto si renombras columna
+            perfil.setContrasena(passwordEncoder.encode(registro.getPassword()));
             perfil.setUsuario(usuario);
             perfil.setRol(rol);
             perfil.setCreatedAt(LocalDateTime.now());
@@ -128,15 +133,15 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("exito",
                     "Cuenta creada exitosamente. Ahora puedes iniciar sesión.");
 
-            return "redirect:/login";
+            return "redirect:/auth/login"; // ✅ corregido
 
         } catch (Exception e) {
-            e.printStackTrace(); // 🔥 AQUÍ VA
+            e.printStackTrace();
 
-    redirectAttributes.addFlashAttribute("error",
-        "Error al registrar: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error",
+                    "Error al registrar: " + e.getMessage());
 
-    return "redirect:/login";
-}
+            return "redirect:/auth/login"; // ✅ corregido
+        }
     }
 }

@@ -6,17 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.proyecto.nexus.usuario.service.UsuarioDetailsService;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 
 @Configuration
 @EnableWebSecurity
@@ -45,12 +40,10 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 
-    // 🔥 Mejorado: handler limpio
+    // ✅ SUCCESS HANDLER CORREGIDO
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return (HttpServletRequest request,
-                HttpServletResponse response,
-                Authentication authentication) -> {
+        return (request, response, authentication) -> {
 
             String role = authentication.getAuthorities()
                     .stream()
@@ -60,16 +53,19 @@ public class SecurityConfig {
 
             switch (role) {
                 case "ROLE_ADMINISTRADOR":
-                    response.sendRedirect("/dashboardAdmin");
+                    response.sendRedirect("/admin/usuarios");
                     break;
+
                 case "ROLE_USUARIO":
-                    response.sendRedirect("/principalUsuario");
+                    response.sendRedirect("/usuario/inicio");
                     break;
+
                 case "ROLE_INSTRUCTOR":
-                    response.sendRedirect("/dashboardInstructor");
+                    response.sendRedirect("/admin/dashboard"); // o el que definas
                     break;
+
                 default:
-                    response.sendRedirect("/");
+                    response.sendRedirect("/auth/login");
                     break;
             }
         };
@@ -80,35 +76,32 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/", "/login", "/recuperar",
+                    "/", 
                     "/auth/**",
                     "/css/**", "/imagenes/**",
                     "/Videos/**", "/js/**"
                 ).permitAll()
 
-                .requestMatchers("/dashboardAdmin/**").hasRole("ADMINISTRADOR")
+                // 🔥 ADMIN
+                .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 
-                .requestMatchers(
-                        "/principalUsuario/**",
-                        "/clases/**",
-                        "/reservas/**",
-                        "/perfil/**",
-                        "/paquetes/**"
-                ).hasRole("USUARIO")
+                // 🔥 USUARIO
+                .requestMatchers("/usuario/**").hasRole("USUARIO")
 
                 .anyRequest().authenticated()
             )
 
             .formLogin(form -> form
-                .loginPage("/login")
+                .loginPage("/auth/login")
+                .loginProcessingUrl("/login") // 👈 AGREGA ESTO
                 .successHandler(successHandler())
-                .failureUrl("/login?error=true")
+                .failureUrl("/auth/login?error=true")
                 .permitAll()
             )
 
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=true")
+                .logoutSuccessUrl("/auth/login?logout=true")
                 .permitAll()
             )
 

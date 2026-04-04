@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Planes Nexus</title>
+    <link rel="stylesheet" th:href="@{/css/Paquetes.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+
+    <div class="main-layout">
+
+        <!-- SIDEBAR -->
+        <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <h1>Planes de Combate</h1>
+
+            <!-- MENSAJES -->
+            <div th:if="${mensaje}" th:text="${mensaje}"></div>
+
+            <!-- PLANES -->
+            <div class="paquetes-grid">
+
+                <div th:each="plan : ${planes}" class="paquete-card">
+
+                    <h3 th:text="${plan.nombre}"></h3>
+
+                    <p th:text="${plan.totalClases} + ' clases'"></p>
+
+                    <p th:text="'$' + ${plan.precio}"></p>
+
+                    <form th:action="@{/usuario/paquetes/comprar}" method="post">
+                        <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
+                        <button type="submit">Comprar</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+</body>
+</html>

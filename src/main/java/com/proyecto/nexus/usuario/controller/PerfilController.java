@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -15,6 +16,7 @@ import com.proyecto.nexus.usuario.model.DatosUsuario;
 import com.proyecto.nexus.usuario.repository.DatosUsuarioRepository;
 
 @Controller
+@RequestMapping("/usuario")
 public class PerfilController {
 
     private final DatosUsuarioRepository datosUsuarioRepository;
@@ -34,14 +36,14 @@ public class PerfilController {
         Long cedula = obtenerCedula(auth);
 
         if (cedula == null) {
-            return "redirect:/login?error=cedula_invalida";
+            return "redirect:/auth/login?error=cedula_invalida";
         }
 
         Optional<DatosUsuario> usuarioOpt =
                 datosUsuarioRepository.findByCedula(cedula);
 
         if (usuarioOpt.isEmpty()) {
-            return "redirect:/login?error=usuario_no_encontrado";
+            return "redirect:/auth/login?error=usuario_no_encontrado";
         }
 
         DatosUsuario usuario = usuarioOpt.get();
@@ -52,7 +54,7 @@ public class PerfilController {
                 .findFirstByUsuarioAndEstadoOrderByFechaVencimientoAsc(usuario, "ACTIVO")
                 .ifPresent(paquete -> model.addAttribute("paquete", paquete));
 
-        return "Perfil";
+        return "usuario/perfil";
     }
 
     // ==================== ACTUALIZAR ====================
@@ -75,7 +77,7 @@ public class PerfilController {
         if (cedula == null) {
             redirectAttributes.addFlashAttribute("mensaje", "Sesión inválida");
             redirectAttributes.addFlashAttribute("tipo", "error");
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
 
         Optional<DatosUsuario> usuarioOpt =
@@ -84,7 +86,7 @@ public class PerfilController {
         if (usuarioOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("mensaje", "Usuario no encontrado");
             redirectAttributes.addFlashAttribute("tipo", "error");
-            return "redirect:/perfil";
+            return "redirect:/usuario/perfil";
         }
 
         DatosUsuario usuario = usuarioOpt.get();
@@ -104,7 +106,7 @@ public class PerfilController {
         redirectAttributes.addFlashAttribute("mensaje", "Perfil actualizado correctamente");
         redirectAttributes.addFlashAttribute("tipo", "exito");
 
-        return "redirect:/perfil";
+        return "redirect:/usuario/perfil";
     }
 
     // ==================== MÉTODO PRIVADO ====================

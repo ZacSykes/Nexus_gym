@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Finalizar Compra</title>
+    <link rel="stylesheet" th:href="@{/css/Paquetes.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+
+    <div class="main-layout">
+        <main class="main-content">
+
+            <div th:if="${plan == null}">
+                <p>Error: No se encontró el plan.</p>
+                <a th:href="@{/usuario/paquetes}">Volver</a>
+            </div>
+
+            <div th:if="${plan != null}">
+
+                <h1>Finalizar Compra</h1>
+
+                <p th:text="${plan.nombre}"></p>
+                <p th:text="${plan.precio}"></p>
+
+                <form th:action="@{/usuario/pago/procesar}" method="post">
+
+                    <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
+
+                    <label>
+                        <input type="radio" name="metodoPago" value="Tarjeta" required>
+                        Tarjeta
+                    </label>
+
+                    <label>
+                        <input type="radio" name="metodoPago" value="Nequi">
+                        Nequi
+                    </label>
+
+                    <button type="submit">Pagar</button>
+
+                </form>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+</body>
+</html>

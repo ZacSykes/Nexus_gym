@@ -28,20 +28,19 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "Login";
-    }
-
     // ===== ADMIN =====
-    @GetMapping("/dashboardAdmin")
+    @GetMapping("/admin/dashboard")
     public String dashboardAdmin() {
-        return "dashboardAdmin";
+        return "admin/dashboard";
     }
 
     // ===== USUARIO =====
-    @GetMapping("/principalUsuario")
+    @GetMapping("/usuario/inicio")
     public String principalUsuario(Model model, Authentication auth) {
+
+        if (auth == null) {
+            return "redirect:/auth/login";
+        }
 
         String cedula = auth.getName();
 
@@ -61,7 +60,6 @@ public class HomeController {
                     claseService.obtenerReservasProximas(usuario));
         }
 
-        return "PrincipalUsuario";
+        return "usuario/inicio";
     }
-
 }

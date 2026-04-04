@@ -1,9 +1,15 @@
 package com.proyecto.nexus.pago.controller;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.proyecto.nexus.clase.model.PaqueteClase;
@@ -15,11 +21,8 @@ import com.proyecto.nexus.plan.repository.PlanRepository;
 import com.proyecto.nexus.usuario.model.DatosUsuario;
 import com.proyecto.nexus.usuario.repository.DatosUsuarioRepository;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 @Controller
-@RequestMapping("/pago")
+@RequestMapping("/usuario")
 public class PagoController {
 
     private final PlanRepository planRepository;
@@ -47,7 +50,7 @@ public class PagoController {
         Long cedula = obtenerCedula(auth);
 
         if (cedula == null) {
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
 
         Optional<DatosUsuario> usuarioOpt =
@@ -57,18 +60,18 @@ public class PagoController {
                 planRepository.findById(idPlan);
 
         if (usuarioOpt.isEmpty() || planOpt.isEmpty()) {
-            return "redirect:/paquetes?error=datos_invalidos";
+            return "redirect:/usuario/paquetes";
         }
 
         model.addAttribute("usuario", usuarioOpt.get());
         model.addAttribute("plan", planOpt.get());
 
-        return "CheckoutPago";
+        return "usuario/checkout";
     }
 
     // ==================== PROCESAR PAGO ====================
 
-    @PostMapping("/procesar")
+    @PostMapping("/procesar-pago")
     public String procesarPago(@RequestParam Integer idPlan,
                                @RequestParam String metodoPago,
                                @RequestParam(required = false) String referencia,
@@ -78,7 +81,7 @@ public class PagoController {
         Long cedula = obtenerCedula(auth);
 
         if (cedula == null) {
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
 
         Optional<DatosUsuario> usuarioOpt =
@@ -89,7 +92,7 @@ public class PagoController {
 
         if (usuarioOpt.isEmpty() || planOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Datos inválidos");
-            return "redirect:/paquetes";
+            return "redirect:/usuario/paquetes";
         }
 
         DatosUsuario usuario = usuarioOpt.get();
@@ -134,7 +137,7 @@ public class PagoController {
             redirectAttributes.addFlashAttribute("tipo", "error");
         }
 
-        return "redirect:/paquetes";
+        return "redirect:/usuario/paquetes";
     }
 
     // ==================== MÉTODO PRIVADO ====================

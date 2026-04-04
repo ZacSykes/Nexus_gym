@@ -1,0 +1,54 @@
+<aside class="sidebar" th:fragment="sidebarUsuario">
+
+    <div class="sidebar-menu">
+
+        <!-- USUARIO -->
+        <div class="sidebar-user" th:if="${usuario != null}">
+            <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=60&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                 alt="Avatar" class="sidebar-avatar">
+
+            <h4 th:text="${usuario.nombre + ' ' + usuario.apellido}"></h4>
+
+            <span class="sidebar-rank"
+                  th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">
+            </span>
+        </div>
+
+        <!-- NAV -->
+        <nav class="sidebar-nav">
+
+            <a th:href="@{/usuario/inicio}" class="nav-item">
+                🏠 Nexus
+            </a>
+
+            <a th:href="@{/usuario/clases}" class="nav-item">
+                🥊 Clases Disponibles
+            </a>
+
+            <a th:href="@{/usuario/reservas}" class="nav-item">
+                📋 Mis Reservas
+            </a>
+
+            <a th:href="@{/usuario/perfil}" class="nav-item">
+                👤 Mi Perfil
+            </a>
+
+            <a th:href="@{/usuario/paquetes}" class="nav-item">
+                🛡️ Comprar Paquetes
+            </a>
+
+        </nav>
+
+        <!-- FOOTER -->
+        <div class="sidebar-footer" th:if="${paquete != null}">
+            <span>Clases restantes:</span>
+            <strong th:text="${paquete.clasesRestantes}"></strong>
+        </div>
+
+        <div class="sidebar-footer" th:unless="${paquete != null}">
+            <span>No tienes un plan activo</span>
+        </div>
+
+    </div>
+
+</aside>

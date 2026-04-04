@@ -5,11 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.proyecto.nexus.usuario.service.PasswordService;
 
 @Controller
+@RequestMapping("/auth")
 public class PasswordController {
 
     @Autowired
@@ -26,15 +28,14 @@ public class PasswordController {
         } catch (Exception e) {
             model.addAttribute("error", "Datos incorrectos");
         }
-        System.out.println("ENTRÓ AL CONTROLLER");
 
-        return "recuperar";
+        return "auth/recuperar";
     }
 
     @GetMapping("/reset-password")
     public String mostrarReset(@RequestParam String token, Model model) {
         model.addAttribute("token", token);
-        return "reset-password";
+        return "auth/reset-password";
     }
 
     @PostMapping("/reset-password")
@@ -43,13 +44,11 @@ public class PasswordController {
 
         passwordService.resetPassword(token, password);
 
-        return "redirect:/login?resetExitoso";
+        return "redirect:/auth/login?resetExitoso";
     }
-
-    
 
     @GetMapping("/recuperar")
     public String mostrarRecuperar() {
-        return "recuperar";
+        return "auth/recuperar";
     }
 }

@@ -2,7 +2,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nexus Login</title>
@@ -13,16 +12,11 @@
 
 <body>
 
-<!-- VIDEO FONDO -->
-<video autoplay muted loop class="video-bg">
-<source src="Videos/FondoL.mp4" type="video/mp4">
-</video>
-
 <div class="container">
 
 <!-- LOGO -->
 <div class="logo">
-<img src="imagenes/Login.png" alt="Nexus Logo">
+<img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
 </div>
 
 <!-- SWITCH -->
@@ -53,19 +47,16 @@
 
     <br>
 
-    <!-- Error de login -->
     <div th:if="${param.error}" class="error-msg">
         Usuario o contraseña incorrectos
     </div>
 
-    <!-- Mensaje de éxito al registrarse -->
     <div th:if="${exito}" class="success-msg" th:text="${exito}"></div>
-    <!-- Mensaje de error en registro -->
     <div th:if="${error}" class="error-msg" th:text="${error}"></div>
 
     <button type="submit">Iniciar sesión</button>
 
-    <a href="/recuperar">¿Olvidaste tu contraseña?</a>
+    <a th:href="@{/auth/recuperar}">¿Olvidaste tu contraseña?</a>
 
     <hr><br>
 
@@ -114,10 +105,9 @@
     <input type="password" name="confirmarPassword" placeholder="Confirmar contraseña" required>
     <input type="text" name="direccion" placeholder="Dirección (opcional)">
 
-    <!-- Mensajes de error del registro (si se usan en la misma página) -->
     <div th:if="${errorRegistro}" class="error-msg" th:text="${errorRegistro}"></div>
 
-    <button type="submit" onclick="alert('REGISTRO')">Registrarte</button>
+    <button type="submit">Registrarte</button>
 
 </form>
 
@@ -150,14 +140,12 @@
 </footer>
 
 <script>
-
 const toggle = document.getElementById("toggleForm");
 const card = document.querySelector(".card");
 
 toggle.addEventListener("change", () => {
 card.classList.toggle("active");
 });
-
 </script>
 
 </body>

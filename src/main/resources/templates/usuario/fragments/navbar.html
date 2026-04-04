@@ -1,0 +1,52 @@
+<header class="navbar" th:fragment="navbarUsuario">
+
+    <div class="nav-container">
+
+        <!-- LOGO -->
+        <div class="logo-nav">
+            <button class="menu-toggle">☰</button>
+            <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
+            <span class="logo-text">NEXUS</span>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="nav-actions">
+
+            <!-- NOTIFICACIONES -->
+            <div class="notifications">
+                <button class="icon-btn notif-btn">🔔</button>
+                <span class="notif-badge">3</span>
+            </div>
+
+            <!-- USUARIO -->
+            <div class="user-menu" th:if="${usuario != null}">
+
+                <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                     alt="Avatar" class="avatar">
+
+                <div class="user-info">
+                    <span class="user-name"
+                          th:text="${usuario.nombre + ' ' + usuario.apellido}">
+                    </span>
+
+                    <span class="user-rank"
+                          th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">
+                    </span>
+                </div>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">🚪 Salir</button>
+                </form>
+
+            </div>
+
+            <!-- FALLBACK -->
+            <div th:unless="${usuario != null}" class="user-menu">
+                <span>No autenticado</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
