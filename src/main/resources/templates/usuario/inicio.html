@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus - El Campamento</title>
+    <title>Nexus - Mi Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/PrincipalUsuario.css}">
 </head>
 
@@ -18,44 +20,142 @@
         <!-- SIDEBAR -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
-        <!-- CONTENIDO -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
-
-            <h1>Bienvenido <span th:text="${usuario.nombre}"></span> 👋</h1>
-
-            <!-- PLAN -->
-            <div th:if="${paquete != null}">
-                <p>Clases restantes: <strong th:text="${paquete.clasesRestantes}"></strong></p>
-                <p>
-                    Vence: 
-                    <span th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></span>
-                </p>
-            </div>
-
-            <div th:if="${paquete == null}">
-                <p>No tienes un plan activo</p>
-                <a th:href="@{/usuario/paquetes}">Comprar plan</a>
-            </div>
-
-            <hr>
-
-            <!-- RESERVAS -->
-            <div th:if="${#lists.isEmpty(reservas)}">
-                <p>No tienes clases próximas.</p>
-                <a th:href="@{/usuario/clases}">Reservar ahora</a>
-            </div>
-
-            <div th:if="${!#lists.isEmpty(reservas)}">
-                <h3>Mis próximas clases</h3>
-
-                <div th:each="r : ${reservas}">
-                    <p>
-                        <strong th:text="${r.clase.nombre}"></strong> -
-                        <span th:text="${#temporals.format(r.fechaClase, 'dd/MM/yyyy')}"></span>
-                    </p>
+            
+            <!-- Header de bienvenida -->
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <h1>¡Bienvenido de vuelta, <span th:text="${usuario.nombre}">Usuario</span>! 👋</h1>
+                    <p>Aquí tienes un resumen de tu actividad en el gimnasio</p>
                 </div>
+                <div class="welcome-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"></span>
+                </div>
+            </div>
 
-                <a th:href="@{/usuario/reservas}">Ver todas</a>
+            <!-- Tarjetas de estadísticas -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" th:text="${paquete != null ? paquete.clasesRestantes : '0'}">0</span>
+                        <span class="stat-label">Clases restantes</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" th:text="${#lists.size(reservas)}">0</span>
+                        <span class="stat-label">Próximas clases</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" th:text="${clasesEsteMes}">0</span>
+                        <span class="stat-label">Clases este mes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Plan Activo -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-ticket-alt"></i> Mi Plan Activo</h2>
+                    <a th:href="@{/usuario/paquetes}" class="btn-link">Ver planes <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div th:if="${paquete != null}" class="plan-info">
+                    <div class="plan-details">
+                        <div class="plan-badge">
+                            <i class="fas fa-crown"></i>
+                            <span th:text="${paquete.nombre}">Plan Premium</span>
+                        </div>
+                        <div class="plan-progress">
+                            <div class="progress-info">
+                                <span>Clases usadas</span>
+                                <span th:text="${paquete.clasesUsadas != null ? paquete.clasesUsadas : 0} + ' / ' + paquete.clasesTotales"></span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" 
+                                     th:style="'width: ' + (paquete.clasesUsadas != null ? (paquete.clasesUsadas * 100 / paquete.clasesTotales) : 0) + '%'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="plan-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span>Vence: <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></strong></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Progreso: <strong th:text="${paquete.clasesUsadas != null ? (paquete.clasesUsadas * 100 / paquete.clasesTotales) : 0} + '%'"></strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div th:if="${paquete == null}" class="no-plan">
+                    <i class="fas fa-gem"></i>
+                    <p>No tienes un plan activo</p>
+                    <a th:href="@{/usuario/paquetes}" class="btn-primary-small">Comprar plan ahora</a>
+                </div>
+            </div>
+
+            <!-- Sección de Próximas Clases -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-check"></i> Mis Próximas Clases</h2>
+                    <a th:href="@{/usuario/clases}" class="btn-link">Reservar clase <i class="fas fa-plus"></i></a>
+                </div>
+                
+                <div th:if="${#lists.isEmpty(reservas)}" class="empty-state">
+                    <i class="fas fa-calendar-alt"></i>
+                    <p>No tienes clases próximas</p>
+                    <a th:href="@{/usuario/clases}" class="btn-primary-small">Reservar ahora</a>
+                </div>
+                
+                <div th:if="${!#lists.isEmpty(reservas)}" class="clases-list">
+                    <div th:each="r : ${reservas}" class="clase-card">
+                        <div class="clase-date">
+                            <span class="date-day" th:text="${#temporals.format(r.fechaClase, 'dd')}"></span>
+                            <span class="date-month" th:text="${#temporals.format(r.fechaClase, 'MMM')}"></span>
+                        </div>
+                        <div class="clase-info">
+                            <h4 th:text="${r.clase.nombre}">Clase de Spinning</h4>
+                            <div class="clase-meta">
+                                <span><i class="fas fa-clock"></i> <span th:text="${#temporals.format(r.fechaClase, 'HH:mm')}">18:00</span></span>
+                                <span><i class="fas fa-user"></i> <span th:text="${r.clase.profesor != null ? r.clase.profesor.nombre : 'Por asignar'}">Profesor</span></span>
+                            </div>
+                        </div>
+                        <div class="clase-status">
+                            <span class="status-badge confirmed">Confirmada</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ver-todas">
+                        <a th:href="@{/usuario/reservas}" class="btn-outline-small">Ver todas mis reservas <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Recomendaciones / Tips -->
+            <div class="tips-card">
+                <div class="tips-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="tips-content">
+                    <h3>💪 Tip del día</h3>
+                    <p>La constancia es más importante que la intensidad. ¡Sigue así!</p>
+                </div>
             </div>
 
         </main>
