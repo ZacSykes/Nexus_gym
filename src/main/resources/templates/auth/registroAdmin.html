@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Registro Administrador | Nexus</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/RegistroAdmin.css}">
+</head>
+<body>
+<div class="register-container">
+  <!-- Logo encima del formulario -->
+  <div class="logo-top">
+    <img src="/imagenes/Nexus.png" alt="Logo de Nexus" class="nexus-logo-top">
+    <h1 class="logo-name">Nexus</h1>
+    <p class="logo-slogan">Registro de Administrador</p>
+  </div>
+
+  <!-- Formulario de registro -->
+  <div class="register-wrapper">
+    <div class="register-card">
+      <div class="welcome-title">Registra tu Gimnasio</div>
+      <div class="welcome-sub">Completa los datos del administrador y del gimnasio</div>
+
+      <form id="registerAdminForm">
+        <!-- Sección: Datos del Administrador -->
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-user-shield"></i>
+            <span>Datos del Administrador</span>
+          </div>
+          
+          <div class="input-group">
+            <label class="input-label" for="admin_nombre">Nombre completo</label>
+            <input type="text" id="admin_nombre" class="input-field" placeholder="Ej: Carlos Rodríguez" autocomplete="name">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group half">
+              <label class="input-label" for="admin_documento">Documento</label>
+              <input type="text" id="admin_documento" class="input-field" placeholder="Ej: 1234567890">
+            </div>
+            <div class="input-group half">
+              <label class="input-label" for="admin_telefono">Teléfono</label>
+              <input type="tel" id="admin_telefono" class="input-field" placeholder="Ej: 3001234567">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="admin_email">Correo electrónico</label>
+            <input type="email" id="admin_email" class="input-field" placeholder="Ej: carlos@gimnasio.com" autocomplete="email">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group half">
+              <label class="input-label" for="admin_password">Contraseña</label>
+              <input type="password" id="admin_password" class="input-field" placeholder="••••••••">
+              <span class="field-hint">Mínimo 6 caracteres</span>
+            </div>
+            <div class="input-group half">
+              <label class="input-label" for="admin_confirm_password">Confirmar contraseña</label>
+              <input type="password" id="admin_confirm_password" class="input-field" placeholder="••••••••">
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Datos del Gimnasio -->
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-building"></i>
+            <span>Datos del Gimnasio</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="gym_nombre">Nombre del gimnasio</label>
+            <input type="text" id="gym_nombre" class="input-field" placeholder="Ej: Fitness Center Premium">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group half">
+              <label class="input-label" for="gym_nit">NIT</label>
+              <input type="text" id="gym_nit" class="input-field" placeholder="Ej: 900123456-7">
+            </div>
+            <div class="input-group half">
+              <label class="input-label" for="gym_telefono">Teléfono del gimnasio</label>
+              <input type="tel" id="gym_telefono" class="input-field" placeholder="Ej: 6012345678">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="gym_email">Correo del gimnasio</label>
+            <input type="email" id="gym_email" class="input-field" placeholder="Ej: contacto@gimnasio.com">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="gym_direccion">Dirección</label>
+            <input type="text" id="gym_direccion" class="input-field" placeholder="Ej: Calle 123 #45-67, Bogotá">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group half">
+              <label class="input-label" for="gym_ciudad">Ciudad</label>
+              <input type="text" id="gym_ciudad" class="input-field" placeholder="Ej: Bogotá">
+            </div>
+            <div class="input-group half">
+              <label class="input-label" for="gym_horario">Horario de atención</label>
+              <input type="text" id="gym_horario" class="input-field" placeholder="Ej: Lun-Vie 6am-10pm">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="gym_descripcion">Descripción (opcional)</label>
+            <textarea id="gym_descripcion" class="input-field textarea-field" rows="3" placeholder="Breve descripción del gimnasio..."></textarea>
+          </div>
+        </div>
+
+        <!-- Términos y condiciones -->
+        <div class="terms-section">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="termsCheck">
+            <span>Acepto los <a href="#" id="termsLink">términos y condiciones</a> y la política de privacidad</span>
+          </label>
+        </div>
+
+        <button type="submit" class="register-btn-main">
+          <i class="fas fa-crown"></i> Registrar Gimnasio y Administrador
+        </button>
+      </form>
+
+      <!-- Separador y enlace de inicio de sesión -->
+      <div class="login-section">
+        <div class="divider">
+          <span>¿Ya tienes una cuenta?</span>
+        </div>
+        <button id="loginBtn" class="login-redirect-btn">
+          <i class="fas fa-sign-in-alt"></i> Iniciar sesión como Administrador
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Elementos del DOM
+  const registerForm = document.getElementById('registerAdminForm');
+  
+  // Campos del administrador
+  const adminNombre = document.getElementById('admin_nombre');
+  const adminDocumento = document.getElementById('admin_documento');
+  const adminTelefono = document.getElementById('admin_telefono');
+  const adminEmail = document.getElementById('admin_email');
+  const adminPassword = document.getElementById('admin_password');
+  const adminConfirmPassword = document.getElementById('admin_confirm_password');
+  
+  // Campos del gimnasio
+  const gymNombre = document.getElementById('gym_nombre');
+  const gymNit = document.getElementById('gym_nit');
+  const gymTelefono = document.getElementById('gym_telefono');
+  const gymEmail = document.getElementById('gym_email');
+  const gymDireccion = document.getElementById('gym_direccion');
+  const gymCiudad = document.getElementById('gym_ciudad');
+  const gymHorario = document.getElementById('gym_horario');
+  const gymDescripcion = document.getElementById('gym_descripcion');
+  
+  const termsCheck = document.getElementById('termsCheck');
+  const loginBtn = document.getElementById('loginBtn');
+  const termsLink = document.getElementById('termsLink');
+
+  // Validar email
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Validar documento (solo números)
+  function isValidDocument(doc) {
+    const docRegex = /^\d{6,12}$/;
+    return docRegex.test(doc);
+  }
+
+  // Validar teléfono
+  function isValidPhone(phone) {
+    const phoneRegex = /^\d{7,12}$/;
+    return phoneRegex.test(phone);
+  }
+
+  // Validar NIT
+  function isValidNIT(nit) {
+    const nitRegex = /^\d{6,15}-?\d?$/;
+    return nitRegex.test(nit);
+  }
+
+  // Mostrar error
+  function showError(input, message) {
+    const inputGroup = input.parentElement;
+    const existingError = inputGroup.querySelector('.error-message');
+    if (existingError) existingError.remove();
+    
+    const errorSpan = document.createElement('span');
+    errorSpan.className = 'error-message';
+    errorSpan.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    errorSpan.style.color = '#EF4444';
+    errorSpan.style.fontSize = '0.7rem';
+    errorSpan.style.marginTop = '0.3rem';
+    errorSpan.style.display = 'block';
+    
+    input.style.borderColor = '#EF4444';
+    inputGroup.appendChild(errorSpan);
+  }
+
+  // Limpiar error
+  function clearError(input) {
+    const inputGroup = input.parentElement;
+    const existingError = inputGroup.querySelector('.error-message');
+    if (existingError) existingError.remove();
+    input.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+  }
+
+  // Eventos para limpiar errores
+  const allInputs = [adminNombre, adminDocumento, adminTelefono, adminEmail, adminPassword, adminConfirmPassword, 
+                     gymNombre, gymNit, gymTelefono, gymEmail, gymDireccion, gymCiudad, gymHorario];
+  allInputs.forEach(input => {
+    if (input) input.addEventListener('input', () => clearError(input));
+  });
+
+  // Redirigir al login
+  loginBtn.addEventListener('click', () => {
+    console.log('Redirigir al inicio de sesión de administrador');
+    window.location.href = '/auth/login';
+  });
+
+  // Términos y condiciones
+  termsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('📜 Términos y condiciones para administradores de Nexus Gym');
+  });
+
+  // Manejar envío del formulario
+  registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    let hasError = false;
+    
+    // Validaciones del administrador
+    if (adminNombre.value.trim() === '') {
+      showError(adminNombre, 'El nombre del administrador es obligatorio');
+      hasError = true;
+    } else if (adminNombre.value.trim().length < 3) {
+      showError(adminNombre, 'El nombre debe tener al menos 3 caracteres');
+      hasError = true;
+    }
+    
+    if (!isValidDocument(adminDocumento.value.trim())) {
+      showError(adminDocumento, 'Documento inválido (mínimo 6 dígitos)');
+      hasError = true;
+    }
+    
+    if (adminTelefono.value.trim() !== '' && !isValidPhone(adminTelefono.value.trim())) {
+      showError(adminTelefono, 'Teléfono inválido (mínimo 7 dígitos)');
+      hasError = true;
+    }
+    
+    if (!isValidEmail(adminEmail.value.trim())) {
+      showError(adminEmail, 'Correo electrónico inválido');
+      hasError = true;
+    }
+    
+    if (adminPassword.value.trim().length < 6) {
+      showError(adminPassword, 'La contraseña debe tener al menos 6 caracteres');
+      hasError = true;
+    }
+    
+    if (adminPassword.value.trim() !== adminConfirmPassword.value.trim()) {
+      showError(adminConfirmPassword, 'Las contraseñas no coinciden');
+      hasError = true;
+    }
+    
+    // Validaciones del gimnasio
+    if (gymNombre.value.trim() === '') {
+      showError(gymNombre, 'El nombre del gimnasio es obligatorio');
+      hasError = true;
+    }
+    
+    if (!isValidNIT(gymNit.value.trim())) {
+      showError(gymNit, 'NIT inválido (mínimo 6 dígitos)');
+      hasError = true;
+    }
+    
+    if (gymTelefono.value.trim() !== '' && !isValidPhone(gymTelefono.value.trim())) {
+      showError(gymTelefono, 'Teléfono del gimnasio inválido');
+      hasError = true;
+    }
+    
+    if (gymEmail.value.trim() !== '' && !isValidEmail(gymEmail.value.trim())) {
+      showError(gymEmail, 'Correo del gimnasio inválido');
+      hasError = true;
+    }
+    
+    if (gymDireccion.value.trim() === '') {
+      showError(gymDireccion, 'La dirección es obligatoria');
+      hasError = true;
+    }
+    
+    if (gymCiudad.value.trim() === '') {
+      showError(gymCiudad, 'La ciudad es obligatoria');
+      hasError = true;
+    }
+    
+    if (!termsCheck.checked) {
+      alert('✧ Debes aceptar los términos y condiciones');
+      hasError = true;
+    }
+    
+    if (!hasError) {
+      // Datos para enviar a la base de datos
+      const datosRegistro = {
+        administrador: {
+          nombre: adminNombre.value.trim(),
+          documento: adminDocumento.value.trim(),
+          telefono: adminTelefono.value.trim(),
+          email: adminEmail.value.trim(),
+          password: adminPassword.value.trim(),
+          rol: 'administrador',
+          fecha_registro: new Date().toISOString()
+        },
+        gimnasio: {
+          nombre: gymNombre.value.trim(),
+          nit: gymNit.value.trim(),
+          telefono: gymTelefono.value.trim(),
+          email: gymEmail.value.trim(),
+          direccion: gymDireccion.value.trim(),
+          ciudad: gymCiudad.value.trim(),
+          horario: gymHorario.value.trim(),
+          descripcion: gymDescripcion.value.trim(),
+          fecha_registro: new Date().toISOString()
+        }
+      };
+      
+      console.log('Datos a enviar a la base de datos:', datosRegistro);
+      
+      // Mostrar resumen del registro
+      const resumen = `
+✅ ¡Registro exitoso!
+
+🏋️ GIMNASIO REGISTRADO:
+• Nombre: ${datosRegistro.gimnasio.nombre}
+• NIT: ${datosRegistro.gimnasio.nit}
+• Dirección: ${datosRegistro.gimnasio.direccion}
+• Ciudad: ${datosRegistro.gimnasio.ciudad}
+• Horario: ${datosRegistro.gimnasio.horario || 'No especificado'}
+
+👑 ADMINISTRADOR:
+• Nombre: ${datosRegistro.administrador.nombre}
+• Documento: ${datosRegistro.administrador.documento}
+• Email: ${datosRegistro.administrador.email}
+
+🎉 ¡Bienvenido a Nexus Gym!
+En breve recibirás un correo con los detalles de activación.
+Ahora puedes iniciar sesión con tus credenciales de administrador.
+      `;
+      
+      alert(resumen);
+      
+      // Limpiar formulario
+      registerForm.reset();
+      
+      // Redirigir al login después de 2 segundos
+      setTimeout(() => {
+        alert('🚀 Redirigiendo al inicio de sesión...');
+      }, 2000);
+    }
+  });
+</script>
+</body>
+</html>

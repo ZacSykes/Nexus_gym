@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Mi Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/Perfil.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+
+    <div class="main-layout" th:if="${usuario != null}">
+
+        <!-- SIDEBAR -->
+        <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <!-- MENSAJE -->
+            <div th:if="${mensaje}"
+                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
+                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+                <span th:text="${mensaje}"></span>
+            </div>
+
+            <div class="section-header">
+                <h1>👤 Mi Perfil</h1>
+                <p>Administra tu información personal</p>
+            </div>
+
+            <div class="perfil-card">
+
+                <!-- IZQUIERDA -->
+                <div class="perfil-left">
+
+                    <img th:src="@{'https://ui-avatars.com/api/?name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         class="avatar-large">
+
+                    <p th:text="${usuario.nombre + ' ' + usuario.apellido}"></p>
+
+                    <p th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}"></p>
+
+                    <p>
+                        Clases totales:
+                        <strong th:text="${usuario.clasesTotales != null ? usuario.clasesTotales : 0}"></strong>
+                    </p>
+
+                </div>
+
+                <!-- DERECHA -->
+                <div class="perfil-right">
+
+                    <form th:action="@{/usuario/perfil/actualizar}" method="post">
+
+                        <input type="text" name="nombre" th:value="${usuario.nombre}" required>
+
+                        <input type="text" name="apellido" th:value="${usuario.apellido}" required>
+
+                        <input type="email" name="correo" th:value="${usuario.correo}" required>
+
+                        <input type="tel" name="telefono" th:value="${usuario.telefono}">
+
+                        <input type="text" name="direccion" th:value="${usuario.direccion}">
+
+                        <button type="submit">Guardar cambios</button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ERROR -->
+    <div th:unless="${usuario != null}">
+        <p>Error cargando perfil</p>
+    </div>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+</body>
+</html>

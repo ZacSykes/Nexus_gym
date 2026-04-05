@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Registro de Usuario | Nexus</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/Registro.css}">
+</head>
+<body>
+<div class="register-container">
+  <!-- Logo encima del formulario -->
+  <div class="logo-top">
+    <img src="/imagenes/Nexus.png" alt="Logo de Nexus" class="nexus-logo-top">
+    <h1 class="logo-name">Nexus</h1>
+    <p class="logo-slogan">Conectamos tu entrenamiento</p>
+  </div>
+
+  <!-- Formulario de registro -->
+  <div class="register-wrapper">
+    <div class="register-card">
+      <div class="welcome-title">Crear cuenta</div>
+      <div class="welcome-sub">Completa tus datos para comenzar</div>
+
+      <form id="registerForm">
+        <!-- Datos personales -->
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-user-circle"></i>
+            <span>Datos personales</span>
+          </div>
+          
+          <div class="input-group">
+            <label class="input-label" for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" class="input-field" placeholder="Ej: Ana María García" autocomplete="name">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group half">
+              <label class="input-label" for="documento">Documento</label>
+              <input type="text" id="documento" class="input-field" placeholder="Ej: 1234567890">
+            </div>
+            <div class="input-group half">
+              <label class="input-label" for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" class="input-field" placeholder="Ej: 3001234567">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="fecha_nacimiento">Fecha de nacimiento</label>
+            <input type="date" id="fecha_nacimiento" class="input-field">
+          </div>
+        </div>
+
+        <!-- Datos de cuenta -->
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-envelope"></i>
+            <span>Datos de cuenta</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="email">Correo electrónico</label>
+            <input type="email" id="email" class="input-field" placeholder="Ej: ana@email.com" autocomplete="email">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group half">
+              <label class="input-label" for="password">Contraseña</label>
+              <input type="password" id="password" class="input-field" placeholder="••••••••">
+              <span class="password-hint">Mínimo 6 caracteres</span>
+            </div>
+            <div class="input-group half">
+              <label class="input-label" for="confirm_password">Confirmar contraseña</label>
+              <input type="password" id="confirm_password" class="input-field" placeholder="••••••••">
+            </div>
+          </div>
+        </div>
+
+        <!-- Datos del gimnasio -->
+        <div class="form-section">
+          <div class="section-title">
+            <i class="fas fa-dumbbell"></i>
+            <span>Selecciona tu gimnasio</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="gimnasio">Gimnasio al que perteneces</label>
+            <select id="gimnasio" class="input-field">
+              <option value="">-- Selecciona un gimnasio --</option>
+              <!-- Los gimnasios se cargarán desde JavaScript -->
+            </select>
+            <span class="field-hint">Selecciona el gimnasio donde entrenas</span>
+          </div>
+        </div>
+
+        <!-- Términos y condiciones -->
+        <div class="terms-section">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="termsCheck">
+            <span>Acepto los <a href="#" id="termsLink">términos y condiciones</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="register-btn-main">
+          <i class="fas fa-user-plus"></i> Registrarme
+        </button>
+      </form>
+
+      <!-- Separador y enlace de inicio de sesión -->
+      <div class="login-section">
+        <div class="divider">
+          <span>¿Ya tienes una cuenta?</span>
+        </div>
+        <button th:href="@{/auth/login}" id="loginBtn" class="login-redirect-btn">
+          <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================
+  // LISTA DE GIMNASIOS (esto vendrá de la base de datos)
+  // ============================================
+  const gimnasios = [
+    { id: 1, nit: "900123456-1", nombre: "Fitness Center Premium", direccion: "Calle 123 #45-67", telefono: "3001234567" },
+    { id: 2, nit: "900123456-2", nombre: "Power Gym Elite", direccion: "Carrera 89 #23-45", telefono: "3012345678" },
+    { id: 3, nit: "900123456-3", nombre: "Muscle Zone", direccion: "Avenida 45 #67-89", telefono: "3023456789" },
+    { id: 4, nit: "900123456-4", nombre: "Yoga & Wellness Center", direccion: "Calle 78 #12-34", telefono: "3034567890" },
+    { id: 5, nit: "900123456-5", nombre: "CrossFit Revolution", direccion: "Diagonal 56 #78-90", telefono: "3045678901" },
+    { id: 6, nit: "900123456-6", nombre: "Smart Fit Plus", direccion: "Transversal 34 #56-78", telefono: "3056789012" },
+    { id: 7, nit: "900123456-7", nombre: "Body Tech Gym", direccion: "Calle 12 #34-56", telefono: "3067890123" },
+    { id: 8, nit: "900123456-8", nombre: "Iron Paradise", direccion: "Carrera 67 #89-01", telefono: "3078901234" },
+    { id: 9, nit: "900123456-9", nombre: "Fit Life Studio", direccion: "Avenida 90 #12-34", telefono: "3089012345" },
+    { id: 10, nit: "900123456-0", nombre: "Elite Sports Club", direccion: "Calle 45 #67-89", telefono: "3090123456" }
+  ];
+
+  // Elementos del DOM
+  const registerForm = document.getElementById('registerForm');
+  const nombreInput = document.getElementById('nombre');
+  const documentoInput = document.getElementById('documento');
+  const telefonoInput = document.getElementById('telefono');
+  const fechaNacimiento = document.getElementById('fecha_nacimiento');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirm_password');
+  const gimnasioSelect = document.getElementById('gimnasio');
+  const termsCheck = document.getElementById('termsCheck');
+  const loginBtn = document.getElementById('loginBtn');
+  const termsLink = document.getElementById('termsLink');
+
+  // Cargar gimnasios en el select
+  function cargarGimnasios() {
+    gimnasios.forEach(gimnasio => {
+      const option = document.createElement('option');
+      option.value = gimnasio.id;
+      option.setAttribute('data-nit', gimnasio.nit);
+      option.setAttribute('data-nombre', gimnasio.nombre);
+      option.setAttribute('data-direccion', gimnasio.direccion);
+      option.textContent = `${gimnasio.nombre} (NIT: ${gimnasio.nit})`;
+      gimnasioSelect.appendChild(option);
+    });
+  }
+
+  // Validar email
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Validar documento (solo números)
+  function isValidDocument(doc) {
+    const docRegex = /^\d{6,12}$/;
+    return docRegex.test(doc);
+  }
+
+  // Validar teléfono
+  function isValidPhone(phone) {
+    const phoneRegex = /^\d{7,12}$/;
+    return phoneRegex.test(phone);
+  }
+
+  // Mostrar error
+  function showError(input, message) {
+    const inputGroup = input.parentElement;
+    const existingError = inputGroup.querySelector('.error-message');
+    if (existingError) existingError.remove();
+    
+    const errorSpan = document.createElement('span');
+    errorSpan.className = 'error-message';
+    errorSpan.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    errorSpan.style.color = '#EF4444';
+    errorSpan.style.fontSize = '0.7rem';
+    errorSpan.style.marginTop = '0.3rem';
+    errorSpan.style.display = 'block';
+    
+    input.style.borderColor = '#EF4444';
+    inputGroup.appendChild(errorSpan);
+  }
+
+  // Limpiar error
+  function clearError(input) {
+    const inputGroup = input.parentElement;
+    const existingError = inputGroup.querySelector('.error-message');
+    if (existingError) existingError.remove();
+    input.style.borderColor = 'rgba(124, 58, 237, 0.3)';
+  }
+
+  // Eventos para limpiar errores
+  const inputs = [nombreInput, documentoInput, telefonoInput, emailInput, passwordInput, confirmPasswordInput, gimnasioSelect];
+  inputs.forEach(input => {
+    input.addEventListener('input', () => clearError(input));
+    input.addEventListener('change', () => clearError(input));
+  });
+
+  // Redirigir al login
+  loginBtn.addEventListener('click', () => {
+    window.location.href = '/auth/login';
+  });
+
+  // Términos y condiciones
+  termsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('📜 Términos y condiciones de Nexus Gym\n\n1. Uso responsable de las instalaciones\n2. Respeto hacia los demás miembros\n3. Cumplir con las normas del gimnasio\n4. Puntualidad en las clases agendadas\n5. Mantener actualizados tus datos');
+  });
+
+  // Manejar envío del formulario
+  registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    let hasError = false;
+    
+    // Validar nombre
+    if (nombreInput.value.trim() === '') {
+      showError(nombreInput, 'El nombre completo es obligatorio');
+      hasError = true;
+    } else if (nombreInput.value.trim().length < 3) {
+      showError(nombreInput, 'El nombre debe tener al menos 3 caracteres');
+      hasError = true;
+    }
+    
+    // Validar documento
+    if (!isValidDocument(documentoInput.value.trim())) {
+      showError(documentoInput, 'Documento inválido (mínimo 6 dígitos, solo números)');
+      hasError = true;
+    }
+    
+    // Validar teléfono (opcional)
+    if (telefonoInput.value.trim() !== '' && !isValidPhone(telefonoInput.value.trim())) {
+      showError(telefonoInput, 'Teléfono inválido (mínimo 7 dígitos)');
+      hasError = true;
+    }
+    
+    // Validar email
+    if (!isValidEmail(emailInput.value.trim())) {
+      showError(emailInput, 'Correo electrónico inválido');
+      hasError = true;
+    }
+    
+    // Validar contraseña
+    if (passwordInput.value.trim().length < 6) {
+      showError(passwordInput, 'La contraseña debe tener al menos 6 caracteres');
+      hasError = true;
+    }
+    
+    // Validar confirmación de contraseña
+    if (passwordInput.value.trim() !== confirmPasswordInput.value.trim()) {
+      showError(confirmPasswordInput, 'Las contraseñas no coinciden');
+      hasError = true;
+    }
+    
+    // Validar gimnasio seleccionado
+    if (gimnasioSelect.value === '') {
+      showError(gimnasioSelect, 'Debes seleccionar un gimnasio');
+      hasError = true;
+    }
+    
+    // Validar términos
+    if (!termsCheck.checked) {
+      alert('✧ Debes aceptar los términos y condiciones para continuar.');
+      hasError = true;
+    }
+    
+    if (!hasError) {
+      // Obtener información del gimnasio seleccionado
+      const selectedOption = gimnasioSelect.options[gimnasioSelect.selectedIndex];
+      const gimnasioId = gimnasioSelect.value;
+      const gimnasioNombre = selectedOption.getAttribute('data-nombre');
+      const gimnasioNit = selectedOption.getAttribute('data-nit');
+      
+      // Datos para enviar a la base de datos
+      const datosRegistro = {
+        nombre: nombreInput.value.trim(),
+        documento: documentoInput.value.trim(),
+        telefono: telefonoInput.value.trim(),
+        fecha_nacimiento: fechaNacimiento.value,
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(), // En producción, encriptar antes de enviar
+        gimnasio_id: parseInt(gimnasioId),
+        gimnasio_nombre: gimnasioNombre,
+        gimnasio_nit: gimnasioNit,
+        fecha_registro: new Date().toISOString()
+      };
+      
+      console.log('Datos a enviar a la base de datos:', datosRegistro);
+      
+      // Mostrar resumen del registro
+      const resumen = `
+✅ ¡Registro exitoso!
+
+📋 Datos registrados:
+• Nombre: ${datosRegistro.nombre}
+• Documento: ${datosRegistro.documento}
+• Email: ${datosRegistro.email}
+• Gimnasio: ${gimnasioNombre}
+• NIT: ${gimnasioNit}
+
+🎉 Bienvenido/a a Nexus Gym
+Ahora puedes iniciar sesión y comenzar a entrenar.
+      `;
+      
+      alert(resumen);
+      
+      // Aquí iría la llamada a la API para guardar en la base de datos
+      // fetch('/api/registro', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(datosRegistro)
+      // })
+      
+      // Limpiar formulario
+      registerForm.reset();
+      gimnasioSelect.value = '';
+      fechaNacimiento.value = '';
+      
+      // Redirigir al login después de 2 segundos
+      setTimeout(() => {
+        // window.location.href = '/index.html';
+        alert('🚀 Redirigiendo al inicio de sesión...');
+      }, 2000);
+    }
+  });
+
+  // Cargar la lista de gimnasios al iniciar
+  cargarGimnasios();
+</script>
+</body>
+</html>

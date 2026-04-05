@@ -1,0 +1,50 @@
+<header class="navbar" th:fragment="navbarAdmin">
+
+    <div class="nav-container">
+
+        <!-- LOGO -->
+        <div class="logo-nav">
+            <button id="menuToggle" class="menu-toggle">☰</button>
+            <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
+            <span class="logo-text">ADMIN NEXUS</span>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="nav-actions">
+
+            <div class="user-menu">
+
+                <!-- AVATAR FIJO -->
+                <img class="avatar"
+                     th:src="@{/imagenes/default.png}"
+                     alt="Avatar">
+
+                <!-- INFO USUARIO -->
+                <div class="user-info">
+                    <span class="user-name"
+                          th:text="${usuario != null ? usuario.nombre + ' ' + usuario.apellido : 'Administrador'}">
+                    </span>
+                </div>
+
+                <!-- LOGOUT -->
+                <form th:action="@{/logout}" method="post">
+
+                    <input type="hidden"
+                        th:if="${_csrf != null}"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}" />
+                        
+                    <button type="submit" class="logout-btn">
+                        🚪 Salir
+                    </button>
+
+                </form>
+                
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

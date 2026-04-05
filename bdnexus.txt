@@ -1,0 +1,228 @@
+CREATE TABLE roles (
+    id_rol SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    descripcion VARCHAR(100)
+);
+
+CREATE TABLE rangos (
+    id_rango SERIAL PRIMARY KEY,
+    nombre VARCHAR(50),
+    clases_requeridas INTEGER,
+    color_hex VARCHAR(10),
+    orden INTEGER
+);
+
+CREATE TABLE datos_usuarios (
+    id_usuario SERIAL PRIMARY KEY,
+    cedula BIGINT UNIQUE,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    correo VARCHAR(100) UNIQUE,
+    direccion VARCHAR(150),
+    telefono VARCHAR(50),
+    telefono_emergencia VARCHAR(50),
+    genero VARCHAR(20),
+    fecha_nacimiento DATE,
+    peso DOUBLE PRECISION,
+    altura DOUBLE PRECISION,
+    objetivo VARCHAR(100),
+    experiencia VARCHAR(100),
+    condiciones_medicas TEXT,
+    alergias TEXT,
+    notas_adicionales TEXT,
+    clases_totales INTEGER DEFAULT 0,
+    fecha_registro TIMESTAMP,
+    estado VARCHAR(50),
+
+    id_rango INTEGER,
+
+    CONSTRAINT fk_usuario_rango
+        FOREIGN KEY (id_rango)
+        REFERENCES rangos(id_rango)
+);
+
+CREATE TABLE perfil (
+    id_perfil SERIAL PRIMARY KEY,
+    nombre_usuario VARCHAR(100) UNIQUE NOT NULL,
+    contrasena TEXT NOT NULL,
+
+    id_rol INTEGER,
+    id_usuario INTEGER UNIQUE,
+
+    ultimo_acceso TIMESTAMP,
+    created_at TIMESTAMP,
+
+    CONSTRAINT fk_perfil_rol
+        FOREIGN KEY (id_rol)
+        REFERENCES roles(id_rol),
+
+    CONSTRAINT fk_perfil_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES datos_usuarios(id_usuario)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE profesores (
+    id_profesor SERIAL PRIMARY KEY,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    especialidad VARCHAR(100)
+);
+
+CREATE TABLE clases (
+    id_clase SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    disciplina VARCHAR(100) NOT NULL,
+    nivel VARCHAR(50) NOT NULL,
+    dia_semana VARCHAR(20) NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    cupo_maximo INTEGER NOT NULL,
+    cupo_disponible INTEGER,
+    salon VARCHAR(100),
+    disponible BOOLEAN DEFAULT TRUE,
+
+    id_profesor INTEGER,
+
+    CONSTRAINT fk_clase_profesor
+        FOREIGN KEY (id_profesor)
+        REFERENCES profesores(id_profesor)
+);
+
+CREATE TABLE planes (
+    id_planes SERIAL PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion TEXT,
+    precio DOUBLE PRECISION,
+    total_clases INTEGER,
+    duracion_dias INTEGER,
+    tipo VARCHAR(50),
+    personas INTEGER,
+    estado VARCHAR(50),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE paquetes_clases (
+    id_paquete SERIAL PRIMARY KEY,
+
+    id_usuario INTEGER NOT NULL,
+    id_planes INTEGER,
+
+    total_clases INTEGER,
+    clases_restantes INTEGER,
+    fecha_inicio TIMESTAMP,
+    fecha_vencimiento TIMESTAMP,
+    estado VARCHAR(50),
+    creado_por INTEGER,
+    created_at TIMESTAMP,
+
+    CONSTRAINT fk_paquete_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES datos_usuarios(id_usuario)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_paquete_plan
+        FOREIGN KEY (id_planes)
+        REFERENCES planes(id_planes)
+);
+
+CREATE TABLE pagos (
+    id_pago SERIAL PRIMARY KEY,
+
+    id_usuario INTEGER NOT NULL,
+    id_paquete INTEGER NOT NULL,
+
+    monto DOUBLE PRECISION NOT NULL,
+    estado VARCHAR(50),
+    metodo_pago VARCHAR(50),
+    referencia VARCHAR(100),
+    fecha_pago TIMESTAMP,
+    fecha_confirmacion TIMESTAMP,
+
+    CONSTRAINT fk_pago_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES datos_usuarios(id_usuario),
+
+    CONSTRAINT fk_pago_paquete
+        FOREIGN KEY (id_paquete)
+        REFERENCES paquetes_clases(id_paquete)
+);
+
+CREATE TABLE reservas (
+    id_reserva SERIAL PRIMARY KEY,
+
+    id_usuario INTEGER,
+    id_clase INTEGER,
+    id_paquete INTEGER,
+
+    fecha_clase DATE,
+    hora_inicio TIME,
+    estado VARCHAR(50),
+    fecha_reserva TIMESTAMP,
+    cancelada_en TIMESTAMP,
+    clase_devuelta BOOLEAN,
+
+    CONSTRAINT fk_reserva_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES datos_usuarios(id_usuario),
+
+    CONSTRAINT fk_reserva_clase
+        FOREIGN KEY (id_clase)
+        REFERENCES clases(id_clase),
+
+    CONSTRAINT fk_reserva_paquete
+        FOREIGN KEY (id_paquete)
+        REFERENCES paquetes_clases(id_paquete)
+);
+
+CREATE TABLE password_reset_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    id_usuario INTEGER NOT NULL,
+    fecha_expiracion TIMESTAMP NOT NULL,
+
+	CONSTRAINT fk_token_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES datos_usuarios(id_usuario)
+        ON DELETE CASCADE
+);
+
+INSERTS 
+INSERT INTO roles (nombre, descripcion) VALUES
+('ROLE_ADMINISTRADOR', 'Acceso total'),
+('ROLE_INSTRUCTOR', 'Profesor'),
+('ROLE_USUARIO', 'Alumno');
+
+INSERT INTO datos_usuarios (
+    cedula, nombre, apellido, correo,
+    telefono, fecha_registro, estado
+) VALUES (
+    123456789,
+    'Admin',
+    'Principal',
+    'admin@nexus.com',
+    '3000000000',
+    NOW(),
+    'ACTIVO'
+);
+
+SELECT id_usuario FROM datos_usuarios WHERE cedula = 123456789;
+
+INSERT INTO perfil (
+    nombre_usuario,
+    contrasena,
+    id_rol,
+    id_usuario,
+    created_at
+) VALUES (
+    '123456789',
+    '$2a$10$e0v7Ob5J.V6lrwxNzn6Ap.tGkgD1A/ouE8qAP14chcigv5bittDV2',
+    (SELECT id_rol FROM roles WHERE nombre = 'ROLE_ADMINISTRADOR'),
+    3,
+    NOW()
+);
+
+USUARIO Admin
+USERNAME : 123456789
+PASSWORD: admin123

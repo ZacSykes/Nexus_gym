@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - El Campamento</title>
+    <link rel="stylesheet" th:href="@{/css/PrincipalUsuario.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+
+    <div class="main-layout">
+
+        <!-- SIDEBAR -->
+        <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <h1>Bienvenido <span th:text="${usuario.nombre}"></span> 👋</h1>
+
+            <!-- PLAN -->
+            <div th:if="${paquete != null}">
+                <p>Clases restantes: <strong th:text="${paquete.clasesRestantes}"></strong></p>
+                <p>
+                    Vence: 
+                    <span th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></span>
+                </p>
+            </div>
+
+            <div th:if="${paquete == null}">
+                <p>No tienes un plan activo</p>
+                <a th:href="@{/usuario/paquetes}">Comprar plan</a>
+            </div>
+
+            <hr>
+
+            <!-- RESERVAS -->
+            <div th:if="${#lists.isEmpty(reservas)}">
+                <p>No tienes clases próximas.</p>
+                <a th:href="@{/usuario/clases}">Reservar ahora</a>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(reservas)}">
+                <h3>Mis próximas clases</h3>
+
+                <div th:each="r : ${reservas}">
+                    <p>
+                        <strong th:text="${r.clase.nombre}"></strong> -
+                        <span th:text="${#temporals.format(r.fechaClase, 'dd/MM/yyyy')}"></span>
+                    </p>
+                </div>
+
+                <a th:href="@{/usuario/reservas}">Ver todas</a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER GLOBAL -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+</body>
+</html>

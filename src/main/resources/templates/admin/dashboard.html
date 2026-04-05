@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Nexus</title>
+    <link rel="stylesheet" th:href="@{/css/dashboardAdmin.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR ADMIN -->
+    <div th:replace="admin/fragments/navbar :: navbarAdmin"></div>
+
+    <div class="main-layout">
+
+        <!-- SIDEBAR ADMIN -->
+        <div th:replace="admin/fragments/sidebar :: sidebarAdmin"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <h1 class="title">Panel de Administración</h1>
+
+            <div class="cards">
+
+                <a th:href="@{/admin/usuarios}" class="card-link">
+                    <article class="card">
+                        <img th:src="@{/imagenes/gimnasia.png}" class="icon">
+                        <h3>Gestión de Usuarios</h3>
+                        <p>Administra los usuarios registrados.</p>
+                    </article>
+                </a>
+
+                <a th:href="@{/admin/gimnasios}" class="card-link">
+                    <article class="card">
+                        <img th:src="@{/imagenes/pesa.png}" class="icon">
+                        <h3>Gestión de gimnasios</h3>
+                        <p>Administra las instalaciones.</p>
+                    </article>
+                </a>
+
+                <a th:href="@{/admin/reservas}" class="card-link">
+                    <article class="card">
+                        <img th:src="@{/imagenes/reserva.png}" class="icon">
+                        <h3>Reservas</h3>
+                        <p>Controla las reservas.</p>
+                    </article>
+                </a>
+
+                <a th:href="@{/admin/pagos}" class="card-link">
+                    <article class="card">
+                        <img th:src="@{/imagenes/logout.svg}" class="icon">
+                        <h3>Pagos</h3>
+                        <p>Administra pagos y transacciones.</p>
+                    </article>
+                </a>
+
+                <a th:href="@{/admin/config}" class="card-link">
+                    <article class="card">
+                        <img th:src="@{/imagenes/logout.svg}" class="icon">
+                        <h3>Ajustes</h3>
+                        <p>Configuración del sistema.</p>
+                    </article>
+                </a>
+
+                <!-- LOGOUT -->
+                <form th:action="@{/logout}" method="post">
+                    <button class="card logout-card">
+                        <img th:src="@{/imagenes/logout.svg}" class="icon">
+                        <h3>Cerrar sesión</h3>
+                        <p>Finaliza tu sesión</p>
+                    </button>
+                </form>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+</body>
+</html>

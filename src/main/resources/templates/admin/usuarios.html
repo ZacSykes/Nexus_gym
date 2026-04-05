@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="admin/fragments/navbar :: navbarAdmin"></div>
+
+    <div class="main-layout">
+
+        <!-- SIDEBAR -->
+        <div th:replace="admin/fragments/sidebar :: sidebarAdmin"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <h1>Gestión de Usuarios</h1>
+
+            <!-- MENSAJES -->
+            <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+            <div th:if="${mensaje}" class="alert-success" th:text="${mensaje}"></div>
+
+            <!-- BOTÓN -->
+            <button type="button" onclick="abrirModalCrear()">Crear Usuario</button>
+
+            <!-- TABLA -->
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="usuario : ${usuarios}">
+                        <td th:text="${usuario.id}"></td>
+                        <td th:text="${usuario.nombre}"></td>
+                        <td th:text="${usuario.email}"></td>
+
+                        <!-- ROL (ANTES FALTABA) -->
+                        <td th:text="${usuario.rol}"></td>
+
+                        <!-- ACCIONES -->
+                        <td>
+
+                            <button type="button" onclick="abrirModalEditar(this)">Editar</button>
+
+                            <form th:action="@{/admin/eliminar/{id}(id=${usuario.id})}"
+                                  method="post">
+                                <button type="submit">Eliminar</button>
+                            </form>
+
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+<script>
+/* ================== SIDEBAR ================== */
+const toggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
+const main = document.getElementById("main");
+
+if (toggle && sidebar && main) {
+    toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        main.classList.toggle("shift");
+    });
+}
+
+/* ================== MODAL CREAR ================== */
+function abrirModalCrear() {
+    const form = document.getElementById('usuarioForm');
+    if (form) {
+        form.action = '/admin/guardar';
+    }
+}
+
+/* ================== MODAL EDITAR ================== */
+function abrirModalEditar(boton) {
+    const fila = boton.closest('tr');
+    if (!fila) return;
+
+    console.log("Editando usuario ID:", fila.cells[0].textContent);
+}
+
+/* ================== FILTRO (SI EXISTE) ================== */
+const searchBtn = document.getElementById('searchButton');
+const searchInput = document.getElementById('searchInput');
+
+if (searchBtn && searchInput) {
+    searchBtn.addEventListener('click', () => {
+        const searchValue = searchInput.value.trim();
+        if (searchValue) {
+            window.location.href = '/admin/usuarios?fil=' + encodeURIComponent(searchValue);
+        } else {
+            window.location.href = '/admin/usuarios';
+        }
+    });
+
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            searchBtn.click();
+        }
+    });
+}
+</script>
+
+</body>
+</html>

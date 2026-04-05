@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Mis Reservas</title>
+    <link rel="stylesheet" th:href="@{/css/MisReservas.css}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+
+    <div class="main-layout" th:if="${usuario != null}">
+
+        <!-- SIDEBAR -->
+        <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+
+            <!-- MENSAJES -->
+            <div th:if="${mensaje}" 
+                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
+                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+                <span th:text="${mensaje}"></span>
+            </div>
+
+            <div class="section-header">
+                <h1>📋 Mis Reservas</h1>
+                <p>Gestiona tus clases agendadas</p>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="resumen-card">
+                <div class="resumen-item">
+                    <span>📅</span>
+                    <span th:text="${#lists.size(reservas)}"></span>
+                    <span>Total reservas</span>
+                </div>
+            </div>
+
+            <!-- LISTA -->
+            <div th:if="${not #lists.isEmpty(reservas)}">
+
+                <div th:each="reserva : ${reservas}" class="reserva-card">
+
+                    <h3 th:text="${reserva.clase.nombre}"></h3>
+
+                    <p th:text="'Coach: ' + ${reserva.clase.profesor.nombre}"></p>
+
+                    <p th:text="${#temporals.format(reserva.fechaClase, 'dd/MM/yyyy')}"></p>
+
+                    <form th:action="@{/usuario/cancelar}" method="post"
+                          th:if="${reserva.estado == 'Confirmada'}">
+                        <input type="hidden" name="idReserva" th:value="${reserva.idReservas}">
+                        <button type="submit">Cancelar</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div th:if="${#lists.isEmpty(reservas)}">
+                <p>No tienes reservas</p>
+                <a th:href="@{/usuario/clases}">Reservar clase</a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footerGlobal"></div>
+
+</body>
+</html>

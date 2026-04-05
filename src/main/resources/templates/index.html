@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus | Gestión Inteligente para Gimnasios</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+  <!-- Fondo con gradiente y efecto de partículas -->
+  <div class="bg-gradient"></div>
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- Navbar minimalista -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="imagenes/Nexus.png" alt="Nexus" class="logo-img">
+        <span class="logo-text">Nexus</span>
+      </div>
+      <div class="nav-links">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#caracteristicas" class="nav-link">Características</a>
+        <a href="#para-usuarios" class="nav-link">Para Usuarios</a>
+        <a href="#para-administradores" class="nav-link">Para Administradores</a>
+        <a href="#about" class="nav-link">Nosotros</a>
+      </div>
+      <div class="nav-actions">
+        <a href="/auth/login" class="btn-outline">Iniciar sesión</a>
+        <a href="/registro" class="btn-primary">Registrarse</a>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menú móvil -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#inicio" class="mobile-link">Inicio</a>
+    <a href="#caracteristicas" class="mobile-link">Características</a>
+    <a href="#para-usuarios" class="mobile-link">Para Usuarios</a>
+    <a href="#para-administradores" class="mobile-link">Para Administradores</a>
+    <a href="#about" class="mobile-link">Nosotros</a>
+    <div class="mobile-divider"></div>
+    <a th:href="/auth/login" class="mobile-link">Iniciar sesión</a>
+    <a th:href="/registro" class="mobile-link primary">Registrarse</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Gestión inteligente para gimnasios
+        </div>
+        <h1 class="hero-title">
+          Organiza tu gimnasio
+          <span class="gradient-text">en un solo lugar</span>
+        </h1>
+        <p class="hero-description">
+          Nexus transforma la gestión de tu gimnasio en un proceso simple, rápido y ordenado. 
+          Centraliza clases, pagos y alumnos en una plataforma moderna y eficiente.
+        </p>
+        <div class="hero-buttons">
+          <a href="/registro" class="btn-primary-large">
+            Comenzar ahora
+            <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="#para-administradores" class="btn-secondary-large">
+            Soy administrador
+            <i class="fas fa-crown"></i>
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="visual-card">
+          <div class="visual-header">
+            <i class="fas fa-connectdevelop"></i>
+            <span>Conectamos tu gimnasio</span>
+          </div>
+          <div class="visual-message">
+            <i class="fas fa-check-circle"></i>
+            <p>Simplifica la gestión de tu negocio</p>
+          </div>
+          <div class="visual-message">
+            <i class="fas fa-users"></i>
+            <p>Ofrece la mejor experiencia a tus alumnos</p>
+          </div>
+          <div class="visual-message">
+            <i class="fas fa-chart-line"></i>
+            <p>Controla pagos y asistencia</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="caracteristicas">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Características</span>
+        <h2 class="section-title">Todo lo que necesitas para <span class="gradient-text">gestionar tu gimnasio</span></h2>
+        <p class="section-description">Una plataforma completa que simplifica cada aspecto de tu negocio</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h3>Gestión de clases</h3>
+          <p>Organiza horarios, asigna profesores y controla la asistencia de tus alumnos desde un solo lugar.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Control de alumnos</h3>
+          <p>Mantén un registro completo de tus alumnos, su progreso y membresías activas.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h3>Pagos automatizados</h3>
+          <p>Gestiona suscripciones, pagos pendientes y genera reportes financieros en tiempo real.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-simple"></i>
+          </div>
+          <h3>Reportes analíticos</h3>
+          <p>Visualiza el crecimiento de tu negocio con gráficos y estadísticas detalladas.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Notificaciones</h3>
+          <p>Mantén a tus alumnos informados sobre clases, promociones y recordatorios.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>App móvil</h3>
+          <p>Accede a toda la información desde cualquier lugar con nuestra app optimizada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Para Usuarios Section -->
+  <section class="for-users" id="para-usuarios">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Para Usuarios</span>
+        <h2 class="section-title">Entrena donde quieras, <span class="gradient-text">sin complicaciones</span></h2>
+        <p class="section-description">Como usuario, puedes acceder a tu gimnasio favorito fácilmente</p>
+      </div>
+      <div class="users-grid">
+        <div class="user-card">
+          <div class="user-icon">
+            <i class="fas fa-sign-in-alt"></i>
+          </div>
+          <h3>Inicia sesión</h3>
+          <p>Accede a tu cuenta con tu documento y contraseña para ver tu progreso, clases agendadas y pagos.</p>
+          <a href="/auth/login" class="user-link">Iniciar sesión →</a>
+        </div>
+        <div class="user-card">
+          <div class="user-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h3>Regístrate</h3>
+          <p>Crea tu cuenta como usuario y elige el gimnasio al que perteneces de nuestra lista.</p>
+          <a href="/registro" class="user-link">Registrarme →</a>
+        </div>
+        <div class="user-card">
+          <div class="user-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <h3>Elige tu gimnasio</h3>
+          <p>Selecciona tu gimnasio favorito de nuestra base de datos y conecta con él.</p>
+          <a href="/registro" class="user-link">Ver gimnasios →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Para Administradores Section -->
+  <section class="for-admins" id="para-administradores">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge admin-badge">Para Administradores</span>
+        <h2 class="section-title">Registra tu gimnasio y <span class="gradient-text">comienza a gestionar</span></h2>
+        <p class="section-description">Todo lo que necesitas para administrar tu negocio en un solo lugar</p>
+      </div>
+      <div class="admins-grid">
+        <div class="admin-card">
+          <div class="admin-icon">
+            <i class="fas fa-crown"></i>
+          </div>
+          <h3>Registra tu gimnasio</h3>
+          <p>Crea tu cuenta como administrador junto con todos los datos de tu gimnasio en minutos.</p>
+          <a href="/registro-admin" class="admin-link">Registrar gimnasio →</a>
+        </div>
+        <div class="admin-card">
+          <div class="admin-icon">
+            <i class="fas fa-sliders-h"></i>
+          </div>
+          <h3>Configura tu gimnasio</h3>
+          <p>Agrega clases, horarios, profesores y todo lo necesario para operar tu negocio.</p>
+          <a href="#" class="admin-link">Ver configuración →</a>
+        </div>
+        <div class="admin-card">
+          <div class="admin-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Gestiona y crece</h3>
+          <p>Controla pagos, asistencia y recibe reportes para tomar mejores decisiones.</p>
+          <a href="#" class="admin-link">Ver panel →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <span class="section-badge">Nosotros</span>
+          <h2 class="section-title">¿Qué es <span class="gradient-text">Nexus</span>?</h2>
+          <p>Somos una plataforma creada para ayudar a gimnasios y academias que aún gestionan sus clases de forma manual. Centralizamos clases, pagos y alumnos en un solo lugar para que ahorres tiempo y optimices tus recursos.</p>
+          <div class="about-benefits">
+            <div class="about-benefit">
+              <i class="fas fa-check-circle"></i>
+              <span>Ideal para gimnasios de barrio</span>
+            </div>
+            <div class="about-benefit">
+              <i class="fas fa-check-circle"></i>
+              <span>Academias deportivas</span>
+            </div>
+            <div class="about-benefit">
+              <i class="fas fa-check-circle"></i>
+              <span>Escuelas de artes marciales</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-image">
+          <div class="image-placeholder">
+            <i class="fas fa-dumbbell"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-card">
+        <h2>¿Listo para transformar tu gimnasio?</h2>
+        <p>Únete a cientos de gimnasios que ya confían en Nexus</p>
+        <div class="cta-buttons">
+          <a href="/registro" class="btn-primary-large">Registrarme como usuario</a>
+          <a href="/registro-admin" class="btn-outline-light">Registrar mi gimnasio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <img src="imagenes/Nexus.png" alt="Nexus" class="logo-img">
+            <span class="logo-text">Nexus</span>
+          </div>
+          <p>Transformamos la gestión de tu gimnasio en un proceso simple, rápido y ordenado.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Producto</h4>
+            <a href="#caracteristicas">Características</a>
+            <a href="#para-usuarios">Para Usuarios</a>
+            <a href="#para-administradores">Para Administradores</a>
+          </div>
+          <div class="footer-column">
+            <h4>Compañía</h4>
+            <a href="#about">Nosotros</a>
+            <a href="#">Blog</a>
+            <a href="#">Contacto</a>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <a href="#">Términos de uso</a>
+            <a href="#">Política de privacidad</a>
+          </div>
+        </div>
+        <div class="footer-social">
+          <span>Síguenos</span>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Nexus. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Menú móvil
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scroll para enlaces internos
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
