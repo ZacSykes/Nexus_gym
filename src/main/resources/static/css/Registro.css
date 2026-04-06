@@ -396,3 +396,25 @@ input[type="date"] {
     gap: 0;
   }
 }
+
+/* ===== VALIDACIONES Y MENSAJES DE ERROR ===== */
+.error-message {
+  color: #ef4444;
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.input-field.error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2;
+}
+
+.field-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}

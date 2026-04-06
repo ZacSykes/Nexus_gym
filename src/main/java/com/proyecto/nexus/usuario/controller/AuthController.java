@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.proyecto.nexus.usuario.dto.RegistroDTO;
@@ -18,10 +19,12 @@ import com.proyecto.nexus.usuario.model.Rol;
 import com.proyecto.nexus.usuario.repository.DatosUsuarioRepository;
 import com.proyecto.nexus.usuario.repository.PerfilRepository;
 import com.proyecto.nexus.usuario.repository.RolRepository;
+import com.proyecto.nexus.usuario.repository.GimnasioRepository;   // ← Importar
+import com.proyecto.nexus.usuario.model.Gimnasio;     
+import java.util.List;            // ← Importar
 
 import jakarta.transaction.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/auth")
@@ -31,15 +34,19 @@ public class AuthController {
     private final PerfilRepository perfilRepository;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GimnasioRepository gimnasioRepository;   // ← Nueva dependencia
 
+    // Constructor actualizado
     public AuthController(DatosUsuarioRepository datosUsuarioRepository,
                           PerfilRepository perfilRepository,
                           RolRepository rolRepository,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          GimnasioRepository gimnasioRepository) {   // ← Nuevo parámetro
         this.datosUsuarioRepository = datosUsuarioRepository;
         this.perfilRepository = perfilRepository;
         this.rolRepository = rolRepository;
         this.passwordEncoder = passwordEncoder;
+        this.gimnasioRepository = gimnasioRepository;   // ← Inicializar
     }
     
     @GetMapping("/login")
@@ -47,16 +54,23 @@ public class AuthController {
         return "auth/login";
     }
 
-    @GetMapping("/registro")
-    public String mostrarRegistro() {
-        return "auth/registro"; // ✅ corregido
-    }
-
-    @GetMapping("/registroAdmin")
-public String mostrarRegistroAdmin() {
-    return "auth/registroAdmin"; // Nombre de tu vista HTML para registro de admin
+    
+        @GetMapping("/api/gimnasios")
+        @ResponseBody
+        public List<Gimnasio> listarGimnasios() {
+            return gimnasioRepository.findAll();
 }
 
+    @GetMapping("/registro")
+    public String mostrarRegistro(Model model) {
+    model.addAttribute("gimnasios", gimnasioRepository.findAll());
+    return "auth/registro";
+}
+
+    @GetMapping("/registroAdmin")
+    public String mostrarRegistroAdmin() {
+        return "auth/registroAdmin";
+    }
 
     @PostMapping("/registrar")
     @Transactional
@@ -68,14 +82,12 @@ public String mostrarRegistroAdmin() {
             System.out.println("Cédula: " + registro.getCedula());
 
             // ===== VALIDACIONES =====
-
             if (registro.getCedula() == null || registro.getCedula().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "La cédula es obligatoria");
                 return "redirect:/auth/login";
             }
 
             Long cedula;
-
             try {
                 cedula = Long.parseLong(registro.getCedula());
             } catch (NumberFormatException e) {
@@ -98,8 +110,13 @@ public String mostrarRegistroAdmin() {
                 return "redirect:/auth/login";
             }
 
-            // ===== CREAR USUARIO =====
+            // Validar que se haya seleccionado un gimnasio
+            if (registro.getGimnasioId() == null) {
+                redirectAttributes.addFlashAttribute("error", "Debes seleccionar un gimnasio");
+                return "redirect:/auth/login";
+            }
 
+            // ===== CREAR USUARIO =====
             DatosUsuario usuario = new DatosUsuario();
             usuario.setCedula(cedula);
             usuario.setNombre(registro.getNombre());
@@ -117,12 +134,15 @@ public String mostrarRegistroAdmin() {
             usuario.setFechaRegistro(LocalDateTime.now());
             usuario.setEstado("ACTIVO");
 
-            usuario = datosUsuarioRepository.save(usuario);
+            // Asignar el gimnasio al usuario
+            Gimnasio gimnasio = gimnasioRepository.findById(registro.getGimnasioId())
+                    .orElseThrow(() -> new RuntimeException("Gimnasio no encontrado con ID: " + registro.getGimnasioId()));
+            usuario.setGimnasio(gimnasio);   // ← Relación ManyToOne
 
-            System.out.println("✅ Usuario guardado con ID: " + usuario.getIdUsuario());
+            usuario = datosUsuarioRepository.save(usuario);
+            System.out.println("✅ Usuario guardado con ID: " + usuario.getIdUsuario() + " y gimnasio ID: " + gimnasio.getIdGimnasio());
 
             // ===== CREAR PERFIL =====
-
             Rol rol = rolRepository.findByNombre("ROLE_USUARIO")
                     .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
@@ -134,21 +154,18 @@ public String mostrarRegistroAdmin() {
             perfil.setCreatedAt(LocalDateTime.now());
 
             perfilRepository.save(perfil);
-
             System.out.println("✅ Perfil creado correctamente");
 
             redirectAttributes.addFlashAttribute("exito",
                     "Cuenta creada exitosamente. Ahora puedes iniciar sesión.");
 
-            return "redirect:/auth/login"; // ✅ corregido
+            return "redirect:/auth/login";
 
         } catch (Exception e) {
             e.printStackTrace();
-
             redirectAttributes.addFlashAttribute("error",
                     "Error al registrar: " + e.getMessage());
-
-            return "redirect:/auth/login"; // ✅ corregido
+            return "redirect:/auth/login";
         }
     }
 }

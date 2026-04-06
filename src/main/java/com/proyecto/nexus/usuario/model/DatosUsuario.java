@@ -83,4 +83,8 @@ public class DatosUsuario {
     @ManyToOne
     @JoinColumn(name = "id_rango")
     private Rango rango;
+
+     @ManyToOne
+    @JoinColumn(name = "id_gimnasio")
+    private Gimnasio gimnasio;
 }

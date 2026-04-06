@@ -20,7 +20,6 @@
       <div class="welcome-title">Crear cuenta</div>
       <div class="welcome-sub">Completa tus datos para comenzar</div>
 
-      <!-- ✅ FORMULARIO CON THYMELEAF: action y método correctos -->
       <form th:action="@{/auth/registrar}" th:method="post" id="registerForm">
         
         <!-- Datos personales -->
@@ -30,13 +29,11 @@
             <span>Datos personales</span>
           </div>
 
-          <!-- CÉDULA (antes "documento") -->
           <div class="input-group">
             <label class="input-label" for="cedula">Número de cédula</label>
             <input type="text" id="cedula" name="cedula" class="input-field" placeholder="Ej: 1234567890" autocomplete="off" required>
           </div>
 
-          <!-- NOMBRE (primer nombre) -->
           <div class="input-row">
             <div class="input-group half">
               <label class="input-label" for="nombre">Nombre(s)</label>
@@ -48,25 +45,24 @@
             </div>
           </div>
 
-          <!-- TELÉFONO -->
           <div class="input-group">
-            <label class="input-label" for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" class="input-field" placeholder="Ej: 3001234567">
+            <label class="input-label" for="telefono">Teléfono (10 dígitos)</label>
+            <input type="tel" id="telefono" name="telefono" class="input-field" placeholder="Ej: 3001234567" maxlength="10" required>
+            <div id="phoneError" class="error-message" style="display: none;">
+              <i class="fas fa-exclamation-circle"></i> El teléfono debe tener exactamente 10 dígitos numéricos.
+            </div>
           </div>
 
-          <!-- FECHA DE NACIMIENTO (name = fechaNacimiento) -->
           <div class="input-group">
             <label class="input-label" for="fechaNacimiento">Fecha de nacimiento</label>
             <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="input-field">
           </div>
 
-          <!-- DIRECCIÓN (opcional) -->
           <div class="input-group">
             <label class="input-label" for="direccion">Dirección</label>
             <input type="text" id="direccion" name="direccion" class="input-field" placeholder="Ej: Calle 123 #45-67">
           </div>
 
-          <!-- GÉNERO (opcional) -->
           <div class="input-group">
             <label class="input-label" for="genero">Género</label>
             <select id="genero" name="genero" class="input-field">
@@ -88,6 +84,9 @@
           <div class="input-group">
             <label class="input-label" for="correo">Correo electrónico</label>
             <input type="email" id="correo" name="correo" class="input-field" placeholder="Ej: ana@email.com" autocomplete="email" required>
+            <div id="emailError" class="error-message" style="display: none;">
+              <i class="fas fa-exclamation-circle"></i> Ingresa un correo válido (ejemplo@dominio.com)
+            </div>
           </div>
 
           <div class="input-row">
@@ -101,21 +100,29 @@
               <input type="password" id="confirmarPassword" name="confirmarPassword" class="input-field" placeholder="••••••••" required>
             </div>
           </div>
+          <div id="passwordError" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i> La contraseña debe tener al menos 6 caracteres.
+          </div>
+          <div id="confirmError" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i> Las contraseñas no coinciden.
+          </div>
         </div>
 
-        <!-- Selección de gimnasio (opcional - se guarda en otra tabla si la creas) -->
+        <!-- GIMNASIO (OBLIGATORIO) - AHORA CON THYMELEAF -->
         <div class="form-section">
           <div class="section-title">
             <i class="fas fa-dumbbell"></i>
-            <span>Gimnasio (opcional)</span>
+            <span>Selecciona tu gimnasio</span>
           </div>
           <div class="input-group">
-            <label class="input-label" for="gimnasio">Gimnasio al que perteneces</label>
-            <select id="gimnasio" class="input-field">
+            <label class="input-label" for="gimnasio_id">Gimnasio al que perteneces</label>
+            <select id="gimnasio_id" name="gimnasio_id" class="input-field" required>
               <option value="">-- Selecciona un gimnasio --</option>
-              <!-- Los gimnasios se cargan con JS, pero no se envía al backend aún -->
+              <option th:each="gym : ${gimnasios}" th:value="${gym.idGimnasio}" th:text="${gym.nombre + ' (NIT: ' + gym.nit + ')'}"></option>
             </select>
-            <span class="field-hint">Por ahora solo informativo</span>
+            <div id="gymError" class="error-message" style="display: none;">
+              <i class="fas fa-exclamation-circle"></i> Debes seleccionar un gimnasio.
+            </div>
           </div>
         </div>
 
@@ -145,45 +152,108 @@
 </div>
 
 <script>
-  // Carga de gimnasios (solo visual, no afecta el registro)
-  const gimnasios = [
-    { id: 1, nit: "900123456-1", nombre: "Fitness Center Premium" },
-    { id: 2, nit: "900123456-2", nombre: "Power Gym Elite" },
-    // ... (todos los que tenías)
-  ];
-
-  const gimnasioSelect = document.getElementById('gimnasio');
-  gimnasios.forEach(gym => {
-    const option = document.createElement('option');
-    option.value = gym.id;
-    option.textContent = `${gym.nombre} (NIT: ${gym.nit})`;
-    gimnasioSelect.appendChild(option);
-  });
-
-  // Validación extra antes de enviar (opcional, pero el backend también valida)
+  // ==================== VALIDACIONES (sin fetch) ====================
   const form = document.getElementById('registerForm');
-  form.addEventListener('submit', function(e) {
-    const password = document.getElementById('password').value;
-    const confirm = document.getElementById('confirmarPassword').value;
-    if (password !== confirm) {
-      e.preventDefault();
-      alert('❌ Las contraseñas no coinciden');
-      return false;
-    }
-    if (password.length < 6) {
-      e.preventDefault();
-      alert('❌ La contraseña debe tener al menos 6 caracteres');
-      return false;
-    }
-    if (!document.getElementById('termsCheck').checked) {
-      e.preventDefault();
-      alert('✧ Debes aceptar los términos y condiciones');
-      return false;
-    }
-    // Si todo ok, el formulario se envía normalmente al backend
+  const telefonoInput = document.getElementById('telefono');
+  const correoInput = document.getElementById('correo');
+  const passwordInput = document.getElementById('password');
+  const confirmInput = document.getElementById('confirmarPassword');
+  const gymSelect = document.getElementById('gimnasio_id');
+  const termsCheck = document.getElementById('termsCheck');
+
+  const phoneErrorDiv = document.getElementById('phoneError');
+  const emailErrorDiv = document.getElementById('emailError');
+  const passwordErrorDiv = document.getElementById('passwordError');
+  const confirmErrorDiv = document.getElementById('confirmError');
+  const gymErrorDiv = document.getElementById('gymError');
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  function isValidPhone(phone) {
+    return /^\d{10}$/.test(phone);
+  }
+
+  function clearFieldError(input, errorDiv) {
+    input.classList.remove('error');
+    if (errorDiv) errorDiv.style.display = 'none';
+  }
+
+  function showFieldError(input, errorDiv) {
+    input.classList.add('error');
+    if (errorDiv) errorDiv.style.display = 'flex';
+  }
+
+  telefonoInput.addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    clearFieldError(this, phoneErrorDiv);
   });
 
-  // Redirigir al login
+  telefonoInput.addEventListener('blur', function() {
+    if (this.value && !isValidPhone(this.value)) {
+      showFieldError(this, phoneErrorDiv);
+    }
+  });
+
+  correoInput.addEventListener('input', () => clearFieldError(correoInput, emailErrorDiv));
+  correoInput.addEventListener('blur', function() {
+    if (this.value && !isValidEmail(this.value)) {
+      showFieldError(this, emailErrorDiv);
+    }
+  });
+
+  passwordInput.addEventListener('input', () => clearFieldError(passwordInput, passwordErrorDiv));
+  confirmInput.addEventListener('input', () => clearFieldError(confirmInput, confirmErrorDiv));
+  gymSelect.addEventListener('change', () => clearFieldError(gymSelect, gymErrorDiv));
+
+  form.addEventListener('submit', function(e) {
+    let isValid = true;
+
+    const phone = telefonoInput.value.trim();
+    if (!isValidPhone(phone)) {
+      showFieldError(telefonoInput, phoneErrorDiv);
+      isValid = false;
+    }
+
+    const email = correoInput.value.trim();
+    if (!isValidEmail(email)) {
+      showFieldError(correoInput, emailErrorDiv);
+      isValid = false;
+    }
+
+    const password = passwordInput.value;
+    if (password.length < 6) {
+      showFieldError(passwordInput, passwordErrorDiv);
+      isValid = false;
+    } else {
+      clearFieldError(passwordInput, passwordErrorDiv);
+    }
+
+    const confirm = confirmInput.value;
+    if (password !== confirm) {
+      showFieldError(confirmInput, confirmErrorDiv);
+      isValid = false;
+    } else {
+      clearFieldError(confirmInput, confirmErrorDiv);
+    }
+
+    if (!gymSelect.value) {
+      showFieldError(gymSelect, gymErrorDiv);
+      isValid = false;
+    }
+
+    if (!termsCheck.checked) {
+      alert('✧ Debes aceptar los términos y condiciones para continuar.');
+      isValid = false;
+    }
+
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
+
   document.getElementById('loginBtn').addEventListener('click', () => {
     window.location.href = '/auth/login';
   });

@@ -14,4 +14,5 @@ public class RegistroDTO {
     private String genero;
     private String fechaNacimiento;
     private String direccion;
+    private Long gimnasioId;   // ← NUEVO CAMPO
 }
