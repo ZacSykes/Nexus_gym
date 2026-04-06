@@ -8,6 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/Perfil.css}">
+    <style>
+        /* Estilos para mensajes de error */
+        .error-message {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .error-message i {
+            font-size: 0.7rem;
+        }
+        .form-group input.error-input {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+    </style>
 </head>
 
 <body>
@@ -111,7 +129,8 @@
 
                 <!-- Columna derecha: formulario editable -->
                 <div class="perfil-right">
-                    <form th:action="@{/usuario/perfil/actualizar}" method="post" class="perfil-form">
+                    <!-- Agregamos ID al formulario para las validaciones -->
+                    <form th:action="@{/usuario/perfil/actualizar}" method="post" class="perfil-form" id="perfilForm">
                         <div class="form-row">
                             <div class="form-group">
                                 <label><i class="fas fa-user"></i> Nombre</label>
@@ -124,11 +143,19 @@
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-envelope"></i> Correo electrónico</label>
-                            <input type="email" name="correo" th:value="${usuario.correo}" required>
+                            <input type="email" name="correo" id="correoInput" th:value="${usuario.correo}" required>
+                            <div id="emailError" class="error-message" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> Ingresa un correo válido (ejemplo@dominio.com)
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label><i class="fas fa-phone"></i> Teléfono</label>
-                            <input type="tel" name="telefono" th:value="${usuario.telefono}">
+                            <label><i class="fas fa-phone"></i> Teléfono (10 dígitos)</label>
+                            <!-- maxlength="10" y filtro de números -->
+                            <input type="tel" name="telefono" id="telefonoInput" th:value="${usuario.telefono}" 
+                                   placeholder="Ej: 3001234567" maxlength="10" required>
+                            <div id="phoneError" class="error-message" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> El teléfono debe tener exactamente 10 dígitos numéricos
+                            </div>
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-map-marker-alt"></i> Dirección</label>
@@ -181,6 +208,86 @@
                 });
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 768) sidebar.classList.remove('active');
+                });
+            }
+
+            // ==================== VALIDACIONES DEL FORMULARIO DE PERFIL ====================
+            const form = document.getElementById('perfilForm');
+            const telefonoInput = document.getElementById('telefonoInput');
+            const correoInput = document.getElementById('correoInput');
+            const emailErrorDiv = document.getElementById('emailError');
+            const phoneErrorDiv = document.getElementById('phoneError');
+
+            // 1. Restringir entrada del teléfono a solo dígitos y máximo 10 caracteres
+            if (telefonoInput) {
+                telefonoInput.addEventListener('input', function(e) {
+                    // Eliminar cualquier caracter que no sea número
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    // Cortar a 10 dígitos (por si acaso el usuario pega algo más largo)
+                    if (this.value.length > 10) {
+                        this.value = this.value.slice(0, 10);
+                    }
+                    // Limpiar error mientras escribe
+                    if (phoneErrorDiv && phoneErrorDiv.style.display === 'block') {
+                        phoneErrorDiv.style.display = 'none';
+                        this.classList.remove('error-input');
+                    }
+                });
+            }
+
+            // 2. Validar correo con expresión regular
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // 3. Validar teléfono: exactamente 10 dígitos numéricos
+            function isValidPhone(phone) {
+                return /^\d{10}$/.test(phone);
+            }
+
+            // 4. Validar antes de enviar
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+
+                // Validar correo
+                const email = correoInput.value.trim();
+                if (!isValidEmail(email)) {
+                    emailErrorDiv.style.display = 'flex';
+                    correoInput.classList.add('error-input');
+                    isValid = false;
+                } else {
+                    emailErrorDiv.style.display = 'none';
+                    correoInput.classList.remove('error-input');
+                }
+
+                // Validar teléfono (obligatorio, 10 dígitos)
+                const phone = telefonoInput.value.trim();
+                if (!isValidPhone(phone)) {
+                    phoneErrorDiv.style.display = 'flex';
+                    telefonoInput.classList.add('error-input');
+                    isValid = false;
+                } else {
+                    phoneErrorDiv.style.display = 'none';
+                    telefonoInput.classList.remove('error-input');
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // detener envío si hay errores
+                }
+            });
+
+            // Limpiar errores al hacer foco en los campos
+            if (correoInput) {
+                correoInput.addEventListener('focus', function() {
+                    emailErrorDiv.style.display = 'none';
+                    this.classList.remove('error-input');
+                });
+            }
+            if (telefonoInput) {
+                telefonoInput.addEventListener('focus', function() {
+                    phoneErrorDiv.style.display = 'none';
+                    this.classList.remove('error-input');
                 });
             }
         });

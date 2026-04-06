@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Admin Nexus | Acceso Exclusivo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Css/LoginAdmin.css">
+</head>
+<body>
+  <!-- Partículas flotantes decorativas -->
+  <div class="particle" style="width: 200px; height: 200px; top: -50px; left: -50px; animation-duration: 25s;"></div>
+  <div class="particle" style="width: 150px; height: 150px; bottom: -30px; right: -30px; animation-duration: 18s; animation-delay: -5s;"></div>
+  <div class="particle" style="width: 100px; height: 100px; top: 30%; right: 10%; animation-duration: 22s;"></div>
+  <div class="particle" style="width: 80px; height: 80px; bottom: 20%; left: 5%; animation-duration: 15s; animation-delay: -3s;"></div>
+
+  <div class="admin-login-container">
+    <div class="admin-login-card">
+      <div class="admin-header">
+        <div class="admin-badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>Acceso Restringido</span>
+        </div>
+        <div class="admin-icon">
+          <i class="fas fa-crown"></i>
+        </div>
+        <h1 class="admin-title">Administrador Nexus</h1>
+        <div class="admin-subtitle">
+          <i class="fas fa-lock"></i>
+          <span>Panel de Control del Sistema</span>
+          <i class="fas fa-lock"></i>
+        </div>
+      </div>
+
+      <div class="decorative-line">
+        <span></span>
+        <i class="fas fa-database"></i>
+        <span></span>
+      </div>
+
+      <form id="adminSystemLoginForm">
+        <div class="input-group">
+          <label class="input-label" for="admin_user">
+            <i class="fas fa-user"></i> Usuario / Documento
+          </label>
+          <input type="text" id="admin_user" class="input-field" placeholder="admin@nexus.com" autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="admin_pass">
+            <i class="fas fa-key"></i> Contraseña
+          </label>
+          <input type="password" id="admin_pass" class="input-field" placeholder="••••••••" autocomplete="current-password">
+        </div>
+
+        <div class="options-row">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="rememberAdmin">
+            <span>Mantener sesión</span>
+          </label>
+          <a href="#" class="forgot-link" id="forgotAdminLink">¿Olvidaste tu acceso?</a>
+        </div>
+
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i> Acceder al Sistema
+        </button>
+      </form>
+
+      <div class="security-info">
+        <span><i class="fas fa-check-circle"></i> SSL Seguro</span>
+        <span><i class="fas fa-shield-virus"></i> Protección Avanzada</span>
+        <span><i class="fas fa-fingerprint"></i> Autenticación 2FA</span>
+      </div>
+
+      <div class="admin-footer">
+        <i class="fas fa-chart-line"></i> Panel Global · Todos los gimnasios
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elementos del DOM
+    const adminLoginForm = document.getElementById('adminSystemLoginForm');
+    const adminUser = document.getElementById('admin_user');
+    const adminPass = document.getElementById('admin_pass');
+    const rememberCheck = document.getElementById('rememberAdmin');
+    const forgotLink = document.getElementById('forgotAdminLink');
+
+    // Credenciales del Administrador del Sistema (Demo)
+    const SYSTEM_ADMIN_CREDENTIALS = {
+      usuario: 'admin',
+      documento: '123456789',
+      email: 'admin@nexus.com',
+      password: 'admin123'
+    };
+
+    // Validar que los campos no estén vacíos
+    function validateFields() {
+      const userValue = adminUser.value.trim();
+      const passValue = adminPass.value.trim();
+
+      if (userValue === '') {
+        showError(adminUser, 'El usuario o documento es obligatorio');
+        return false;
+      }
+
+      if (passValue === '') {
+        showError(adminPass, 'La contraseña es obligatoria');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Mostrar error
+    function showError(input, message) {
+      const inputGroup = input.parentElement;
+      const existingError = inputGroup.querySelector('.error-message');
+      if (existingError) existingError.remove();
+
+      const errorSpan = document.createElement('span');
+      errorSpan.className = 'error-message';
+      errorSpan.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+      errorSpan.style.color = '#EF4444';
+      errorSpan.style.fontSize = '0.65rem';
+      errorSpan.style.marginTop = '0.3rem';
+      errorSpan.style.display = 'block';
+
+      input.style.borderColor = '#EF4444';
+      inputGroup.appendChild(errorSpan);
+
+      setTimeout(() => {
+        if (errorSpan.parentElement) errorSpan.remove();
+        input.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+      }, 3000);
+    }
+
+    // Limpiar error al escribir
+    adminUser.addEventListener('input', () => {
+      adminUser.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+      const error = adminUser.parentElement.querySelector('.error-message');
+      if (error) error.remove();
+    });
+
+    adminPass.addEventListener('input', () => {
+      adminPass.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+      const error = adminPass.parentElement.querySelector('.error-message');
+      if (error) error.remove();
+    });
+
+    // Enlace olvidaste contraseña
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('🔐 Recuperación de acceso para Administrador del Sistema\n\nContacta al equipo de soporte técnico de Nexus.\n\nDemo: admin / admin123');
+    });
+
+    // Manejar envío del formulario
+    adminLoginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!validateFields()) return;
+
+      const userValue = adminUser.value.trim();
+      const passValue = adminPass.value.trim();
+      const remember = rememberCheck.checked;
+
+      // Verificar credenciales
+      const isValid = 
+        (userValue === SYSTEM_ADMIN_CREDENTIALS.usuario || 
+         userValue === SYSTEM_ADMIN_CREDENTIALS.documento || 
+         userValue === SYSTEM_ADMIN_CREDENTIALS.email) &&
+        passValue === SYSTEM_ADMIN_CREDENTIALS.password;
+
+      if (isValid) {
+        const rememberMsg = remember ? ' (sesión recordada)' : '';
+
+        // Mensaje de bienvenida para el Administrador del Sistema
+        const welcomeMessage = `
+╔════════════════════════════════════════╗
+║     👑 ADMINISTRADOR DEL SISTEMA 👑     ║
+╠════════════════════════════════════════╣
+║  ✅ Acceso concedido${rememberMsg}        ║
+╠════════════════════════════════════════╣
+║  📊 DATOS DEL SISTEMA:                 ║
+║  • Gimnasios registrados: 10           ║
+║  • Usuarios totales: 1,234             ║
+║  • Profesores activos: 45              ║
+║  • Clases programadas: 128             ║
+║  • Ingresos del mes: $12,500,000       ║
+╠════════════════════════════════════════╣
+║  🔐 Tienes control total sobre:        ║
+║  • Gestión de gimnasios                ║
+║  • Usuarios y profesores               ║
+║  • Reportes globales                   ║
+║  • Configuración del sistema           ║
+╚════════════════════════════════════════╝
+        `;
+
+        alert(welcomeMessage);
+
+        // Feedback visual en el botón
+        const btn = document.querySelector('.login-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Validando acceso...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          // Aquí redirigir al panel de administrador del sistema
+          // window.location.href = '/dashboard-admin-sistema.html';
+          alert('🚀 Redirigiendo al Panel de Control del Sistema...');
+          adminLoginForm.reset();
+        }, 2000);
+      } else {
+        showError(adminUser, 'Credenciales incorrectas');
+        showError(adminPass, '');
+        adminUser.style.borderColor = '#EF4444';
+        adminPass.style.borderColor = '#EF4444';
+        
+        // Efecto de vibración en la tarjeta
+        const card = document.querySelector('.admin-login-card');
+        card.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          card.style.animation = '';
+        }, 500);
+      }
+    });
+  </script>
+</body>
+</html>

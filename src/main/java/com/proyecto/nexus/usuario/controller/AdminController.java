@@ -78,4 +78,10 @@ public class AdminController {
 
         return "redirect:/admin/usuarios";
     }
+
+    @GetMapping("/LoginAdminS")
+    public String administradorSistema() {
+        return "auth/loginAdminS";
+    }
+    
 }
