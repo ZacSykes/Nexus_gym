@@ -1,152 +1,286 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus Login</title>
-
-<link rel="stylesheet" th:href="@{/css/Login.css}">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Inicio de Sesión | Nexus</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/Login.css}">
 </head>
-
 <body>
+<div class="login-page">
+  <!-- Logo fuera del formulario, a la izquierda -->
+  <div class="logo-outside">
+    <a th:href="@{/}" class="logo-link">
+      <img src="/imagenes/Nexus.png" alt="Logo de Nexus" class="nexus-logo-external">
+    </a>
+  </div>
 
-<div class="container">
+  <!-- Formulario de login -->
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="logo-text-only">Nexus</div>
 
-<!-- LOGO -->
-<div class="logo">
-<img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
-</div>
+      <div class="welcome-title">Bienvenido</div>
+      <div class="welcome-sub">Ingresa a tu perfil correspondiente</div>
 
-<!-- SWITCH -->
-<div class="switch">
+      <!-- Selector de perfil (visual) -->
+      <div class="role-tabs">
+        <button class="role-btn active" data-role="user" id="btnUser">👤 Usuario</button>
+        <button class="role-btn" data-role="teacher" id="btnTeacher">💪 Profesor Gym</button>
+      </div>
 
-<span>Iniciar sesión</span>
+      <!-- Botón creativo para administrador (fuera de las pestañas) -->
+      <div class="admin-access">
+        <button type="button" id="adminBtn" class="admin-btn">
+          <i class="fas fa-crown"></i>
+          <span>Acceso Administrador</span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="admin-tooltip">
+          <i class="fas fa-shield-alt"></i> Área exclusiva para administradores de gimnasio
+        </div>
+      </div>
 
-<label class="toggle">
-<input type="checkbox" id="toggleForm">
-<span class="slider"></span>
-</label>
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <span class="role-hint" id="roleBadge">👤 Acceso Usuario</span>
+      </div>
 
-<span>Registrarse</span>
+      <!-- ✅ FORMULARIO PRINCIPAL (Usuario / Profesor) -->
+      <form id="loginForm" action="/login" method="post">
+        <!-- Campo oculto para indicar el rol esperado -->
+        <input type="hidden" name="expectedRole" id="expectedRole" value="ROLE_USUARIO">
 
-</div>
+        <div class="input-group">
+          <label class="input-label" for="documento">Documento</label>
+          <input type="text" id="documento" name="username" class="input-field" placeholder="Ej: 123456789" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="password">Contraseña</label>
+          <input type="password" id="password" name="password" class="input-field" placeholder="••••••••" autocomplete="current-password">
+        </div>
 
-<!-- TARJETA -->
-<div class="card">
+        <div class="options-row">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" name="remember-me" id="rememberCheck"> <span>Mantener sesión</span>
+          </label>
+          <a href="/auth/recuperar" class="forgot-link" id="forgotLink">¿Olvidaste tu contraseña?</a>
+        </div>
 
-<!-- LOGIN -->
-<form class="form login-form" th:action="@{/login}" method="post">
+        <button type="submit" class="login-btn">
+          <i class="fas fa-arrow-right-to-bracket"></i> Iniciar sesión
+        </button>
+      </form>
 
-    <h2>Iniciar sesión</h2>
-    <br>
+      <!-- Separador y enlace de registro -->
+      <div class="register-section">
+        <div class="divider">
+          <span>¿No tienes una cuenta?</span>
+        </div>
+        <button id="registerBtn" class="register-btn">
+          <i class="fas fa-user-plus"></i> Crear cuenta nueva
+        </button>
+      </div>
 
-    <input type="text" name="username" placeholder="Número de documento" required>
-    <input type="password" name="password" placeholder="Contraseña" required>
-
-    <br>
-
-    <div th:if="${param.error}" class="error-msg">
-        Usuario o contraseña incorrectos
+      <div class="info-note" id="contextNote">
+        <i class="fas fa-info-circle"></i> Usuario — Ingresa y agenda tu clase
+      </div>
     </div>
+  </div>
+</div>
 
-    <div th:if="${exito}" class="success-msg" th:text="${exito}"></div>
-    <div th:if="${error}" class="error-msg" th:text="${error}"></div>
-
-    <button type="submit">Iniciar sesión</button>
-
-    <a th:href="@{/auth/recuperar}">¿Olvidaste tu contraseña?</a>
-
-    <hr><br>
-
-    <p>¿Eres usuario y deseas acceder a tu cuenta?</p>
-    <br>
-    <button type="button" onclick="document.getElementById('toggleForm').click()">
-        Ingresar como usuario
-    </button>
-
-</form>
-
-<!-- REGISTER -->
-<form class="form register-form" th:action="@{/auth/registrar}" method="post">
-
-    <h2>Crea una cuenta</h2>
-    <p class="sub">Es rápido y fácil.</p>
-
-    <div class="row">
-        <input type="text" name="nombre" placeholder="Nombre" required>
-        <input type="text" name="apellido" placeholder="Apellido" required>
+<!-- Modal de acceso administrador -->
+<div id="adminModal" class="admin-modal">
+  <div class="admin-modal-content">
+    <div class="admin-modal-header">
+      <div class="admin-modal-icon">
+        <i class="fas fa-crown"></i>
+      </div>
+      <h2>Acceso Administrador</h2>
+      <button class="admin-modal-close" id="closeModalBtn">&times;</button>
     </div>
+    <div class="admin-modal-body">
+      <p class="admin-modal-desc">Ingresa tus credenciales de administrador para acceder al panel de gestión del gimnasio</p>
+      
+      <!-- ✅ FORMULARIO DEL MODAL (Administrador) -->
+      <form id="adminLoginForm" action="/login" method="post">
+        <!-- Campo oculto para rol esperado de administrador -->
+        <input type="hidden" name="expectedRole" value="ROLE_ADMINISTRADOR">
 
-    <label>Fecha de nacimiento</label>
-    <input type="date" name="fechaNacimiento">
-
-    <label>Género</label>
-    <div class="gender">
-        <label class="gender-option">
-            <input type="radio" name="genero" value="Femenino">
-            <span>Mujer</span>
-        </label>
-        <label class="gender-option">
-            <input type="radio" name="genero" value="Masculino">
-            <span>Hombre</span>
-        </label>
-        <label class="gender-option">
-            <input type="radio" name="genero" value="Otro">
-            <span>Personalizado</span>
-        </label>
+        <div class="input-group">
+          <label class="input-label" for="admin_documento">Documento de administrador</label>
+          <input type="text" id="admin_documento" name="username" class="input-field" placeholder="Ej: 123456789" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="admin_password">Contraseña</label>
+          <input type="password" id="admin_password" name="password" class="input-field" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        
+        <div class="admin-options">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" name="remember-me" id="admin_remember">
+            <span>Recordar credenciales</span>
+          </label>
+        </div>
+        
+        <button type="submit" class="admin-login-btn">
+          <i class="fas fa-sign-in-alt"></i> Acceder al panel
+        </button>
+      </form>
+      
+      <!-- Botón para registrarse como administrador -->
+      <div class="admin-register-divider">
+        <span>¿Eres dueño de un gimnasio?</span>
+      </div>
+      <button id="adminRegisterBtn" class="admin-register-btn">
+        <i class="fas fa-building"></i> Registrar mi gimnasio
+      </button>
+      
+      <div class="admin-demo-info">
+        <i class="fas fa-info-circle"></i> Demo: admin / admin123
+      </div>
     </div>
-
-    <input type="text" name="cedula" placeholder="Cédula" required>
-    <input type="tel" name="telefono" placeholder="Número de celular">
-    <input type="email" name="correo" placeholder="Correo electrónico" required>
-    <input type="password" name="password" placeholder="Contraseña" required>
-    <input type="password" name="confirmarPassword" placeholder="Confirmar contraseña" required>
-    <input type="text" name="direccion" placeholder="Dirección (opcional)">
-
-    <div th:if="${errorRegistro}" class="error-msg" th:text="${errorRegistro}"></div>
-
-    <button type="submit">Registrarte</button>
-
-</form>
-
+  </div>
 </div>
-
-</div>
-
-<footer class="footer">
-
-<div class="footer-container">
-
-<p>
-© 2026 <strong>Nexus</strong>. Todos los derechos reservados.
-</p>
-
-<div class="footer-links">
-<a href="#">Términos de uso</a>
-<a href="#">Política de privacidad</a>
-</div>
-
-<div class="footer-social">
-<span>Síguenos:</span>
-<a href="#">Instagram</a>
-<a href="#">Facebook</a>
-<a href="#">TikTok</a>
-</div>
-
-</div>
-
-</footer>
 
 <script>
-const toggle = document.getElementById("toggleForm");
-const card = document.querySelector(".card");
+  // Elementos del DOM
+  const btnUser = document.getElementById('btnUser');
+  const btnTeacher = document.getElementById('btnTeacher');
+  const roleBadge = document.getElementById('roleBadge');
+  const documentoInput = document.getElementById('documento');
+  const passwordInput = document.getElementById('password');
+  const loginForm = document.getElementById('loginForm');
+  const forgotLink = document.getElementById('forgotLink');
+  const contextNote = document.getElementById('contextNote');
+  const registerBtn = document.getElementById('registerBtn');
+  
+  // Elementos del modal de administrador
+  const adminBtn = document.getElementById('adminBtn');
+  const adminModal = document.getElementById('adminModal');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const adminLoginForm = document.getElementById('adminLoginForm');
+  const adminDocumento = document.getElementById('admin_documento');
+  const adminPassword = document.getElementById('admin_password');
+  const adminRegisterBtn = document.getElementById('adminRegisterBtn');
 
-toggle.addEventListener("change", () => {
-card.classList.toggle("active");
-});
+  // Campo oculto para el rol esperado (cambia según pestaña)
+  const expectedRoleInput = document.getElementById('expectedRole');
+
+  let currentRole = 'user';
+
+  // Actualizar UI según rol (visual y campo oculto)
+  function updateRoleUI(role) {
+    currentRole = role;
+    
+    if (role === 'user') {
+      btnUser.classList.add('active');
+      btnTeacher.classList.remove('active');
+      roleBadge.innerHTML = '👤 Acceso Usuario — Empieza ya';
+      documentoInput.placeholder = 'Ej: 123456789';
+      contextNote.innerHTML = '<i class="fas fa-pencil-alt"></i> Usuario — Ingresa y agenda tu clase';
+      expectedRoleInput.value = 'ROLE_USUARIO';
+    } else {
+      btnTeacher.classList.add('active');
+      btnUser.classList.remove('active');
+      roleBadge.innerHTML = '💪 Acceso Profesor Gym — Gestión académica';
+      documentoInput.placeholder = 'Ej: 123456789';
+      contextNote.innerHTML = '<i class="fas fa-chalkboard-user"></i> Profesor — Accede a tu panel de gestión del gimnasio';
+      expectedRoleInput.value = 'ROLE_INSTRUCTOR';
+    }
+  }
+
+  // Eventos de los botones de rol
+  btnUser.addEventListener('click', () => updateRoleUI('user'));
+  btnTeacher.addEventListener('click', () => updateRoleUI('teacher'));
+
+  // Abrir modal de administrador
+  adminBtn.addEventListener('click', () => {
+    adminModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      adminModal.classList.add('show');
+    }, 10);
+  });
+
+  // Cerrar modal
+  function closeModal() {
+    adminModal.classList.remove('show');
+    setTimeout(() => {
+      adminModal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }, 300);
+  }
+
+  closeModalBtn.addEventListener('click', closeModal);
+  
+  // Cerrar modal al hacer clic fuera
+  window.addEventListener('click', (e) => {
+    if (e.target === adminModal) {
+      closeModal();
+    }
+  });
+
+  // Detectar errores de autenticación desde la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('error') === 'true') {
+    alert('❌ Credenciales incorrectas. Por favor verifica tu documento y contraseña.');
+  } else if (urlParams.get('error') === 'role_mismatch') {
+    alert('⛔ No puedes ingresar con ese rol desde esta pestaña. Usa la opción correcta.');
+  } else if (urlParams.get('logout') === 'true') {
+    alert('🔓 Has cerrado sesión correctamente.');
+  } else if (urlParams.get('resetExitoso') === 'true') {
+    alert('✅ Contraseña restablecida. Ya puedes iniciar sesión.');
+  }
+
+  // Enlace "Olvidaste tu contraseña"
+  forgotLink.addEventListener('click', (e) => {
+    // El href ya apunta a /auth/recuperar, se permite navegación
+  });
+
+  // Botón de registro de usuario normal
+  registerBtn.addEventListener('click', () => {
+    window.location.href = '/auth/registro';
+  });
+
+  // Botón de registro de administrador
+  adminRegisterBtn.addEventListener('click', () => {
+    closeModal();
+    window.location.href = '/auth/registroAdmin';
+  });
+
+  // Validación simple antes de enviar el formulario principal
+  loginForm.addEventListener('submit', (e) => {
+    const documento = documentoInput.value.trim();
+    const password = passwordInput.value.trim();
+    if (documento === '' || password === '') {
+      e.preventDefault();
+      alert('✧ Por favor ingresa tu documento y contraseña para continuar.');
+    }
+  });
+
+  // Validación simple antes de enviar el formulario de administrador
+  adminLoginForm.addEventListener('submit', (e) => {
+    const documento = adminDocumento.value.trim();
+    const password = adminPassword.value.trim();
+    if (documento === '' || password === '') {
+      e.preventDefault();
+      alert('✧ Por favor ingresa tu documento y contraseña de administrador.');
+    }
+  });
+
+  // Enfoque automático al cambiar de rol
+  const roleButtons = [btnUser, btnTeacher];
+  roleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTimeout(() => {
+        documentoInput.focus();
+      }, 50);
+    });
+  });
+
+  // Inicializar con rol usuario
+  updateRoleUI('user');
 </script>
-
 </body>
 </html>

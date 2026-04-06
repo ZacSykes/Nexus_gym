@@ -20,6 +20,8 @@ import com.proyecto.nexus.usuario.repository.PerfilRepository;
 import com.proyecto.nexus.usuario.repository.RolRepository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/auth")
@@ -49,6 +51,11 @@ public class AuthController {
     public String mostrarRegistro() {
         return "auth/registro"; // ✅ corregido
     }
+
+    @GetMapping("/registroAdmin")
+public String mostrarRegistroAdmin() {
+    return "auth/registroAdmin"; // Nombre de tu vista HTML para registro de admin
+}
 
 
     @PostMapping("/registrar")
