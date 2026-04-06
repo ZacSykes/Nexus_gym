@@ -1,19 +1,48 @@
+DROP DATABASE IF EXISTS nexus;
+CREATE DATABASE nexus;
+USE nexus;
+
+-- =============================================
+-- TABLA: gimnasios (con id BIGINT)
+-- =============================================
+CREATE TABLE gimnasios (
+    id_gimnasio BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nit VARCHAR(20) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    direccion VARCHAR(200),
+    telefono VARCHAR(20),
+    email VARCHAR(100),
+    ciudad VARCHAR(50),
+    horario VARCHAR(100),
+    descripcion TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================
+-- TABLA: roles
+-- =============================================
 CREATE TABLE roles (
-    id_rol SERIAL PRIMARY KEY,
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE,
     descripcion VARCHAR(100)
 );
 
+-- =============================================
+-- TABLA: rangos
+-- =============================================
 CREATE TABLE rangos (
-    id_rango SERIAL PRIMARY KEY,
+    id_rango INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
-    clases_requeridas INTEGER,
+    clases_requeridas INT,
     color_hex VARCHAR(10),
-    orden INTEGER
+    orden INT
 );
 
+-- =============================================
+-- TABLA: datos_usuarios
+-- =============================================
 CREATE TABLE datos_usuarios (
-    id_usuario SERIAL PRIMARY KEY,
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     cedula BIGINT UNIQUE,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
@@ -23,192 +52,170 @@ CREATE TABLE datos_usuarios (
     telefono_emergencia VARCHAR(50),
     genero VARCHAR(20),
     fecha_nacimiento DATE,
-    peso DOUBLE PRECISION,
-    altura DOUBLE PRECISION,
+    peso DOUBLE,
+    altura DOUBLE,
     objetivo VARCHAR(100),
     experiencia VARCHAR(100),
     condiciones_medicas TEXT,
     alergias TEXT,
     notas_adicionales TEXT,
-    clases_totales INTEGER DEFAULT 0,
-    fecha_registro TIMESTAMP,
+    clases_totales INT DEFAULT 0,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado VARCHAR(50),
-
-    id_rango INTEGER,
-
-    CONSTRAINT fk_usuario_rango
-        FOREIGN KEY (id_rango)
-        REFERENCES rangos(id_rango)
+    id_rango INT,
+    id_gimnasio BIGINT,  -- ← tipo BIGINT
+    CONSTRAINT fk_usuario_rango FOREIGN KEY (id_rango) REFERENCES rangos(id_rango),
+    CONSTRAINT fk_usuario_gimnasio FOREIGN KEY (id_gimnasio) REFERENCES gimnasios(id_gimnasio)
 );
 
+-- =============================================
+-- TABLA: perfil
+-- =============================================
 CREATE TABLE perfil (
-    id_perfil SERIAL PRIMARY KEY,
+    id_perfil INT AUTO_INCREMENT PRIMARY KEY,
     nombre_usuario VARCHAR(100) UNIQUE NOT NULL,
     contrasena TEXT NOT NULL,
-
-    id_rol INTEGER,
-    id_usuario INTEGER UNIQUE,
-
-    ultimo_acceso TIMESTAMP,
-    created_at TIMESTAMP,
-
-    CONSTRAINT fk_perfil_rol
-        FOREIGN KEY (id_rol)
-        REFERENCES roles(id_rol),
-
-    CONSTRAINT fk_perfil_usuario
-        FOREIGN KEY (id_usuario)
-        REFERENCES datos_usuarios(id_usuario)
-        ON DELETE CASCADE
+    id_rol INT,
+    id_usuario INT UNIQUE,
+    ultimo_acceso TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_perfil_rol FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
+    CONSTRAINT fk_perfil_usuario FOREIGN KEY (id_usuario) REFERENCES datos_usuarios(id_usuario) ON DELETE CASCADE
 );
 
+-- =============================================
+-- TABLA: profesores
+-- =============================================
 CREATE TABLE profesores (
-    id_profesor SERIAL PRIMARY KEY,
+    id_profesor INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
     especialidad VARCHAR(100)
 );
 
+-- =============================================
+-- TABLA: clases
+-- =============================================
 CREATE TABLE clases (
-    id_clase SERIAL PRIMARY KEY,
+    id_clase INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     disciplina VARCHAR(100) NOT NULL,
     nivel VARCHAR(50) NOT NULL,
     dia_semana VARCHAR(20) NOT NULL,
     hora_inicio TIME NOT NULL,
     hora_fin TIME NOT NULL,
-    cupo_maximo INTEGER NOT NULL,
-    cupo_disponible INTEGER,
+    cupo_maximo INT NOT NULL,
+    cupo_disponible INT,
     salon VARCHAR(100),
-    disponible BOOLEAN DEFAULT TRUE,
-
-    id_profesor INTEGER,
-
-    CONSTRAINT fk_clase_profesor
-        FOREIGN KEY (id_profesor)
-        REFERENCES profesores(id_profesor)
+    disponible TINYINT(1) DEFAULT 1,
+    id_profesor INT,
+    CONSTRAINT fk_clase_profesor FOREIGN KEY (id_profesor) REFERENCES profesores(id_profesor)
 );
 
+-- =============================================
+-- TABLA: planes
+-- =============================================
 CREATE TABLE planes (
-    id_planes SERIAL PRIMARY KEY,
+    id_planes INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     descripcion TEXT,
-    precio DOUBLE PRECISION,
-    total_clases INTEGER,
-    duracion_dias INTEGER,
+    precio DOUBLE,
+    total_clases INT,
+    duracion_dias INT,
     tipo VARCHAR(50),
-    personas INTEGER,
+    personas INT,
     estado VARCHAR(50),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL
 );
 
+-- =============================================
+-- TABLA: paquetes_clases
+-- =============================================
 CREATE TABLE paquetes_clases (
-    id_paquete SERIAL PRIMARY KEY,
-
-    id_usuario INTEGER NOT NULL,
-    id_planes INTEGER,
-
-    total_clases INTEGER,
-    clases_restantes INTEGER,
-    fecha_inicio TIMESTAMP,
-    fecha_vencimiento TIMESTAMP,
+    id_paquete INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_planes INT,
+    total_clases INT,
+    clases_restantes INT,
+    fecha_inicio TIMESTAMP NULL,
+    fecha_vencimiento TIMESTAMP NULL,
     estado VARCHAR(50),
-    creado_por INTEGER,
-    created_at TIMESTAMP,
-
-    CONSTRAINT fk_paquete_usuario
-        FOREIGN KEY (id_usuario)
-        REFERENCES datos_usuarios(id_usuario)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_paquete_plan
-        FOREIGN KEY (id_planes)
-        REFERENCES planes(id_planes)
+    creado_por INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_paquete_usuario FOREIGN KEY (id_usuario) REFERENCES datos_usuarios(id_usuario) ON DELETE CASCADE,
+    CONSTRAINT fk_paquete_plan FOREIGN KEY (id_planes) REFERENCES planes(id_planes)
 );
 
+-- =============================================
+-- TABLA: pagos
+-- =============================================
 CREATE TABLE pagos (
-    id_pago SERIAL PRIMARY KEY,
-
-    id_usuario INTEGER NOT NULL,
-    id_paquete INTEGER NOT NULL,
-
-    monto DOUBLE PRECISION NOT NULL,
+    id_pago INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_paquete INT NOT NULL,
+    monto DOUBLE NOT NULL,
     estado VARCHAR(50),
     metodo_pago VARCHAR(50),
     referencia VARCHAR(100),
-    fecha_pago TIMESTAMP,
-    fecha_confirmacion TIMESTAMP,
-
-    CONSTRAINT fk_pago_usuario
-        FOREIGN KEY (id_usuario)
-        REFERENCES datos_usuarios(id_usuario),
-
-    CONSTRAINT fk_pago_paquete
-        FOREIGN KEY (id_paquete)
-        REFERENCES paquetes_clases(id_paquete)
+    fecha_pago TIMESTAMP NULL,
+    fecha_confirmacion TIMESTAMP NULL,
+    CONSTRAINT fk_pago_usuario FOREIGN KEY (id_usuario) REFERENCES datos_usuarios(id_usuario),
+    CONSTRAINT fk_pago_paquete FOREIGN KEY (id_paquete) REFERENCES paquetes_clases(id_paquete)
 );
 
+-- =============================================
+-- TABLA: reservas
+-- =============================================
 CREATE TABLE reservas (
-    id_reserva SERIAL PRIMARY KEY,
-
-    id_usuario INTEGER,
-    id_clase INTEGER,
-    id_paquete INTEGER,
-
+    id_reserva INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_clase INT,
+    id_paquete INT,
     fecha_clase DATE,
     hora_inicio TIME,
     estado VARCHAR(50),
-    fecha_reserva TIMESTAMP,
-    cancelada_en TIMESTAMP,
-    clase_devuelta BOOLEAN,
-
-    CONSTRAINT fk_reserva_usuario
-        FOREIGN KEY (id_usuario)
-        REFERENCES datos_usuarios(id_usuario),
-
-    CONSTRAINT fk_reserva_clase
-        FOREIGN KEY (id_clase)
-        REFERENCES clases(id_clase),
-
-    CONSTRAINT fk_reserva_paquete
-        FOREIGN KEY (id_paquete)
-        REFERENCES paquetes_clases(id_paquete)
+    fecha_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cancelada_en TIMESTAMP NULL,
+    clase_devuelta TINYINT(1),
+    CONSTRAINT fk_reserva_usuario FOREIGN KEY (id_usuario) REFERENCES datos_usuarios(id_usuario),
+    CONSTRAINT fk_reserva_clase FOREIGN KEY (id_clase) REFERENCES clases(id_clase),
+    CONSTRAINT fk_reserva_paquete FOREIGN KEY (id_paquete) REFERENCES paquetes_clases(id_paquete)
 );
 
+-- =============================================
+-- TABLA: password_reset_tokens
+-- =============================================
 CREATE TABLE password_reset_tokens (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     token VARCHAR(255) NOT NULL,
-    id_usuario INTEGER NOT NULL,
+    id_usuario INT NOT NULL,
     fecha_expiracion TIMESTAMP NOT NULL,
-
-	CONSTRAINT fk_token_usuario
-        FOREIGN KEY (id_usuario)
-        REFERENCES datos_usuarios(id_usuario)
-        ON DELETE CASCADE
+    CONSTRAINT fk_token_usuario FOREIGN KEY (id_usuario) REFERENCES datos_usuarios(id_usuario) ON DELETE CASCADE
 );
 
-INSERTS 
+-- =============================================
+-- INSERTS
+-- =============================================
 INSERT INTO roles (nombre, descripcion) VALUES
 ('ROLE_ADMINISTRADOR', 'Acceso total'),
 ('ROLE_INSTRUCTOR', 'Profesor'),
 ('ROLE_USUARIO', 'Alumno');
 
+-- Insertar gimnasios de ejemplo
+INSERT INTO gimnasios (nit, nombre, direccion, telefono, email, ciudad) VALUES
+('900123456-1', 'Fitness Center Premium', 'Calle 123 #45-67', '3001234567', 'contacto@fitnesscenter.com', 'Bogotá'),
+('900123456-2', 'Power Gym Elite', 'Carrera 89 #23-45', '3012345678', 'info@powergym.com', 'Medellín'),
+('900123456-3', 'Muscle Zone', 'Avenida 45 #67-89', '3023456789', 'musclezone@gmail.com', 'Cali');
+
+-- Insertar usuario administrador (sin gimnasio asignado, puede ser NULL)
 INSERT INTO datos_usuarios (
-    cedula, nombre, apellido, correo,
-    telefono, fecha_registro, estado
+    cedula, nombre, apellido, correo, telefono, fecha_registro, estado, id_gimnasio
 ) VALUES (
-    123456789,
-    'Admin',
-    'Principal',
-    'admin@nexus.com',
-    '3000000000',
-    NOW(),
-    'ACTIVO'
+    123456789, 'Admin', 'Principal', 'admin@nexus.com', '3000000000', NOW(), 'ACTIVO', NULL
 );
 
-SELECT id_usuario FROM datos_usuarios WHERE cedula = 123456789;
-
+-- Insertar perfil del administrador
 INSERT INTO perfil (
     nombre_usuario,
     contrasena,
@@ -219,10 +226,11 @@ INSERT INTO perfil (
     '123456789',
     '$2a$10$e0v7Ob5J.V6lrwxNzn6Ap.tGkgD1A/ouE8qAP14chcigv5bittDV2',
     (SELECT id_rol FROM roles WHERE nombre = 'ROLE_ADMINISTRADOR'),
-    3,
+    (SELECT id_usuario FROM datos_usuarios WHERE cedula = 123456789),
     NOW()
 );
 
-USUARIO Admin
-USERNAME : 123456789
-PASSWORD: admin123
+SELECT * FROM datos_usuarios;
+SELECT * FROM perfil;
+SELECT * FROM gimnasios;
+SHOW TABLES;
