@@ -3,52 +3,83 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Planes Nexus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Planes de Combate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/Paquetes.css}">
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (fragmento) -->
     <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
 
-    <div class="main-layout">
+    <div class="main-layout" th:if="${usuario != null}">
 
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
-        <!-- CONTENIDO -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
 
-            <h1>Planes de Combate</h1>
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensaje}" class="alert-message" th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'">
+                <i th:if="${tipo == 'exito'}" class="fas fa-check-circle"></i>
+                <i th:unless="${tipo == 'exito'}" class="fas fa-exclamation-triangle"></i>
+                <span th:text="${mensaje}"></span>
+            </div>
 
-            <!-- MENSAJES -->
-            <div th:if="${mensaje}" th:text="${mensaje}"></div>
+            <div class="page-header">
+                <h1><i class="fas fa-tags"></i> Planes de Combate</h1>
+                <p>Elige el plan que mejor se adapte a tu entrenamiento</p>
+            </div>
 
-            <!-- PLANES -->
-            <div class="paquetes-grid">
-
+            <!-- Grid de planes -->
+            <div class="paquetes-grid" th:if="${planes != null and not #lists.isEmpty(planes)}">
                 <div th:each="plan : ${planes}" class="paquete-card">
-
-                    <h3 th:text="${plan.nombre}"></h3>
-
-                    <p th:text="${plan.totalClases} + ' clases'"></p>
-
-                    <p th:text="'$' + ${plan.precio}"></p>
-
-                    <form th:action="@{/usuario/paquetes/comprar}" method="post">
+                    <div class="paquete-header">
+                        <div class="paquete-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 th:text="${plan.nombre}">Plan Básico</h3>
+                    </div>
+                    <div class="paquete-body">
+                        <div class="paquete-clases">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span th:text="${plan.totalClases} + ' clases'"></span>
+                        </div>
+                        <div class="paquete-precio">
+                            <span class="precio-simbolo">$</span>
+                            <span class="precio-valor" th:text="${plan.precio}"></span>
+                            <span class="precio-periodo">/mes</span>
+                        </div>
+                        <div class="paquete-beneficios">
+                            <span><i class="fas fa-check-circle"></i> Acceso a todas las disciplinas</span>
+                            <span><i class="fas fa-check-circle"></i> Reserva anticipada</span>
+                            <span><i class="fas fa-check-circle"></i> Cancelación gratuita</span>
+                        </div>
+                    </div>
+                    <form th:action="@{/usuario/paquetes/comprar}" method="post" class="paquete-form">
                         <input type="hidden" name="idPlan" th:value="${plan.idPlanes}">
-                        <button type="submit">Comprar</button>
+                        <button type="submit" class="btn-comprar">
+                            <i class="fas fa-cart-shopping"></i> Comprar ahora
+                        </button>
                     </form>
-
                 </div>
+            </div>
 
+            <!-- Estado vacío -->
+            <div th:if="${planes == null or #lists.isEmpty(planes)}" class="empty-state">
+                <i class="fas fa-box-open"></i>
+                <p>No hay planes disponibles en este momento.</p>
+                <a th:href="@{/usuario/inicio}" class="btn-primary-small">Volver al inicio</a>
             </div>
 
         </main>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
 
 </body>

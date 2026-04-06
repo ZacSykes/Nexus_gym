@@ -5,73 +5,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus - Mis Reservas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/MisReservas.css}">
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (fragmento) -->
     <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
 
     <div class="main-layout" th:if="${usuario != null}">
 
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
-        <!-- CONTENIDO -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
 
-            <!-- MENSAJES -->
-            <div th:if="${mensaje}" 
-                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
-                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensaje}" class="alert-message" th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'">
+                <i th:if="${tipo == 'exito'}" class="fas fa-check-circle"></i>
+                <i th:unless="${tipo == 'exito'}" class="fas fa-exclamation-triangle"></i>
                 <span th:text="${mensaje}"></span>
             </div>
 
-            <div class="section-header">
-                <h1>📋 Mis Reservas</h1>
+            <!-- Encabezado -->
+            <div class="page-header">
+                <h1><i class="fas fa-calendar-alt"></i> Mis Reservas</h1>
                 <p>Gestiona tus clases agendadas</p>
             </div>
 
-            <!-- RESUMEN -->
-            <div class="resumen-card">
-                <div class="resumen-item">
-                    <span>📅</span>
-                    <span th:text="${#lists.size(reservas)}"></span>
-                    <span>Total reservas</span>
+            <!-- Tarjeta resumen -->
+            <div class="summary-card">
+                <div class="summary-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="summary-info">
+                    <span class="summary-label">Total de reservas</span>
+                    <strong class="summary-number" th:text="${#lists.size(reservas)}">0</strong>
                 </div>
             </div>
 
-            <!-- LISTA -->
-            <div th:if="${not #lists.isEmpty(reservas)}">
-
+            <!-- Lista de reservas -->
+            <div th:if="${not #lists.isEmpty(reservas)}" class="reservas-grid">
                 <div th:each="reserva : ${reservas}" class="reserva-card">
-
-                    <h3 th:text="${reserva.clase.nombre}"></h3>
-
-                    <p th:text="'Coach: ' + ${reserva.clase.profesor.nombre}"></p>
-
-                    <p th:text="${#temporals.format(reserva.fechaClase, 'dd/MM/yyyy')}"></p>
-
-                    <form th:action="@{/usuario/cancelar}" method="post"
-                          th:if="${reserva.estado == 'Confirmada'}">
+                    <div class="reserva-header">
+                        <h3 th:text="${reserva.clase.nombre}">Clase de Boxeo</h3>
+                        <span class="reserva-status" 
+                              th:classappend="${reserva.estado == 'Confirmada'} ? 'status-confirmada' : 'status-cancelada'"
+                              th:text="${reserva.estado}">Confirmada</span>
+                    </div>
+                    <div class="reserva-body">
+                        <div class="reserva-info">
+                            <i class="fas fa-user-coach"></i>
+                            <span>Coach: <strong th:text="${reserva.clase.profesor.nombre}">Carlos Martínez</strong></span>
+                        </div>
+                        <div class="reserva-info">
+                            <i class="fas fa-calendar-day"></i>
+                            <span th:text="${#temporals.format(reserva.fechaClase, 'dd/MM/yyyy')}">15/04/2025</span>
+                        </div>
+                        <div class="reserva-info">
+                            <i class="fas fa-clock"></i>
+                            <span th:text="${reserva.clase.horaInicio}">18:00</span>
+                        </div>
+                    </div>
+                    <form th:action="@{/usuario/cancelar}" method="post" class="cancelar-form" th:if="${reserva.estado == 'Confirmada'}">
                         <input type="hidden" name="idReserva" th:value="${reserva.idReservas}">
-                        <button type="submit">Cancelar</button>
+                        <button type="submit" class="btn-cancelar">
+                            <i class="fas fa-times-circle"></i> Cancelar reserva
+                        </button>
                     </form>
-
                 </div>
-
             </div>
 
-            <div th:if="${#lists.isEmpty(reservas)}">
-                <p>No tienes reservas</p>
-                <a th:href="@{/usuario/clases}">Reservar clase</a>
+            <!-- Estado vacío (sin lupa) -->
+            <div th:if="${#lists.isEmpty(reservas)}" class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <p>No tienes reservas aún</p>
+                <a th:href="@{/usuario/clases}" class="btn-primary-small">Explorar clases</a>
             </div>
 
         </main>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
 
 </body>

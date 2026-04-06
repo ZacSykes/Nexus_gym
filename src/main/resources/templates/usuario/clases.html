@@ -5,163 +5,215 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus - Clases Disponibles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/ClasesDisponibles.css}">
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+    <!-- NAVBAR (fragmento o incluido directamente) -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle" id="menuToggleBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <img th:src="@{/imagenes/Nexus.png}" alt="Nexus Logo" class="logo-img">
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-actions">
+                <!-- NOTIFICACIONES CON DROPDOWN -->
+                <div class="notifications-wrapper">
+                    <button class="icon-btn notif-btn" id="notifBtn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <span class="notif-badge" th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">3</span>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <div class="notif-header">
+                            <span>Notificaciones</span>
+                            <a th:href="@{/usuario/notificaciones}">Ver todas</a>
+                        </div>
+                        <div class="notif-list">
+                            <div class="notif-empty">
+                                <i class="fas fa-bell-slash"></i>
+                                <span>No hay notificaciones recientes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENÚ USUARIO -->
+                <div class="user-menu" th:if="${usuario != null}">
+                    <div class="avatar-wrapper">
+                        <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                             alt="Avatar" class="avatar">
+                        <div class="avatar-status online"></div>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Sextiana Luque</span>
+                        <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Sin rango</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" class="logout-form">
+                        <button type="submit" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Salir</span>
+                        </button>
+                    </form>
+                </div>
+                <div th:unless="${usuario != null}" class="user-menu fallback">
+                    <a th:href="@{/auth/login}" class="login-link">Iniciar sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <div class="main-layout">
-
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
-        <!-- CONTENIDO -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
 
-            <!-- MENSAJES -->
-            <div th:if="${mensaje}" 
-                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
-                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensaje}" class="alert-message" th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'">
+                <i th:if="${tipo == 'exito'}" class="fas fa-check-circle"></i>
+                <i th:unless="${tipo == 'exito'}" class="fas fa-exclamation-triangle"></i>
                 <span th:text="${mensaje}"></span>
             </div>
 
-            <div class="section-header">
-                <h1>🥊 Clases Disponibles</h1>
+            <div class="page-header">
+                <h1><i class="fas fa-fist-raised"></i> Clases Disponibles</h1>
                 <p>Encuentra tu próxima clase y reserva tu lugar</p>
             </div>
 
-            <!-- PAQUETE ACTIVO -->
-            <div class="paquete-resumen" th:if="${paquete != null}">
-                <div class="paquete-info">
-                    <span class="paquete-icon">🛡️</span>
-                    <div class="paquete-detalle">
-                        <span class="paquete-label">Tu plan actual</span>
-                        <span class="paquete-nombre" th:text="${paquete.totalClases + ' clases'}"></span>
+            <!-- Resumen del plan activo -->
+            <div th:if="${paquete != null}" class="plan-card">
+                <div class="plan-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="plan-details">
+                    <span class="plan-label">Tu plan actual</span>
+                    <strong class="plan-name" th:text="${paquete.totalClases + ' clases'}"></strong>
+                </div>
+                <div class="plan-stats">
+                    <div class="stat">
+                        <span class="stat-number" th:text="${paquete.clasesRestantes}"></span>
+                        <span class="stat-text">clases restantes</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></span>
                     </div>
                 </div>
-                <div class="clases-restantes">
-                    <span class="restantes-numero" th:text="${paquete.clasesRestantes}"></span>
-                    <span class="restantes-label">clases restantes</span>
-                </div>
-                <div class="vencimiento">
-                    <span>📅 Vence: 
-                        <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></strong>
-                    </span>
-                </div>
-                <a th:href="@{/usuario/paquetes}" class="btn-comprar">🔄 Recargar plan</a>
+                <a th:href="@{/usuario/paquetes}" class="btn-outline-plan"><i class="fas fa-sync-alt"></i> Recargar plan</a>
             </div>
 
-            <!-- FILTROS -->
-            <form th:action="@{/usuario/clases}" method="get">
-                <div class="filters-bar">
-
+            <!-- Filtros -->
+            <div class="filters-card">
+                <form th:action="@{/usuario/clases}" method="get" class="filters-form">
                     <div class="filter-group">
-                        <label>🥋 Disciplina</label>
-                        <select class="filter-select" name="disciplina">
+                        <label><i class="fas fa-tag"></i> Disciplina</label>
+                        <select name="disciplina" class="filter-select">
                             <option value="todas">Todas</option>
                             <option value="Boxeo">🥊 Boxeo</option>
                             <option value="Muay Thai">🦵 Muay Thai</option>
                             <option value="MMA">🔥 MMA</option>
                         </select>
                     </div>
-
                     <div class="filter-group">
-                        <label>📊 Nivel</label>
-                        <select class="filter-select" name="nivel">
+                        <label><i class="fas fa-chart-line"></i> Nivel</label>
+                        <select name="nivel" class="filter-select">
                             <option value="todos">Todos</option>
                             <option value="Principiante">Principiante</option>
                             <option value="Intermedio">Intermedio</option>
                             <option value="Avanzado">Avanzado</option>
                         </select>
                     </div>
-
-                    <button type="submit" class="btn-buscar">🔍 Buscar</button>
-                    <a th:href="@{/usuario/clases}" class="btn-limpiar-filtros">🗑️ Limpiar</a>
-
-                </div>
-            </form>
-
-            <!-- RESULTADOS -->
-            <div class="resultados-header">
-                <span th:text="'Mostrando ' + ${#lists.size(clases)} + ' clases disponibles'"></span>
+                    <button type="submit" class="btn-primary-filter"><i class="fas fa-search"></i> Buscar</button>
+                    <a th:href="@{/usuario/clases}" class="btn-link-filter"><i class="fas fa-eraser"></i> Limpiar</a>
+                </form>
             </div>
 
-            <!-- GRID -->
+            <!-- Resultados -->
+            <div class="results-header">
+                <span><i class="fas fa-list-ul"></i> Mostrando <strong th:text="${#lists.size(clases)}"></strong> clases disponibles</span>
+            </div>
+
+            <!-- Grid de clases -->
             <div class="clases-grid">
-
                 <div th:each="clase : ${clases}" class="clase-card">
-
-                    <h3 th:text="${clase.nombre}"></h3>
-
-                    <p th:text="'Coach: ' + ${clase.profesor.nombre}"></p>
-
-                    <p th:text="${clase.diaSemana} + ' - ' + ${clase.horaInicio}"></p>
-
-                    <form th:action="@{/usuario/reservar}" method="post">
+                    <div class="clase-header">
+                        <h3 th:text="${clase.nombre}"></h3>
+                        <span class="clase-level" th:text="${clase.nivel}"></span>
+                    </div>
+                    <div class="clase-body">
+                        <div class="clase-info">
+                            <i class="fas fa-user-coach"></i>
+                            <span>Coach: <strong th:text="${clase.profesor.nombre}"></strong></span>
+                        </div>
+                        <div class="clase-info">
+                            <i class="fas fa-calendar-week"></i>
+                            <span th:text="${clase.diaSemana} + ' - ' + ${clase.horaInicio}"></span>
+                        </div>
+                    </div>
+                    <form th:action="@{/usuario/reservar}" method="post" class="reserva-form">
                         <input type="hidden" name="idClase" th:value="${clase.idClases}">
-                        <button type="submit" th:disabled="${paquete == null}">
-                            Reservar
+                        <button type="submit" class="btn-reservar" th:disabled="${paquete == null}">
+                            <i class="fas fa-calendar-check"></i> Reservar
                         </button>
                     </form>
-
                 </div>
+            </div>
 
-                <div th:if="${#lists.isEmpty(clases)}">
-                    <p>No hay clases disponibles</p>
-                </div>
-
+            <!-- Estado vacío (sin ícono de ojo) -->
+            <div th:if="${#lists.isEmpty(clases)}" class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <p>No hay clases disponibles con los filtros seleccionados.</p>
+                <a th:href="@{/usuario/clases}" class="btn-primary-small">Ver todas las clases</a>
             </div>
 
         </main>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
 
-   <script>
-    document.querySelectorAll('.fecha-input').forEach(input => {
-        const diaSemanaClase = input.getAttribute('data-dia-semana');
-        const form = input.closest('.clase-card').querySelector('.reserva-form');
-        const hiddenFecha = form.querySelector('.fecha-hidden');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle notificaciones
+            const notifBtn = document.getElementById('notifBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+            if (notifBtn && notifDropdown) {
+                notifBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notifDropdown.classList.toggle('show');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+                        notifDropdown.classList.remove('show');
+                    }
+                });
+            }
 
-        input.addEventListener('change', function() {
-            if (this.value) {
-                // Parsear la fecha en la zona horaria local
-                const [year, month, day] = this.value.split('-');
-                const selectedDate = new Date(year, month - 1, day); // ¡importante: month-1!
-                const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                const diaSemanaSeleccionado = diasSemana[selectedDate.getDay()];
-
-                // Normalizar para comparación (minúsculas, sin tildes)
-                const normalizar = (str) => {
-                    return str.trim().toLowerCase()
-                        .replace(/á/g, 'a')
-                        .replace(/é/g, 'e')
-                        .replace(/í/g, 'i')
-                        .replace(/ó/g, 'o')
-                        .replace(/ú/g, 'u')
-                        .replace(/ü/g, 'u')
-                        .replace(/ñ/g, 'n');
-                };
-
-                const diaClaseNorm = normalizar(diaSemanaClase);
-                const diaSeleccionadoNorm = normalizar(diaSemanaSeleccionado);
-
-                if (diaClaseNorm !== diaSeleccionadoNorm) {
-                    alert(`La clase solo se imparte los ${diaSemanaClase}. Por favor, elige una fecha que sea ${diaSemanaClase}.`);
-                    this.value = '';
-                    hiddenFecha.value = '';
-                } else {
-                    hiddenFecha.value = this.value;
-                }
-            } else {
-                hiddenFecha.value = '';
+            // Toggle sidebar móvil
+            const menuToggle = document.getElementById('menuToggleBtn');
+            const sidebar = document.querySelector('.sidebar');
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                            sidebar.classList.remove('active');
+                        }
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) sidebar.classList.remove('active');
+                });
             }
         });
-    });
-</script>
+    </script>
 </body>
 </html>
