@@ -217,4 +217,54 @@ public class ClaseService {
             throw new RuntimeException("Clase llena");
         }
     }
+
+public List<Map<String, Object>> obtenerClasesSemana(String disciplina, String nivel) {
+
+    List<Clase> clases;
+
+    if (disciplina != null && !disciplina.equals("todas")) {
+        clases = claseRepository.findByDisciplinaAndDisponibleTrue(disciplina);
+    } else if (nivel != null && !nivel.equals("todos")) {
+        clases = claseRepository.findByNivelAndDisponibleTrue(nivel);
+    } else {
+        clases = claseRepository.findByDisponibleTrue();
+    }
+
+    List<Map<String, Object>> resultado = new java.util.ArrayList<>();
+
+    LocalDate hoy = LocalDate.now();
+
+    for (int i = 0; i < 7; i++) {
+        LocalDate fecha = hoy.plusDays(i);
+        String diaSemana = DIAS_ESPANOL.get(fecha.getDayOfWeek());
+
+        for (Clase clase : clases) {
+
+            if (clase.getDiaSemana().equalsIgnoreCase(diaSemana)) {
+
+                if (!claseYaPaso(clase, fecha)) {
+
+                    Map<String, Object> item = new java.util.HashMap<>();
+                    item.put("clase", clase);
+                    item.put("fecha", fecha);
+
+                    resultado.add(item);
+                }
+            }
+        }
+    }
+
+    return resultado;
+}
+
+private boolean claseYaPaso(Clase clase, LocalDate fecha) {
+
+    // Si no es hoy → no ha pasado
+    if (!fecha.equals(LocalDate.now())) {
+        return false;
+    }
+
+    // Si es hoy → comparar hora
+    return clase.getHoraInicio().isBefore(java.time.LocalTime.now());
+}
 }

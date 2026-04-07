@@ -17,8 +17,54 @@
 
     <div class="main-layout">
 
+<<<<<<< HEAD
         <!-- SIDEBAR -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+=======
+    <!-- SIDEBAR -->
+    <div th:replace="~{usuario/fragments/sidebar :: sidebarUsuario}"></div>
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <h1>
+            Bienvenido,
+            <span th:text="${usuario != null ? usuario.nombre : 'Usuario'}"></span>
+        </h1>
+
+        <!-- ================= STATS ================= -->
+
+        <div class="stats">
+
+            <p>
+                Clases restantes:
+                <strong th:text="${paquete != null ? paquete.clasesRestantes : 0}"></strong>
+            </p>
+
+            <p>
+                Próximas reservas:
+                <strong th:text="${reservas != null ? #lists.size(reservas) : 0}"></strong>
+            </p>
+
+        </div>
+
+        <!-- ================= RESERVAS ================= -->
+
+        <div class="reservas-preview">
+
+            <h2>Mis próximas clases</h2>
+
+            <!-- SI HAY -->
+            <div th:if="${reservas != null and !#lists.isEmpty(reservas)}">
+
+                <div th:each="r : ${reservas}" class="reserva-item">
+
+                    <p>
+                        <strong th:text="${r.clase != null ? r.clase.nombre : 'Clase'}"></strong>
+                    </p>
+
+                    <p th:text="${r.fechaClase != null ? #temporals.format(r.fechaClase, 'dd/MM/yyyy') : ''}"></p>
+>>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
         <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
@@ -158,11 +204,16 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
         </main>
     </div>
 
     <!-- FOOTER GLOBAL -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
+=======
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+>>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
 </body>
 </html>

@@ -5,134 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus - Clases Disponibles</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/ClasesDisponibles.css}">
 </head>
 
 <body>
 
-    <!-- NAVBAR (fragmento o incluido directamente) -->
-    <header class="navbar">
-        <div class="nav-container">
-            <div class="logo-nav">
-                <button class="menu-toggle" id="menuToggleBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <img th:src="@{/imagenes/Nexus.png}" alt="Nexus Logo" class="logo-img">
-                <span class="logo-text">NEXUS</span>
-            </div>
-            <div class="nav-actions">
-                <!-- NOTIFICACIONES CON DROPDOWN -->
-                <div class="notifications-wrapper">
-                    <button class="icon-btn notif-btn" id="notifBtn">
-                        <i class="fas fa-bell"></i>
-                    </button>
-                    <span class="notif-badge" th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">3</span>
-                    <div class="notif-dropdown" id="notifDropdown">
-                        <div class="notif-header">
-                            <span>Notificaciones</span>
-                            <a th:href="@{/usuario/notificaciones}">Ver todas</a>
-                        </div>
-                        <div class="notif-list">
-                            <div class="notif-empty">
-                                <i class="fas fa-bell-slash"></i>
-                                <span>No hay notificaciones recientes</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MENÚ USUARIO -->
-                <div class="user-menu" th:if="${usuario != null}">
-                    <div class="avatar-wrapper">
-                        <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
-                             alt="Avatar" class="avatar">
-                        <div class="avatar-status online"></div>
-                    </div>
-                    <div class="user-info">
-                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Sextiana Luque</span>
-                        <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Sin rango</span>
-                    </div>
-                    <form th:action="@{/logout}" method="post" class="logout-form">
-                        <button type="submit" class="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Salir</span>
-                        </button>
-                    </form>
-                </div>
-                <div th:unless="${usuario != null}" class="user-menu fallback">
-                    <a th:href="@{/auth/login}" class="login-link">Iniciar sesión</a>
-                </div>
-            </div>
+<header class="navbar">
+    <div class="nav-container">
+        <div class="logo-nav">
+            <button class="menu-toggle" id="menuToggleBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <img th:src="@{/imagenes/Nexus.png}" class="logo-img">
+            <span class="logo-text">NEXUS</span>
         </div>
-    </header>
 
-    <div class="main-layout">
-        <!-- SIDEBAR (fragmento) -->
-        <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+        <div class="nav-actions">
 
-        <!-- CONTENIDO PRINCIPAL -->
-        <main class="main-content">
+            <!-- Notificaciones -->
+            <div class="notifications-wrapper">
+                <button class="icon-btn notif-btn" id="notifBtn">
+                    <i class="fas fa-bell"></i>
+                </button>
 
-            <!-- Mensajes de alerta -->
-            <div th:if="${mensaje}" class="alert-message" th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'">
-                <i th:if="${tipo == 'exito'}" class="fas fa-check-circle"></i>
-                <i th:unless="${tipo == 'exito'}" class="fas fa-exclamation-triangle"></i>
-                <span th:text="${mensaje}"></span>
-            </div>
+                <span class="notif-badge"
+                      th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">0</span>
 
-            <div class="page-header">
-                <h1><i class="fas fa-fist-raised"></i> Clases Disponibles</h1>
-                <p>Encuentra tu próxima clase y reserva tu lugar</p>
-            </div>
-
-            <!-- Resumen del plan activo -->
-            <div th:if="${paquete != null}" class="plan-card">
-                <div class="plan-icon"><i class="fas fa-shield-alt"></i></div>
-                <div class="plan-details">
-                    <span class="plan-label">Tu plan actual</span>
-                    <strong class="plan-name" th:text="${paquete.totalClases + ' clases'}"></strong>
-                </div>
-                <div class="plan-stats">
-                    <div class="stat">
-                        <span class="stat-number" th:text="${paquete.clasesRestantes}"></span>
-                        <span class="stat-text">clases restantes</span>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">
+                        <span>Notificaciones</span>
+                        <a th:href="@{/usuario/notificaciones}">Ver todas</a>
                     </div>
-                    <div class="stat">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></span>
+                    <div class="notif-list">
+                        <div class="notif-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <span>No hay notificaciones</span>
+                        </div>
                     </div>
                 </div>
-                <a th:href="@{/usuario/paquetes}" class="btn-outline-plan"><i class="fas fa-sync-alt"></i> Recargar plan</a>
             </div>
 
-            <!-- Filtros -->
-            <div class="filters-card">
-                <form th:action="@{/usuario/clases}" method="get" class="filters-form">
-                    <div class="filter-group">
-                        <label><i class="fas fa-tag"></i> Disciplina</label>
-                        <select name="disciplina" class="filter-select">
-                            <option value="todas">Todas</option>
-                            <option value="Boxeo">🥊 Boxeo</option>
-                            <option value="Muay Thai">🦵 Muay Thai</option>
-                            <option value="MMA">🔥 MMA</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label><i class="fas fa-chart-line"></i> Nivel</label>
-                        <select name="nivel" class="filter-select">
-                            <option value="todos">Todos</option>
-                            <option value="Principiante">Principiante</option>
-                            <option value="Intermedio">Intermedio</option>
-                            <option value="Avanzado">Avanzado</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-primary-filter"><i class="fas fa-search"></i> Buscar</button>
-                    <a th:href="@{/usuario/clases}" class="btn-link-filter"><i class="fas fa-eraser"></i> Limpiar</a>
+            <!-- Usuario -->
+            <div class="user-menu" th:if="${usuario != null}">
+                <span th:text="${usuario.nombre + ' ' + usuario.apellido}"></span>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Salir</button>
                 </form>
             </div>
 
+<<<<<<< HEAD
             <!-- Resultados -->
             <div class="results-header">
                 <span><i class="fas fa-list-ul"></i> Mostrando <strong th:text="${#lists.size(clases)}"></strong> clases disponibles</span>
@@ -172,7 +97,97 @@
             </div>
 
         </main>
+=======
+        </div>
+>>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
     </div>
+</header>
+
+<div class="main-layout">
+
+    <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+
+    <main class="main-content">
+
+        <!-- MENSAJES -->
+        <div th:if="${mensaje}" class="alert-message">
+            <span th:text="${mensaje}"></span>
+        </div>
+
+        <!-- HEADER -->
+        <div class="page-header">
+            <h1>Clases Disponibles</h1>
+        </div>
+
+        <!-- PLAN -->
+        <div th:if="${paquete != null}">
+            <p>
+                Clases restantes:
+                <strong th:text="${paquete.clasesRestantes}"></strong>
+            </p>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div class="results-header">
+            Mostrando
+            <strong th:text="${#lists.size(clasesSemana)}"></strong>
+            clases
+        </div>
+
+        <!-- 🔥 LISTA DE CLASES -->
+        <div class="clases-grid">
+
+            <div th:each="item : ${clasesSemana}" class="clase-card">
+
+                <h3 th:text="${item.clase.nombre}"></h3>
+
+                <p th:text="${item.clase.nivel}"></p>
+
+                <p>
+                    <strong th:text="${item.clase.profesor.nombre}"></strong>
+                </p>
+
+                <p>
+                    <span th:text="${item.clase.diaSemana}"></span> -
+                    <span th:text="${#temporals.format(item.clase.horaInicio, 'hh:mm a')}"></span>
+                </p>
+
+                <p>
+                    Fecha:
+                    <span th:text="${#temporals.format(item.fecha, 'dd/MM/yyyy')}"></span>
+                </p>
+
+                <!-- FORM -->
+                <form th:action="@{/usuario/reservar}" method="post">
+
+                    <input type="hidden" name="idClase"
+                           th:value="${item.clase.idClases}">
+
+                    <input type="hidden" name="fechaClase"
+                           th:value="${#temporals.format(item.fecha, 'yyyy-MM-dd')}">
+
+                    <button type="submit"
+                            th:disabled="${paquete == null}">
+                        Reservar
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- VACÍO -->
+        <div th:if="${#lists.isEmpty(clasesSemana)}">
+            <p>No hay clases disponibles</p>
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
 
     <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>

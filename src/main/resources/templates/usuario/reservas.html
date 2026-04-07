@@ -17,8 +17,13 @@
 
     <div class="main-layout" th:if="${usuario != null}">
 
+<<<<<<< HEAD
         <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+=======
+    <!-- SIDEBAR -->
+    <div th:replace="~{usuario/fragments/sidebar :: sidebarUsuario}"></div>
+>>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
         <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
@@ -89,8 +94,18 @@
         </main>
     </div>
 
+<<<<<<< HEAD
     <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
+=======
+        </div>
+
+    </main>
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+>>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
 </body>
 </html>

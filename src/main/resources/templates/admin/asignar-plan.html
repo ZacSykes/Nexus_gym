@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Asignar Plan</title>
+</head>
+<body>
+
+<div th:replace="admin/fragments/navbar :: navbarAdmin"></div>
+
+<h2>Asignar Plan a Usuario</h2>
+
+<form th:action="@{/admin/buscar-usuario}" method="get">
+    <input type="number" name="cedula" placeholder="Ingrese cédula" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<hr>
+
+<!-- ==================== USUARIO ==================== -->
+<div th:if="${usuario != null}">
+
+    <h3>Usuario encontrado</h3>
+
+    <p>
+        <strong>Nombre:</strong>
+        <span th:text="${usuario.nombre + ' ' + usuario.apellido}"></span>
+    </p>
+
+    <p>
+        <strong>Cédula:</strong>
+        <span th:text="${usuario.cedula}"></span>
+    </p>
+
+    <!-- ==================== FORM ASIGNAR ==================== -->
+    <form th:action="@{/admin/asignar-plan}" method="post">
+
+        <!-- ⚠️ CLAVE: idUsuario -->
+        <input type="hidden" name="usuarioId"
+               th:value="${usuario.idUsuario}" />
+
+        <label>Seleccione un plan:</label>
+
+        <select name="planId" required>
+            <option value="">-- Seleccionar --</option>
+
+            <option th:each="plan : ${planes}"
+                    th:value="${plan.idPlanes}"
+                    th:text="${plan.nombre + ' - ' + plan.totalClases + ' clases'}">
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">Asignar Plan</button>
+
+    </form>
+
+</div>
+
+<div th:if="${mensaje}">
+    <p style="color: green;" th:text="${mensaje}"></p>
+</div>
+
+<div th:if="${error}">
+    <p style="color: red;" th:text="${error}"></p>
+</div>
+
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+
+</body>
+</html>

@@ -69,7 +69,7 @@
     <div class="main-layout" th:if="${usuario != null}">
 
         <!-- SIDEBAR (fragmento) -->
-        <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
+        <div th:replace="~{usuario/fragments/sidebar :: sidebarUsuario}"></div>
 
         <main class="main-content">
             <!-- ALERTAS MEJORADAS -->
@@ -146,8 +146,13 @@
         </main>
     </div>
 
+<<<<<<< HEAD
     <!-- FOOTER -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
+=======
+    <!-- FOOTER (fragmento) -->
+    <div th:replace="~{fragments/footer :: footerGlobal}"></div>
+>>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
