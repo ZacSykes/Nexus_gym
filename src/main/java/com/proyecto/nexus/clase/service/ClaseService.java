@@ -120,6 +120,17 @@ public class ClaseService {
         Clase clase = claseRepository.findById(idClase)
                 .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
 
+        boolean yaReservada = reservaRepository.existsByUsuarioAndClaseAndFechaClaseAndEstadoIn(
+            usuario,
+            clase,
+            fechaClase,
+            List.of("Confirmada", "Pendiente")
+        );
+
+        if (yaReservada) {
+            return "error: Ya reservaste esta clase para esa fecha";
+        }
+
         validarDiaClase(clase, fechaClase);
         validarCupo(clase, fechaClase);
 
@@ -147,7 +158,12 @@ public class ClaseService {
     }
 
     public List<Reserva> obtenerReservasUsuario(DatosUsuario usuario) {
-        return reservaRepository.findByUsuarioOrderByFechaReservaDesc(usuario);
+        return reservaRepository.findByUsuarioAndEstadoIn(
+            usuario,
+            List.of("Confirmada", "Pendiente")
+        ).stream()
+            .sorted(Comparator.comparing(Reserva::getFechaReserva).reversed())
+            .toList();
     }
 
     public List<Reserva> obtenerReservasProximas(DatosUsuario usuario) {
@@ -255,6 +271,41 @@ public List<Map<String, Object>> obtenerClasesSemana(String disciplina, String n
     }
 
     return resultado;
+}
+
+public List<Map<String, Object>> filtrarClasesYaReservadas(List<Map<String, Object>> clasesSemana,
+                                                           DatosUsuario usuario) {
+    if (clasesSemana == null || clasesSemana.isEmpty() || usuario == null) {
+        return clasesSemana;
+    }
+
+    List<Reserva> reservasActivas = reservaRepository.findByUsuarioAndEstadoIn(
+            usuario,
+            List.of("Confirmada", "Pendiente")
+    );
+
+    if (reservasActivas.isEmpty()) {
+        return clasesSemana;
+    }
+
+    Set<String> clavesReservadas = reservasActivas.stream()
+            .filter(r -> r.getClase() != null && r.getClase().getIdClases() != null && r.getFechaClase() != null)
+            .map(r -> r.getClase().getIdClases() + "|" + r.getFechaClase())
+            .collect(java.util.stream.Collectors.toSet());
+
+    return clasesSemana.stream()
+            .filter(item -> {
+                Clase clase = (Clase) item.get("clase");
+                LocalDate fecha = (LocalDate) item.get("fecha");
+
+                if (clase == null || clase.getIdClases() == null || fecha == null) {
+                    return true;
+                }
+
+                String clave = clase.getIdClases() + "|" + fecha;
+                return !clavesReservadas.contains(clave);
+            })
+            .toList();
 }
 
 private boolean claseYaPaso(Clase clase, LocalDate fecha) {

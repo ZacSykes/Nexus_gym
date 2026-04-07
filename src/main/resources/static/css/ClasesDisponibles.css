@@ -344,11 +344,16 @@ body {
     padding: 2rem;
     margin-left: 0;        /* ya no se usa margin-left porque el sidebar es sticky */
     overflow-y: auto;
+    max-width: 1180px;
 }
 
 /* ========== ESTILOS DE LA PÁGINA (tus estilos existentes) ========== */
 .page-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.4rem;
+    padding: 1.25rem 1.4rem;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(59, 30, 112, 0.06));
+    border: 1px solid rgba(124, 58, 237, 0.22);
 }
 
 .page-header h1 {
@@ -366,6 +371,24 @@ body {
 .page-header p {
     color: #9CA3AF;
     margin-top: 0.3rem;
+}
+
+.main-content > div[th\:if="${paquete != null}"] {
+    margin-bottom: 1.6rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 0.9rem;
+    background: rgba(18, 18, 30, 0.62);
+    border: 1px solid rgba(124, 58, 237, 0.18);
+}
+
+.main-content > div[th\:if="${paquete != null}"] p {
+    margin: 0;
+    color: #D1D5DB;
+    font-size: 0.92rem;
+}
+
+.main-content > div[th\:if="${paquete != null}"] strong {
+    color: #C4B5FD;
 }
 
 .alert-message {
@@ -534,30 +557,87 @@ body {
 }
 
 .results-header {
-    margin-bottom: 1rem;
-    font-size: 0.85rem;
-    color: #9CA3AF;
+    margin-top: 0.2rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.82rem;
+    color: #C4B5FD;
+    width: fit-content;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    background: rgba(124, 58, 237, 0.12);
 }
 
 .clases-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    gap: 1.1rem;
 }
 
 .clase-card {
-    background: rgba(18, 18, 30, 0.6);
+    background: linear-gradient(160deg, rgba(22, 22, 36, 0.78), rgba(14, 14, 24, 0.86));
     backdrop-filter: blur(8px);
-    border-radius: 1rem;
-    padding: 1.2rem;
-    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 1.15rem;
+    padding: 1.1rem;
+    border: 1px solid rgba(124, 58, 237, 0.24);
     transition: all 0.3s;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
 .clase-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(124, 58, 237, 0.4);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border-color: rgba(196, 181, 253, 0.45);
+    box-shadow: 0 14px 30px rgba(56, 34, 98, 0.35);
+}
+
+.clase-card h3 {
+    margin-bottom: 0.35rem;
+    color: #F9FAFB;
+    font-size: 1.08rem;
+}
+
+.clase-card p {
+    margin-bottom: 0.45rem;
+    color: #CBD5E1;
+    font-size: 0.86rem;
+}
+
+.clase-card p:first-of-type {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 0.7rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(124, 58, 237, 0.16);
+    color: #DDD6FE;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.clase-card form {
+    margin-top: 0.7rem;
+}
+
+.clase-card button {
+    width: 100%;
+    border: 1px solid rgba(124, 58, 237, 0.42);
+    background: linear-gradient(135deg, #7C3AED, #3B1E70);
+    color: #FFFFFF;
+    border-radius: 999px;
+    padding: 0.58rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.clase-card button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(124, 58, 237, 0.35);
+}
+
+.clase-card button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
 
 .clase-header {
@@ -627,9 +707,10 @@ body {
 
 .empty-state {
     text-align: center;
-    padding: 3rem;
-    background: rgba(18, 18, 30, 0.5);
+    padding: 2rem;
+    background: linear-gradient(150deg, rgba(18, 18, 30, 0.62), rgba(15, 15, 24, 0.82));
     border-radius: 1rem;
+    border: 1px dashed rgba(124, 58, 237, 0.3);
 }
 
 .empty-state i {

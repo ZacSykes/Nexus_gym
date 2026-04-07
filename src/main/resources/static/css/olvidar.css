@@ -154,6 +154,32 @@ outline:none;
 
 }
 
+input.email-field{
+
+border-radius:0.8rem;
+
+border:1px solid rgba(124,58,237,0.3);
+
+background:rgba(255,255,255,0.05);
+
+color:#F9FAFB;
+
+padding:10px 12px;
+
+outline:none;
+
+}
+
+input.email-field:focus{
+
+border-color:#7C3AED;
+
+background:rgba(124,58,237,0.1);
+
+box-shadow:0 0 0 3px rgba(124,58,237,0.2);
+
+}
+
 input:focus{
 
 border:1px solid #9400D3;

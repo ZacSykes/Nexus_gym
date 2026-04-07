@@ -206,6 +206,20 @@ body::after {
   font-size: 0.85rem;
 }
 
+.email-field {
+  border-radius: 0.8rem;
+}
+
+.email-field:focus {
+  border-color: #7C3AED;
+  background: rgba(124, 58, 237, 0.1);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.email-field::placeholder {
+  color: #6B7280;
+}
+
 .input-field option {
   background: #1A1A2E;
   color: #F9FAFB;

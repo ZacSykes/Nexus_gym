@@ -1,6 +1,7 @@
 package com.proyecto.nexus.usuario.controller;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ import com.proyecto.nexus.usuario.repository.DatosUsuarioRepository;
 @Controller
 @RequestMapping("/usuario")
 public class PerfilController {
+
+    private static final Pattern CORREO_PATTERN =
+            Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
     private final DatosUsuarioRepository datosUsuarioRepository;
     private final PaqueteClaseRepository paqueteClaseRepository;
@@ -91,9 +95,25 @@ public class PerfilController {
 
         DatosUsuario usuario = usuarioOpt.get();
 
+        String correoLimpio = correo == null ? "" : correo.trim().toLowerCase();
+
+        if (correoLimpio.isBlank() || correoLimpio.length() > 254 || !CORREO_PATTERN.matcher(correoLimpio).matches()) {
+            redirectAttributes.addFlashAttribute("mensaje", "Ingresa un correo válido con @ y dominio");
+            redirectAttributes.addFlashAttribute("tipo", "error");
+            return "redirect:/usuario/perfil";
+        }
+
+        if (datosUsuarioRepository.findByCorreo(correoLimpio)
+                .filter(otro -> !otro.getIdUsuario().equals(usuario.getIdUsuario()))
+                .isPresent()) {
+            redirectAttributes.addFlashAttribute("mensaje", "El correo ya está registrado");
+            redirectAttributes.addFlashAttribute("tipo", "error");
+            return "redirect:/usuario/perfil";
+        }
+
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
-        usuario.setCorreo(correo);
+        usuario.setCorreo(correoLimpio);
         usuario.setTelefono(telefono);
         usuario.setDireccion(direccion);
         usuario.setGenero(genero);

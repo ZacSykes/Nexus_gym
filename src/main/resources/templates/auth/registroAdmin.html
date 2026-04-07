@@ -48,7 +48,7 @@
 
           <div class="input-group">
             <label class="input-label" for="admin_email">Correo electrónico</label>
-            <input type="email" id="admin_email" class="input-field" placeholder="Ej: carlos@gimnasio.com" autocomplete="email">
+            <input type="email" id="admin_email" class="input-field email-field" placeholder="Ej: carlos@gimnasio.com" autocomplete="email" maxlength="254" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" title="Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)">
           </div>
 
           <div class="input-row">
@@ -89,7 +89,7 @@
 
           <div class="input-group">
             <label class="input-label" for="gym_email">Correo del gimnasio</label>
-            <input type="email" id="gym_email" class="input-field" placeholder="Ej: contacto@gimnasio.com">
+            <input type="email" id="gym_email" class="input-field email-field" placeholder="Ej: contacto@gimnasio.com" autocomplete="email" maxlength="254" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" title="Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)">
           </div>
 
           <div class="input-group">

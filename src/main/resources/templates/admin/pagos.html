@@ -15,61 +15,82 @@
         <h1>Gestión de Pagos</h1>
 
         <!-- ==================== BUSCAR USUARIO ==================== -->
-        <section class="card">
+        <section class="card search-card">
           <h2>Buscar Usuario</h2>
 
-          <form th:action="@{/admin/pagos/buscar}" method="get">
+          <form class="search-form" th:action="@{/admin/pagos/buscar}" method="get">
             <input
+              class="search-input"
               type="text"
               name="cedula"
               placeholder="Ingrese cédula"
               required
             />
-            <button type="submit">Buscar</button>
+            <button type="submit" class="btn-buscar">
+              <span class="search-icon">🔎</span>
+              Buscar
+            </button>
           </form>
         </section>
 
         <!-- ==================== DATOS USUARIO ==================== -->
-        <section class="card" th:if="${usuario != null}">
-          <h2>Datos del Usuario</h2>
+        <section class="card user-data-card" th:if="${usuario != null}">
+          <div class="user-data-header">
+            <div>
+              <h2>Datos del Usuario</h2>
+              <p>Selecciona un plan y registra el pago desde aquí.</p>
+            </div>
+            <div class="user-data-badge">
+              <span th:text="${usuario.cedula}"></span>
+            </div>
+          </div>
 
-          <p>
-            <strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span>
-          </p>
-          <p>
-            <strong>Apellido:</strong>
-            <span th:text="${usuario.apellido}"></span>
-          </p>
-          <p>
-            <strong>Correo:</strong> <span th:text="${usuario.correo}"></span>
-          </p>
-          <p>
-            <strong>Dirección:</strong>
-            <span th:text="${usuario.direccion}"></span>
-          </p>
+          <div class="user-data-grid">
+            <div class="user-data-item">
+              <span class="user-data-label">Nombre</span>
+              <span class="user-data-value" th:text="${usuario.nombre}"></span>
+            </div>
+            <div class="user-data-item">
+              <span class="user-data-label">Apellido</span>
+              <span class="user-data-value" th:text="${usuario.apellido}"></span>
+            </div>
+            <div class="user-data-item">
+              <span class="user-data-label">Correo</span>
+              <span class="user-data-value" th:text="${usuario.correo}"></span>
+            </div>
+            <div class="user-data-item user-data-item-wide">
+              <span class="user-data-label">Dirección</span>
+              <span class="user-data-value" th:text="${usuario.direccion}"></span>
+            </div>
+          </div>
 
           <!-- ==================== CREAR PAGO ==================== -->
-          <h3>Asignar Plan</h3>
+          <div class="plan-assignment">
+            <div class="plan-assignment-header">
+              <h3>Asignar Plan</h3>
+              <p>Elige el paquete que quedará activo en el perfil del usuario.</p>
+            </div>
 
-          <form th:action="@{/admin/pagos/crear}" method="post">
-            <input
-              type="hidden"
-              name="usuarioId"
-              th:value="${usuario.idUsuario}"
-            />
+            <form class="plan-form" th:action="@{/admin/pagos/crear}" method="post">
+              <input
+                type="hidden"
+                name="usuarioId"
+                th:value="${usuario.idUsuario}"
+              />
 
-            <label>Seleccionar Plan:</label>
-            <select name="planId" required>
-              <option value="">-- Seleccione --</option>
-              <option
-                th:each="plan : ${planes}"
-                th:value="${plan.idPlanes}"
-                th:text="${plan.nombre + ' - $' + plan.precio}"
-              ></option>
-            </select>
+              <label for="planId">Seleccionar Plan</label>
+              <select id="planId" name="planId" required>
+                <option value="">-- Seleccione --</option>
+                <option
+                  th:each="plan : ${planes}"
+                  th:value="${plan.idPlanes}"
+                  th:text="${plan.nombre + ' - $' + plan.precio}"
+                ></option>
+              </select>
 
-            <button type="submit">Registrar Pago</button>
-          </form>
+              <button type="submit" class="btn-register-payment">Registrar Pago</button>
+            </form>
+          </div>
         </section>
 
         <!-- ==================== TABLA PAGOS ==================== -->

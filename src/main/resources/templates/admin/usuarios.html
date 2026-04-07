@@ -72,6 +72,29 @@
             transform: translateY(-1px);
         }
 
+        .usuario-form input.email-field {
+            height: auto;
+            padding: 0.8rem 1rem;
+            border-radius: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: #F9FAFB;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .usuario-form input.email-field:focus {
+            border-color: #7C3AED;
+            background: rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+
+        .usuario-form input.email-field::placeholder {
+            color: #6B7280;
+        }
+
         .usuario-form select option {
             color: #F9FAFB;
             background: #1A1A2E;
@@ -188,7 +211,10 @@
                           <input type="text" name="documento" id="usuarioDocumento" placeholder="Cédula"
                               inputmode="numeric" maxlength="12" pattern="^\d{6,12}$"
                               title="Debe tener entre 6 y 12 dígitos" required>
-                          <input type="email" name="email" id="usuarioEmail" placeholder="Correo" maxlength="254" required>
+                          <input type="email" name="email" id="usuarioEmail" class="email-field" placeholder="Correo"
+                              autocomplete="email" maxlength="254"
+                              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                              title="Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)" required>
                           <input type="text" name="telefono" id="usuarioTelefono" placeholder="Teléfono"
                               inputmode="numeric" maxlength="10" pattern="^3\d{9}$"
                               title="Debe tener 10 dígitos e iniciar por 3" required>

@@ -15,6 +15,11 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
     List<Reserva> findByUsuarioAndEstadoIn(DatosUsuario usuario, List<String> estados);
 
+    boolean existsByUsuarioAndClaseAndFechaClaseAndEstadoIn(DatosUsuario usuario,
+                                                             Clase clase,
+                                                             LocalDate fechaClase,
+                                                             List<String> estados);
+
     List<Reserva> findByUsuarioOrderByFechaReservaDesc(DatosUsuario usuario);
 
     @Query("SELECT COUNT(r) FROM Reserva r WHERE r.clase = :clase AND r.fechaClase = :fechaClase AND r.estado IN ('Confirmada', 'Pendiente')")

@@ -118,7 +118,15 @@
 
                         <div class="form-group" id="emailGroup">
                             <label><i class="fas fa-envelope"></i> Correo electrónico</label>
-                            <input type="email" name="correo" id="correoInput" th:value="${usuario.correo}" required>
+                            <input type="email"
+                                name="correo"
+                                id="correoInput"
+                                th:value="${usuario.correo}"
+                                autocomplete="email"
+                                maxlength="254"
+                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                                   title="Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)"
+                                required>
                             <div class="error-message" id="emailError">
                                 <i class="fas fa-exclamation-circle"></i> <span>Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)</span>
                             </div>

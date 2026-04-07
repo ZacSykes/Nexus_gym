@@ -29,9 +29,13 @@
         <!-- FORMULARIO -->
         <form th:action="@{/recuperar-password}" method="post" autocomplete="off">
 
-            <input type="email"
+            <input type="email" class="email-field"
                 name="email"
                 placeholder="Correo electrónico"
+                autocomplete="email"
+                maxlength="254"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                title="Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)"
                 required>
 
             <input type="text"

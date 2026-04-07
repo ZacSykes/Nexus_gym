@@ -46,17 +46,23 @@ public String clases(Model model,
         usuarioOpt = datosUsuarioRepository.findByCedula(cedula);
     }
 
-    List<Map<String, Object>> clasesSemana =
+        List<Map<String, Object>> clasesSemana =
             claseService.obtenerClasesSemana(disciplina, nivel);
 
-    model.addAttribute("clasesSemana", clasesSemana);
-
     usuarioOpt.ifPresent(usuario -> {
+        List<Map<String, Object>> clasesFiltradas =
+                claseService.filtrarClasesYaReservadas(clasesSemana, usuario);
+
+        model.addAttribute("clasesSemana", clasesFiltradas);
         model.addAttribute("usuario", usuario);
 
         claseService.obtenerPaqueteActivo(usuario)
                 .ifPresent(paquete -> model.addAttribute("paquete", paquete));
     });
+
+    if (usuarioOpt.isEmpty()) {
+        model.addAttribute("clasesSemana", clasesSemana);
+    }
 
     model.addAttribute("disciplinaSeleccionada", disciplina);
     model.addAttribute("nivelSeleccionado", nivel);
@@ -92,7 +98,7 @@ public String clases(Model model,
             redirectAttributes.addFlashAttribute("tipo", "error");
         }
 
-        return "redirect:/usuario/clases";
+        return "redirect:/usuario/reservas";
     }
 
     // ==================== MIS RESERVAS ====================

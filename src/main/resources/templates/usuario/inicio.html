@@ -96,38 +96,43 @@
             </div>
 
             <div th:if="${paquete != null}">
+                <p>
+                    🎟 Total de clases:
+                    <strong th:text="${paquete.totalClases}"></strong>
+                </p>
 
-    <p>
-        🎟 Total de clases:
-        <strong th:text="${paquete.totalClases}"></strong>
-    </p>
+                <p>
+                    ✅ Clases restantes:
+                    <strong th:text="${paquete.clasesRestantes}"></strong>
+                </p>
 
-    <p>
-        ✅ Clases restantes:
-        <strong th:text="${paquete.clasesRestantes}"></strong>
-    </p>
+                <p>
+                    ❌ Clases usadas:
+                    <strong th:text="${paquete.totalClases - paquete.clasesRestantes}"></strong>
+                </p>
 
-    <p>
-        ❌ Clases usadas:
-        <strong th:text="${paquete.totalClases - paquete.clasesRestantes}"></strong>
-    </p>
+                <p>
+                    📅 Inicio:
+                    <strong th:text="${#temporals.format(paquete.fechaInicio, 'dd/MM/yyyy')}"></strong>
+                </p>
 
-    <p>
-        📅 Inicio:
-        <strong th:text="${#temporals.format(paquete.fechaInicio, 'dd/MM/yyyy')}"></strong>
-    </p>
+                <p>
+                    ⏳ Vence:
+                    <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></strong>
+                </p>
 
-    <p>
-        ⏳ Vence:
-        <strong th:text="${#temporals.format(paquete.fechaVencimiento, 'dd/MM/yyyy')}"></strong>
-    </p>
+                <p>
+                    📌 Estado:
+                    <strong th:text="${paquete.estado}"></strong>
+                </p>
+            </div>
 
-    <p>
-        📌 Estado:
-        <strong th:text="${paquete.estado}"></strong>
-    </p>
-
-</div>
+            <div th:if="${paquete == null}" class="no-plan">
+                <i class="fas fa-ticket-alt"></i>
+                <p>No tienes un plan activo por ahora.</p>
+                <a th:href="@{/usuario/paquetes}" class="btn-primary-small">Ver planes disponibles</a>
+            </div>
+        </div>
 
         <!-- PRÓXIMAS CLASES -->
         <div class="section-card">
