@@ -3,7 +3,10 @@ package com.proyecto.nexus.usuario.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,20 @@ import com.proyecto.nexus.usuario.repository.RolRepository;
 
 @Service
 public class AdminService {
+
+    private static final int MAX_NOMBRE_APELLIDO = 60;
+    private static final int MAX_EMAIL = 254;
+    private static final Pattern CEDULA_PATTERN = Pattern.compile("^\\d{6,12}$");
+    private static final Pattern NOMBRE_PATTERN =
+        Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(?:\\s+[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)*$");
+    private static final Pattern TELEFONO_PATTERN = Pattern.compile("^3\\d{9}$");
+    private static final Pattern CORREO_PATTERN =
+            Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    private static final Pattern PASSWORD_PATTERN =
+        Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,72}$");
+
+    private static final Set<String> PASSWORDS_COMUNES = Set.of(
+        "12345678", "password", "qwerty123", "admin123", "123456789", "abc12345");
 
     private final DatosUsuarioRepository datosUsuarioRepository;
     private final PerfilRepository perfilRepository;
@@ -77,30 +94,44 @@ public class AdminService {
     // ==================== CREAR ====================
 
     public String crearUsuario(UsuarioDTO dto, String password) {
+        String nombre = normalizarTexto(dto.getNombre());
+        String apellido = normalizarTexto(dto.getApellido());
+        String documento = normalizarTexto(dto.getDocumento());
+        String email = normalizarCorreo(dto.getEmail());
+        String telefono = normalizarTexto(dto.getTelefono());
+        String passwordLimpia = password == null ? "" : password.trim();
 
-        Long cedula;
-
-        try {
-            cedula = Long.parseLong(dto.getDocumento());
-        } catch (NumberFormatException e) {
-            return "La cédula debe ser numérica";
+        String errorBasico = validarCamposBasicos(nombre, apellido, documento, email, telefono);
+        if (errorBasico != null) {
+            return errorBasico;
         }
+
+        String errorPassword = validarPassword(passwordLimpia, true);
+        if (errorPassword != null) {
+            return errorPassword;
+        }
+
+        Long cedula = Long.parseLong(documento);
 
         if (datosUsuarioRepository.findByCedula(cedula).isPresent()) {
             return "La cédula ya existe";
         }
 
-        if (datosUsuarioRepository.findByCorreo(dto.getEmail()).isPresent()) {
+        if (datosUsuarioRepository.findByCorreo(email).isPresent()) {
             return "El correo ya existe";
+        }
+
+        if (datosUsuarioRepository.findByTelefono(telefono).isPresent()) {
+            return "El teléfono ya está registrado";
         }
 
         // Crear usuario
         DatosUsuario usuario = new DatosUsuario();
         usuario.setCedula(cedula);
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setCorreo(dto.getEmail());
-        usuario.setTelefono(dto.getTelefono());
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setCorreo(email);
+        usuario.setTelefono(telefono);
         usuario.setFechaRegistro(LocalDateTime.now());
         usuario.setEstado("ACTIVO");
         usuario.setClasesTotales(0);
@@ -109,8 +140,8 @@ public class AdminService {
 
         // Crear perfil
         Perfil perfil = new Perfil();
-        perfil.setNombreUsuario(dto.getDocumento());
-        perfil.setContrasena(passwordEncoder.encode(password));
+        perfil.setNombreUsuario(documento);
+        perfil.setContrasena(passwordEncoder.encode(passwordLimpia));
         perfil.setUsuario(usuario);
         perfil.setRol(obtenerRol(dto.getRol()));
         perfil.setCreatedAt(LocalDateTime.now());
@@ -124,6 +155,10 @@ public class AdminService {
 
     public String editarUsuario(UsuarioDTO dto, String password) {
 
+        if (dto.getId() == null) {
+            return "Usuario inválido";
+        }
+
         Optional<DatosUsuario> usuarioOpt =
                 datosUsuarioRepository.findById(dto.getId().intValue());
 
@@ -133,10 +168,51 @@ public class AdminService {
 
         DatosUsuario usuario = usuarioOpt.get();
 
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setCorreo(dto.getEmail());
-        usuario.setTelefono(dto.getTelefono());
+        String nombre = normalizarTexto(dto.getNombre());
+        String apellido = normalizarTexto(dto.getApellido());
+        String email = normalizarCorreo(dto.getEmail());
+        String telefono = normalizarTexto(dto.getTelefono());
+        String passwordLimpia = password == null ? "" : password.trim();
+
+        if (nombre == null || nombre.length() < 2 || nombre.length() > MAX_NOMBRE_APELLIDO
+                || !NOMBRE_PATTERN.matcher(nombre).matches()) {
+            return "El nombre debe tener entre 2 y 60 caracteres y solo letras";
+        }
+
+        if (apellido == null || apellido.length() < 2 || apellido.length() > MAX_NOMBRE_APELLIDO
+                || !NOMBRE_PATTERN.matcher(apellido).matches()) {
+            return "El apellido debe tener entre 2 y 60 caracteres y solo letras";
+        }
+
+        if (email == null || email.length() > MAX_EMAIL || !CORREO_PATTERN.matcher(email).matches()) {
+            return "Correo inválido. Ejemplo válido: usuario@email.com";
+        }
+
+        if (telefono == null || !TELEFONO_PATTERN.matcher(telefono).matches()) {
+            return "El teléfono debe tener 10 dígitos y empezar por 3";
+        }
+
+        Optional<DatosUsuario> otroConCorreo = datosUsuarioRepository.findByCorreo(email);
+        if (otroConCorreo.isPresent() && !otroConCorreo.get().getIdUsuario().equals(usuario.getIdUsuario())) {
+            return "El correo ya existe";
+        }
+
+        Optional<DatosUsuario> otroConTelefono = datosUsuarioRepository.findByTelefono(telefono);
+        if (otroConTelefono.isPresent() && !otroConTelefono.get().getIdUsuario().equals(usuario.getIdUsuario())) {
+            return "El teléfono ya está registrado";
+        }
+
+        if (!passwordLimpia.isBlank()) {
+            String errorPassword = validarPassword(passwordLimpia, false);
+            if (errorPassword != null) {
+                return errorPassword;
+            }
+        }
+
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setCorreo(email);
+        usuario.setTelefono(telefono);
 
         datosUsuarioRepository.save(usuario);
 
@@ -145,11 +221,10 @@ public class AdminService {
 
         if (perfilOpt.isPresent()) {
             Perfil perfil = perfilOpt.get();
-
             perfil.setRol(obtenerRol(dto.getRol()));
 
-            if (password != null && !password.isEmpty()) {
-                perfil.setContrasena(passwordEncoder.encode(password));
+            if (!passwordLimpia.isBlank()) {
+                perfil.setContrasena(passwordEncoder.encode(passwordLimpia));
             }
 
             perfilRepository.save(perfil);
@@ -204,5 +279,69 @@ public class AdminService {
                 return rolRepository.findByNombre("ROLE_USUARIO")
                         .orElseThrow(() -> new RuntimeException("Rol USUARIO no encontrado"));
         }
+    }
+
+    private String validarCamposBasicos(String nombre,
+                                        String apellido,
+                                        String documento,
+                                        String email,
+                                        String telefono) {
+        if (nombre == null || nombre.length() < 2 || nombre.length() > MAX_NOMBRE_APELLIDO
+                || !NOMBRE_PATTERN.matcher(nombre).matches()) {
+            return "El nombre debe tener entre 2 y 60 caracteres y solo letras";
+        }
+
+        if (apellido == null || apellido.length() < 2 || apellido.length() > MAX_NOMBRE_APELLIDO
+                || !NOMBRE_PATTERN.matcher(apellido).matches()) {
+            return "El apellido debe tener entre 2 y 60 caracteres y solo letras";
+        }
+
+        if (documento == null || !CEDULA_PATTERN.matcher(documento).matches()) {
+            return "La cédula debe tener entre 6 y 12 dígitos numéricos";
+        }
+
+        if (email == null || email.length() > MAX_EMAIL || !CORREO_PATTERN.matcher(email).matches()) {
+            return "Correo inválido. Ejemplo válido: usuario@email.com";
+        }
+
+        if (telefono == null || !TELEFONO_PATTERN.matcher(telefono).matches()) {
+            return "El teléfono debe tener 10 dígitos y empezar por 3";
+        }
+
+        return null;
+    }
+
+    private String validarPassword(String password, boolean obligatorio) {
+        if ((password == null || password.isBlank()) && obligatorio) {
+            return "La contraseña es obligatoria";
+        }
+
+        if (password == null || password.isBlank()) {
+            return null;
+        }
+
+        if (!PASSWORD_PATTERN.matcher(password).matches()) {
+            return "La contraseña debe tener 8-72 caracteres, mayúscula, minúscula, número y símbolo";
+        }
+
+        if (PASSWORDS_COMUNES.contains(password.toLowerCase(Locale.ROOT))) {
+            return "La contraseña es demasiado común. Usa una más segura";
+        }
+
+        return null;
+    }
+
+    private String normalizarTexto(String valor) {
+        if (valor == null) {
+            return null;
+        }
+        return valor.trim().replaceAll("\\s+", " ");
+    }
+
+    private String normalizarCorreo(String correo) {
+        if (correo == null) {
+            return null;
+        }
+        return correo.trim().toLowerCase(Locale.ROOT);
     }
 }
