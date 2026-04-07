@@ -80,15 +80,38 @@ public class AdminService {
             lista.add(dto);
         }
 
-        if (filtro != null && !filtro.isEmpty()) {
+        if (filtro != null && !filtro.isBlank()) {
             return lista.stream()
-                    .filter(u -> u.getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
-                                 u.getApellido().toLowerCase().contains(filtro.toLowerCase()) ||
-                                 u.getDocumento().contains(filtro))
-                    .toList();
+                .filter(u -> cumpleFiltroMulticriterio(u, filtro))
+                .toList();
         }
 
         return lista;
+    }
+
+    private boolean cumpleFiltroMulticriterio(UsuarioDTO usuario, String filtro) {
+        String[] terminos = filtro.trim().split("\\s+");
+
+        for (String termino : terminos) {
+            boolean coincideTermino =
+                    contieneIgnoreCase(usuario.getNombre(), termino)
+                    || contieneIgnoreCase(usuario.getApellido(), termino)
+                    || contieneIgnoreCase(usuario.getEmail(), termino)
+                    || contieneIgnoreCase(usuario.getTelefono(), termino)
+                    || contieneIgnoreCase(usuario.getDocumento(), termino)
+                    || contieneIgnoreCase(usuario.getRol(), termino);
+
+            if (!coincideTermino) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean contieneIgnoreCase(String valor, String termino) {
+        return valor != null && termino != null
+                && valor.toLowerCase(Locale.ROOT).contains(termino.toLowerCase(Locale.ROOT));
     }
 
     // ==================== CREAR ====================

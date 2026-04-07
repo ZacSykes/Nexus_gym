@@ -73,10 +73,10 @@ public class AuthController {
         return "auth/registro"; // ✅ corregido
     }
 
-    @GetMapping("/registroAdmin")
-public String mostrarRegistroAdmin() {
-    return "auth/registroAdmin"; // Nombre de tu vista HTML para registro de admin
-}
+    @GetMapping({"/registroAdmin", "/registro-admin"})
+    public String mostrarRegistroAdmin() {
+        return "auth/registroAdmin"; // Nombre de tu vista HTML para registro de admin
+    }
 
 
     @PostMapping("/registrar")

@@ -90,6 +90,9 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/", 
                     "/auth/**",
+                    "/registro",
+                    "/registro-admin",
+                    "/registroAdmin",
                     "/css/**", "/imagenes/**",
                     "/Videos/**", "/js/**"
                 ).permitAll()

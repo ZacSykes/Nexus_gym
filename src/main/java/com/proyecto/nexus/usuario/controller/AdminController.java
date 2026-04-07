@@ -36,6 +36,7 @@ public class AdminController {
                                 @RequestParam(required = false) String fil) {
 
         model.addAttribute("usuarios", adminService.listarUsuarios(fil));
+        model.addAttribute("fil", fil);
 
         return "admin/usuarios";
     }

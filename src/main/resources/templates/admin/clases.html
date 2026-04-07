@@ -11,7 +11,7 @@
     <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
     <main class="main-content">
         <div class="clases-header">
-            <h1 style="margin: 0;">Gestion de Clases</h1>
+            <h1>Gestion de Clases</h1>
             <button type="button" id="btnMostrarFormulario" class="btn-crear">Crear clase</button>
         </div>
 
@@ -20,8 +20,7 @@
 
         <section id="panelCrearClase"
                  class="table-container crear-clase-panel"
-                 th:classappend="${error != null} ? ' open'"
-                 style="padding: 20px; margin-bottom: 24px;">
+                 th:classappend="${error != null} ? ' open'">
             <h2 class="crear-clase-title" id="tituloFormularioClase">Crear Nueva Clase</h2>
             <form id="formClase" th:action="@{/admin/clases/crear}" method="post"
                 class="crear-clase-form">

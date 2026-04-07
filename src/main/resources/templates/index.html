@@ -35,7 +35,7 @@
       </div>
       <div class="nav-actions">
         <a th:href="@{/auth/login}" class="btn-outline">Iniciar sesión</a>
-        <a th:href="@{/registro}" class="btn-primary">Registrarse</a>
+        <a th:href="@{/auth/registro}" class="btn-primary">Registrarse</a>
       </div>
       <button class="mobile-menu-btn" id="mobileMenuBtn">
         <i class="fas fa-bars"></i>
@@ -52,7 +52,7 @@
     <a href="#about" class="mobile-link">Nosotros</a>
     <div class="mobile-divider"></div>
     <a th:href="@{/auth/login}" class="mobile-link">Iniciar sesión</a>
-    <a th:href="@{/registro}" class="mobile-link primary">Registrarse</a>
+    <a th:href="@{/auth/registro}" class="mobile-link primary">Registrarse</a>
   </div>
 
   <!-- Hero Section -->
@@ -72,7 +72,7 @@
           Centraliza clases, pagos y alumnos en una plataforma moderna y eficiente.
         </p>
         <div class="hero-buttons">
-          <a th:href="@{/registro}" class="btn-primary-large">
+          <a th:href="@{/auth/registro}" class="btn-primary-large">
             Comenzar ahora
             <i class="fas fa-arrow-right"></i>
           </a>
@@ -183,7 +183,7 @@
           </div>
           <h3>Regístrate</h3>
           <p>Crea tu cuenta como usuario y elige el gimnasio al que perteneces de nuestra lista.</p>
-          <a th:href="@{/registro}" class="user-link">Registrarme →</a>
+          <a th:href="@{/auth/registro}" class="user-link">Registrarme →</a>
         </div>
         <div class="user-card">
           <div class="user-icon">
@@ -191,14 +191,14 @@
           </div>
           <h3>Elige tu gimnasio</h3>
           <p>Selecciona tu gimnasio favorito de nuestra base de datos y conecta con él.</p>
-          <a th:href="@{/registro}" class="user-link">Ver gimnasios →</a>
+          <a th:href="@{/auth/registro}" class="user-link">Ver gimnasios →</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Para Administradores Section -->
-  <section class="for-admins" id="para-administradores">
+  <section class="for-admins" id="para-administradores" style="display:none;">
     <div class="container">
       <div class="section-header">
         <span class="section-badge admin-badge">Para Administradores</span>
@@ -273,8 +273,8 @@
         <h2>¿Listo para transformar tu gimnasio?</h2>
         <p>Únete a cientos de gimnasios que ya confían en Nexus</p>
         <div class="cta-buttons">
-          <a th:href="@{/registro}" class="btn-primary-large">Registrarme como usuario</a>
-          <a th:href="@{/registro-admin}" class="btn-outline-light">Registrar mi gimnasio</a>
+          <a th:href="@{/auth/registro}" class="btn-primary-large">Registrarme como usuario</a>
+          <a th:href="@{/auth/registro-admin}" class="btn-outline-light">Registrar mi gimnasio</a>
         </div>
       </div>
     </div>

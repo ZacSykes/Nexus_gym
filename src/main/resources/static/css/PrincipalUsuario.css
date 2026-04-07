@@ -455,6 +455,54 @@ body {
   color: #9CA3AF;
 }
 
+/* Footer */
+.footer {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  background: rgba(10, 10, 18, 0.9);
+  border-top: 1px solid rgba(124, 58, 237, 0.2);
+  padding: 1.25rem 2rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.5rem;
+}
+
+.footer p,
+.footer-links,
+.footer-social {
+  margin: 0;
+}
+
+.footer-links,
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.footer a {
+  color: #C4B5FD;
+  text-decoration: none;
+  font-size: 0.82rem;
+}
+
+.footer a:hover {
+  color: #F9FAFB;
+}
+
+.footer-social span,
+.footer p {
+  color: #9CA3AF;
+  font-size: 0.82rem;
+}
+
 /* ============================================
    NAVBAR PRINCIPAL
    ============================================ */
@@ -766,6 +814,22 @@ body {
         margin-left: 0;
         padding: 1rem;
     }
+
+  .footer {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-links,
+  .footer-social {
+    flex-wrap: wrap;
+  }
 
     .stats-grid {
         grid-template-columns: 1fr;

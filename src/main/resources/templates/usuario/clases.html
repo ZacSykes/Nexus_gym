@@ -139,7 +139,7 @@
 
         </div>
 
-        <!-- VACÍO -->
+        <!-- VACIO -->
         <div th:if="${clasesSemana == null or clasesSemana.isEmpty()}">
             <p>No hay clases disponibles</p>
         </div>
@@ -148,49 +148,47 @@
 
 </div>
 
-</body>
-</html>
+<!-- FOOTER (fragmento) -->
+<div th:replace="fragments/footer :: footerGlobal"></div>
 
-    <!-- FOOTER (fragmento) -->
-    <div th:replace="fragments/footer :: footerGlobal"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle notificaciones
+        const notifBtn = document.getElementById('notifBtn');
+        const notifDropdown = document.getElementById('notifDropdown');
+        if (notifBtn && notifDropdown) {
+            notifBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notifDropdown.classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+                    notifDropdown.classList.remove('show');
+                }
+            });
+        }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Toggle notificaciones
-            const notifBtn = document.getElementById('notifBtn');
-            const notifDropdown = document.getElementById('notifDropdown');
-            if (notifBtn && notifDropdown) {
-                notifBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    notifDropdown.classList.toggle('show');
-                });
-                document.addEventListener('click', (e) => {
-                    if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
-                        notifDropdown.classList.remove('show');
+        // Toggle sidebar movil
+        const menuToggle = document.getElementById('menuToggleBtn');
+        const sidebar = document.querySelector('.sidebar');
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                    if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                        sidebar.classList.remove('active');
                     }
-                });
-            }
+                }
+            });
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) sidebar.classList.remove('active');
+            });
+        }
+    });
+</script>
 
-            // Toggle sidebar móvil
-            const menuToggle = document.getElementById('menuToggleBtn');
-            const sidebar = document.querySelector('.sidebar');
-            if (menuToggle && sidebar) {
-                menuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    sidebar.classList.toggle('active');
-                });
-                document.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
-                        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-                            sidebar.classList.remove('active');
-                        }
-                    }
-                });
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth > 768) sidebar.classList.remove('active');
-                });
-            }
-        });
-    </script>
 </body>
 </html>

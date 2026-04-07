@@ -110,6 +110,11 @@ body {
     transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.footer {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+}
+
 /* SIDEBAR */
 .sidebar {
     position: fixed;
@@ -586,6 +591,11 @@ tbody td {
         margin-left: 0;
         padding: 100px 20px 20px;
     }
+
+    .footer {
+        margin-left: 0;
+        width: 100%;
+    }
     
     .modal-content {
         width: 95%;
@@ -657,4 +667,118 @@ tbody td {
 
 .btn-crear:active {
     transform: translateY(0);
+}
+
+/* GESTION DE CLASES */
+.clases-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.crear-clase-panel {
+    border: 1px solid rgba(124, 58, 237, 0.35);
+    background: linear-gradient(160deg, rgba(18, 18, 30, 0.92), rgba(26, 26, 46, 0.94));
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.crear-clase-panel.open {
+    max-height: 1200px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.crear-clase-title {
+    margin: 0 0 14px;
+    font-size: 1.2rem;
+    color: #F9FAFB;
+}
+
+.crear-clase-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.crear-clase-form input,
+.crear-clase-form select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(124, 58, 237, 0.28);
+    background: rgba(18, 18, 30, 0.82);
+    color: #F9FAFB;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.crear-clase-form input::placeholder {
+    color: #9CA3AF;
+}
+
+.crear-clase-form input:focus,
+.crear-clase-form select:focus {
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+    transform: translateY(-1px);
+}
+
+.crear-clase-form select option {
+    color: #F9FAFB;
+    background: #1A1A2E;
+}
+
+.switch-disponible {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #E5E7EB;
+    font-size: 0.95rem;
+    min-height: 44px;
+    padding: 0 2px;
+}
+
+.switch-disponible input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #7C3AED;
+}
+
+.crear-clase-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.btn-secundario {
+    background: transparent;
+    color: #C4B5FD;
+    border: 1px solid rgba(124, 58, 237, 0.5);
+    border-radius: 40px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.btn-secundario:hover {
+    background: rgba(124, 58, 237, 0.14);
+    color: #F9FAFB;
+    transform: translateY(-1px);
 }
