@@ -17,13 +17,8 @@
 
     <div class="main-layout" th:if="${usuario != null}">
 
-<<<<<<< HEAD
         <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
-=======
-    <!-- SIDEBAR -->
-    <div th:replace="~{usuario/fragments/sidebar :: sidebarUsuario}"></div>
->>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
         <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
@@ -76,7 +71,7 @@
                         </div>
                     </div>
                     <form th:action="@{/usuario/cancelar}" method="post" class="cancelar-form" th:if="${reserva.estado == 'Confirmada'}">
-                        <input type="hidden" name="idReserva" th:value="${reserva.idReservas}">
+                        <input type="hidden" name="idReserva" th:value="${reserva.idReserva}">
                         <button type="submit" class="btn-cancelar">
                             <i class="fas fa-times-circle"></i> Cancelar reserva
                         </button>
@@ -94,18 +89,8 @@
         </main>
     </div>
 
-<<<<<<< HEAD
     <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
-=======
-        </div>
-
-    </main>
-</div>
-
-<!-- FOOTER -->
-<div th:replace="~{fragments/footer :: footerGlobal}"></div>
->>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
 
 </body>
 </html>

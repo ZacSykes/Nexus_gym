@@ -57,54 +57,13 @@
                 </form>
             </div>
 
-<<<<<<< HEAD
-            <!-- Resultados -->
-            <div class="results-header">
-                <span><i class="fas fa-list-ul"></i> Mostrando <strong th:text="${#lists.size(clases)}"></strong> clases disponibles</span>
-            </div>
-
-            <!-- Grid de clases -->
-            <div class="clases-grid">
-                <div th:each="clase : ${clases}" class="clase-card">
-                    <div class="clase-header">
-                        <h3 th:text="${clase.nombre}"></h3>
-                        <span class="clase-level" th:text="${clase.nivel}"></span>
-                    </div>
-                    <div class="clase-body">
-                        <div class="clase-info">
-                            <i class="fas fa-user-coach"></i>
-                            <span>Coach: <strong th:text="${clase.profesor.nombre}"></strong></span>
-                        </div>
-                        <div class="clase-info">
-                            <i class="fas fa-calendar-week"></i>
-                            <span th:text="${clase.diaSemana} + ' - ' + ${clase.horaInicio}"></span>
-                        </div>
-                    </div>
-                    <form th:action="@{/usuario/reservar}" method="post" class="reserva-form">
-                        <input type="hidden" name="idClase" th:value="${clase.idClases}">
-                        <button type="submit" class="btn-reservar" th:disabled="${paquete == null}">
-                            <i class="fas fa-calendar-check"></i> Reservar
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Estado vacío (sin ícono de ojo) -->
-            <div th:if="${#lists.isEmpty(clases)}" class="empty-state">
-                <i class="fas fa-calendar-times"></i>
-                <p>No hay clases disponibles con los filtros seleccionados.</p>
-                <a th:href="@{/usuario/clases}" class="btn-primary-small">Ver todas las clases</a>
-            </div>
-
-        </main>
-=======
         </div>
->>>>>>> 93acfa9 (ASIGNAR PLAN ADMIN - RESERVAR/CANCELAR USUARIO)
     </div>
 </header>
 
 <div class="main-layout">
 
+    <!-- Sidebar -->
     <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
     <main class="main-content">
@@ -128,14 +87,16 @@
         </div>
 
         <!-- RESULTADOS -->
-        <div class="results-header">
+        <div class="results-header"
+             th:if="${clasesSemana != null}">
             Mostrando
             <strong th:text="${#lists.size(clasesSemana)}"></strong>
             clases
         </div>
 
-        <!-- 🔥 LISTA DE CLASES -->
-        <div class="clases-grid">
+        <!-- LISTA DE CLASES -->
+        <div class="clases-grid"
+             th:if="${clasesSemana != null and !clasesSemana.isEmpty()}">
 
             <div th:each="item : ${clasesSemana}" class="clase-card">
 
@@ -144,6 +105,7 @@
                 <p th:text="${item.clase.nivel}"></p>
 
                 <p>
+                    Coach:
                     <strong th:text="${item.clase.profesor.nombre}"></strong>
                 </p>
 
@@ -157,7 +119,7 @@
                     <span th:text="${#temporals.format(item.fecha, 'dd/MM/yyyy')}"></span>
                 </p>
 
-                <!-- FORM -->
+                <!-- FORM RESERVA -->
                 <form th:action="@{/usuario/reservar}" method="post">
 
                     <input type="hidden" name="idClase"
@@ -168,7 +130,7 @@
 
                     <button type="submit"
                             th:disabled="${paquete == null}">
-                        Reservar
+                        <i class="fas fa-calendar-check"></i> Reservar
                     </button>
 
                 </form>
@@ -178,7 +140,7 @@
         </div>
 
         <!-- VACÍO -->
-        <div th:if="${#lists.isEmpty(clasesSemana)}">
+        <div th:if="${clasesSemana == null or clasesSemana.isEmpty()}">
             <p>No hay clases disponibles</p>
         </div>
 
