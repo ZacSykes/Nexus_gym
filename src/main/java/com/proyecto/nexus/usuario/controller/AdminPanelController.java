@@ -190,18 +190,6 @@ public class AdminPanelController {
         return "admin/reservas";
     }
 
-    @GetMapping("/pagos")
-    public String pagos(Model model, Authentication auth) {
-        agregarUsuarioActual(model, auth);
-        model.addAttribute("pagos", pagoRepository.findAll()
-                .stream()
-            .sorted(Comparator.comparing(
-                (Pago p) -> p.getFechaPago() == null ? java.time.LocalDateTime.MIN : p.getFechaPago())
-                .reversed())
-                .toList());
-        return "admin/pagos";
-    }
-
     @GetMapping("/planes")
     public String planes(Model model, Authentication auth) {
         agregarUsuarioActual(model, auth);
