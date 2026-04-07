@@ -1,136 +1,116 @@
 @import url('/css/admin.css');
 
-/* RESET */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins', sans-serif;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-/* FONDO MÁS ELEGANTE */
-body{
-background: linear-gradient(135deg, #0b0014, #120022);
-color:white;
-min-height:100vh;
-display:flex;
-flex-direction:column;
+body {
+	background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 100%);
+	color: #F9FAFB;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
-/* DASHBOARD */
 .main-content,
-.dashboard{
-margin-top:80px;
-flex:1;
-padding:40px 20px;
-text-align:center;
+.dashboard {
+	margin-top: 80px;
+	flex: 1;
+	padding: 40px 20px;
+	text-align: center;
 }
 
-/* TITULO BLANCO (ELEGANTE) */
-.title{
-font-size:2.8rem;
-margin-bottom:50px;
-color:#ffffff;
-font-weight:700;
-letter-spacing:1px;
-text-shadow:0 0 10px rgba(255,255,255,0.1);
+.title {
+	font-size: 2.8rem;
+	margin-bottom: 50px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	background: linear-gradient(135deg, #F9FAFB, #C4B5FD);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
 }
 
-/* GRID FIJO (4 TARJETAS EN UNA FILA) */
-.cards{
-display:grid;
-grid-template-columns: repeat(4, 1fr);
-max-width:1100px;
-margin:auto;
-gap:25px;
+.cards {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	max-width: 1100px;
+	margin: auto;
+	gap: 25px;
 }
 
-/* TARJETAS MÁS CLEAN */
-.card{
-background: rgba(255,255,255,0.04);
-border-radius:14px;
-padding:25px;
-text-align:center;
-transition:0.35s;
-border:1px solid rgba(255,255,255,0.08);
-
-backdrop-filter: blur(6px);
+.card {
+	background: rgba(18, 18, 30, 0.6);
+	border-radius: 14px;
+	padding: 25px;
+	text-align: center;
+	transition: 0.35s;
+	border: 1px solid rgba(124, 58, 237, 0.2);
+	backdrop-filter: blur(8px);
 }
 
-/* HOVER ELEGANTE */
-.card:hover{
-transform:translateY(-6px);
-border-color:rgba(180,0,255,0.4);
-
-box-shadow:
-0 0 20px rgba(180,0,255,0.25);
+.card:hover {
+	transform: translateY(-6px);
+	border-color: rgba(124, 58, 237, 0.5);
+	box-shadow: 0 10px 24px rgba(124, 58, 237, 0.25);
 }
 
-/* ICONOS */
-.card .icon{
-width:55px;
-margin-bottom:12px;
-filter: brightness(0) invert(1);
-opacity:0.85;
-transition:0.3s;
+.card .icon {
+	width: 55px;
+	margin-bottom: 12px;
+	filter: brightness(0) invert(1);
+	opacity: 0.9;
+	transition: 0.3s;
 }
 
-.card:hover .icon{
-transform:scale(1.15);
-filter: drop-shadow(0 0 6px #b400ff);
+.card:hover .icon {
+	transform: scale(1.12);
+	filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(124, 58, 237, 0.6));
 }
 
-/* TEXTOS */
-.card h3{
-color:#e4d0ff;
-margin-bottom:8px;
-font-size:17px;
+.card h3 {
+	color: #F9FAFB;
+	margin-bottom: 8px;
+	font-size: 17px;
 }
 
-.card p{
-font-size:13px;
-opacity:0.75;
+.card p {
+	font-size: 13px;
+	color: #9CA3AF;
 }
 
-/* LINK */
-.card-link{
-text-decoration:none;
-color:inherit;
+.card-link {
+	text-decoration: none;
+	color: inherit;
 }
 
-/* LOGOUT MÁS SUTIL */
-.logout-card{
-border:1px solid rgba(255,0,80,0.25);
+.logout-card {
+	border: 1px solid rgba(124, 58, 237, 0.35);
 }
 
-.logout-card:hover{
-box-shadow:
-0 0 20px rgba(255,0,80,0.25);
+.logout-card:hover {
+	box-shadow: 0 10px 24px rgba(124, 58, 237, 0.3);
 }
 
-/* FOOTER */
-.footer{
-text-align:center;
-padding:18px;
-background:#0a0015;
-border-top:1px solid rgba(255,255,255,0.05);
-font-size:13px;
-opacity:0.7;
+.footer {
+	text-align: center;
+	padding: 18px;
+	background: rgba(18, 18, 30, 0.9);
+	border-top: 1px solid rgba(124, 58, 237, 0.2);
+	font-size: 13px;
+	color: #9CA3AF;
 }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-
-.cards{
-grid-template-columns: repeat(2, 1fr);
+@media (max-width: 900px) {
+	.cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
-}
-
-@media(max-width:500px){
-
-.cards{
-grid-template-columns: 1fr;
-}
-
+@media (max-width: 500px) {
+	.cards {
+		grid-template-columns: 1fr;
+	}
 }

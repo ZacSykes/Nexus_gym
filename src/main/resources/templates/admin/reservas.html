@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Reservas</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
+<div class="main-layout">
+    <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
+    <main class="main-content">
+        <h1>Gestion de Reservas</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Clase</th>
+                <th>Fecha Clase</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Fecha Reserva</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td th:text="${reserva.idReserva}"></td>
+                <td th:text="${reserva.usuario != null ? reserva.usuario.nombre + ' ' + reserva.usuario.apellido : 'N/A'}"></td>
+                <td th:text="${reserva.clase != null ? reserva.clase.nombre : 'N/A'}"></td>
+                <td th:text="${reserva.fechaClase}"></td>
+                <td th:text="${reserva.horaInicio}"></td>
+                <td th:text="${reserva.estado}"></td>
+                <td th:text="${reserva.fechaReserva}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+</body>
+</html>

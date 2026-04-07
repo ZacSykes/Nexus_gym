@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Clases</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <style>
+        :root {
+            --nexus-bg-1: #0F0F1A;
+            --nexus-bg-2: #1A1A2E;
+            --nexus-surface: rgba(18, 18, 30, 0.82);
+            --nexus-border: rgba(124, 58, 237, 0.35);
+            --nexus-primary: #7C3AED;
+            --nexus-primary-soft: #C4B5FD;
+            --nexus-text: #F9FAFB;
+            --nexus-muted: #9CA3AF;
+        }
+
+        .clases-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .crear-clase-panel {
+            display: block;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(-8px);
+            pointer-events: none;
+            transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .crear-clase-panel.open {
+            max-height: 1200px;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .crear-clase-panel {
+            border: 1px solid var(--nexus-border);
+            background: linear-gradient(160deg, rgba(18, 18, 30, 0.92), rgba(26, 26, 46, 0.94));
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+        }
+
+        .crear-clase-title {
+            margin-bottom: 16px;
+            color: var(--nexus-text);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .crear-clase-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .crear-clase-form input,
+        .crear-clase-form select {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(124, 58, 237, 0.28);
+            background: var(--nexus-surface);
+            color: var(--nexus-text);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .crear-clase-form input::placeholder {
+            color: var(--nexus-muted);
+        }
+
+        .crear-clase-form input:focus,
+        .crear-clase-form select:focus {
+            border-color: var(--nexus-primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .crear-clase-form option {
+            color: var(--nexus-text);
+            background: var(--nexus-bg-2);
+        }
+
+        .switch-disponible {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--nexus-text);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            background: rgba(124, 58, 237, 0.1);
+            min-height: 44px;
+        }
+
+        .switch-disponible input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--nexus-primary);
+        }
+
+        .crear-clase-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 4px;
+            gap: 10px;
+        }
+
+        .btn-secundario {
+            background: transparent;
+            color: var(--nexus-primary-soft);
+            border: 1px solid rgba(124, 58, 237, 0.5);
+            border-radius: 40px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-secundario:hover {
+            background: rgba(124, 58, 237, 0.14);
+            color: var(--nexus-text);
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
+<div class="main-layout">
+    <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
+    <main class="main-content">
+        <div class="clases-header">
+            <h1 style="margin: 0;">Gestion de Clases</h1>
+            <button type="button" id="btnMostrarFormulario" class="btn-crear">Crear clase</button>
+        </div>
+
+        <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+        <div th:if="${mensaje}" class="alert-success" th:text="${mensaje}"></div>
+
+        <section id="panelCrearClase"
+                 class="table-container crear-clase-panel"
+                 th:classappend="${error != null} ? ' open'"
+                 style="padding: 20px; margin-bottom: 24px;">
+            <h2 class="crear-clase-title" id="tituloFormularioClase">Crear Nueva Clase</h2>
+            <form id="formClase" th:action="@{/admin/clases/crear}" method="post"
+                class="crear-clase-form">
+                <input type="hidden" name="idClase" id="idClaseEditar">
+                <input type="text" name="nombre" placeholder="Nombre de la clase" required>
+
+                <select name="disciplina" required>
+                    <option value="" disabled selected>Disciplina</option>
+                    <option value="Boxeo">Boxeo</option>
+                    <option value="Crossfit">Crossfit</option>
+                    <option value="Funcional">Funcional</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Spinning">Spinning</option>
+                </select>
+
+                <select name="nivel" required>
+                    <option value="" disabled selected>Nivel</option>
+                    <option value="Principiante">Principiante</option>
+                    <option value="Intermedio">Intermedio</option>
+                    <option value="Avanzado">Avanzado</option>
+                </select>
+
+                <select name="diaSemana" required>
+                    <option value="" disabled selected>Dia de la semana</option>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miércoles">Miércoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
+                </select>
+
+                <input type="time" name="horaInicio" required>
+                <input type="time" name="horaFin" required>
+
+                <input type="number" name="cupoMaximo" min="1" placeholder="Cupo maximo" required>
+                <input type="number" name="cupoDisponible" min="0" placeholder="Cupo disponible (opcional)">
+
+                <input type="text" name="salon" placeholder="Salon (opcional)">
+
+                <select name="idProfesor">
+                    <option value="" selected>Profesor (opcional)</option>
+                    <option th:each="profesor : ${profesores}"
+                            th:value="${profesor.idProfesor}"
+                            th:text="${profesor.nombre + ' ' + profesor.apellido + (profesor.especialidad != null ? ' - ' + profesor.especialidad : '')}">
+                    </option>
+                </select>
+
+                <input type="hidden" name="disponible" value="false">
+                <label class="switch-disponible">
+                    <input type="checkbox" name="disponible" value="true" checked>
+                    Clase disponible
+                </label>
+
+                <div class="crear-clase-actions">
+                    <button type="submit" class="btn-crear" id="btnGuardarClase">Guardar Clase</button>
+                    <button type="button" class="btn-secundario" id="btnCancelarEdicion" style="display:none;">Cancelar edición</button>
+                </div>
+            </form>
+        </section>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Disciplina</th>
+                <th>Nivel</th>
+                <th>Dia</th>
+                <th>Horario</th>
+                <th>Cupo max.</th>
+                <th>Cupo disp.</th>
+                <th>Salon</th>
+                <th>Profesor</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="clase : ${clases}">
+                <td th:text="${clase.idClases}"></td>
+                <td th:text="${clase.nombre}"></td>
+                <td th:text="${clase.disciplina}"></td>
+                <td th:text="${clase.nivel}"></td>
+                <td th:text="${clase.diaSemana}"></td>
+                <td th:text="${clase.horaInicio + ' - ' + clase.horaFin}"></td>
+                <td th:text="${clase.cupoMaximo}"></td>
+                <td th:text="${clase.cupoDisponible}"></td>
+                <td th:text="${clase.salon}"></td>
+                <td th:text="${clase.profesor != null ? clase.profesor.nombre + ' ' + clase.profesor.apellido : 'Sin asignar'}"></td>
+                <td th:text="${clase.disponible ? 'Activa' : 'Inactiva'}"></td>
+                <td class="acciones">
+                    <button type="button"
+                            class="btn-editar"
+                            th:attr="
+                              data-id=${clase.idClases},
+                              data-nombre=${clase.nombre},
+                              data-disciplina=${clase.disciplina},
+                              data-nivel=${clase.nivel},
+                              data-dia=${clase.diaSemana},
+                              data-inicio=${clase.horaInicio},
+                              data-fin=${clase.horaFin},
+                              data-cupomax=${clase.cupoMaximo},
+                              data-cupodisp=${clase.cupoDisponible},
+                              data-salon=${clase.salon},
+                              data-profesor=${clase.profesor != null ? clase.profesor.idProfesor : ''},
+                              data-disponible=${clase.disponible}"
+                            onclick="editarClase(this)">
+                        Editar
+                    </button>
+
+                    <form th:action="@{/admin/clases/eliminar/{idClase}(idClase=${clase.idClases})}"
+                          method="post"
+                          style="display:inline;"
+                          onsubmit="return confirm('¿Seguro que deseas eliminar esta clase?');">
+                        <button type="submit" class="btn-eliminar">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+
+<script>
+    const btnMostrarFormulario = document.getElementById('btnMostrarFormulario');
+    const panelCrearClase = document.getElementById('panelCrearClase');
+    const formClase = document.getElementById('formClase');
+    const tituloFormularioClase = document.getElementById('tituloFormularioClase');
+    const btnGuardarClase = document.getElementById('btnGuardarClase');
+    const btnCancelarEdicion = document.getElementById('btnCancelarEdicion');
+    const inputIdClase = document.getElementById('idClaseEditar');
+
+    const URL_CREAR = '/admin/clases/crear';
+    const URL_EDITAR = '/admin/clases/editar';
+
+    function limpiarModoEdicion() {
+        if (!formClase) return;
+        formClase.action = URL_CREAR;
+        formClase.reset();
+        inputIdClase.value = '';
+        tituloFormularioClase.textContent = 'Crear Nueva Clase';
+        btnGuardarClase.textContent = 'Guardar Clase';
+        btnCancelarEdicion.style.display = 'none';
+    }
+
+    function editarClase(btn) {
+        if (!btn || !formClase) return;
+
+        panelCrearClase.classList.add('open');
+        btnMostrarFormulario.textContent = 'Ocultar formulario';
+
+        formClase.action = URL_EDITAR;
+        inputIdClase.value = btn.dataset.id || '';
+
+        formClase.nombre.value = btn.dataset.nombre || '';
+        formClase.disciplina.value = btn.dataset.disciplina || '';
+        formClase.nivel.value = btn.dataset.nivel || '';
+        formClase.diaSemana.value = btn.dataset.dia || '';
+        formClase.horaInicio.value = (btn.dataset.inicio || '').substring(0, 5);
+        formClase.horaFin.value = (btn.dataset.fin || '').substring(0, 5);
+        formClase.cupoMaximo.value = btn.dataset.cupomax || '';
+        formClase.cupoDisponible.value = btn.dataset.cupodisp || '';
+        formClase.salon.value = btn.dataset.salon || '';
+        formClase.idProfesor.value = btn.dataset.profesor || '';
+        formClase.disponible.checked = String(btn.dataset.disponible) === 'true';
+
+        tituloFormularioClase.textContent = 'Editar Clase';
+        btnGuardarClase.textContent = 'Actualizar Clase';
+        btnCancelarEdicion.style.display = 'inline-flex';
+    }
+
+    if (btnMostrarFormulario && panelCrearClase) {
+        btnMostrarFormulario.addEventListener('click', () => {
+            panelCrearClase.classList.toggle('open');
+            btnMostrarFormulario.textContent = panelCrearClase.classList.contains('open')
+                ? 'Ocultar formulario'
+                : 'Crear clase';
+
+            if (!panelCrearClase.classList.contains('open')) {
+                limpiarModoEdicion();
+            }
+        });
+
+        if (panelCrearClase.classList.contains('open')) {
+            btnMostrarFormulario.textContent = 'Ocultar formulario';
+        }
+    }
+
+    if (btnCancelarEdicion) {
+        btnCancelarEdicion.addEventListener('click', () => {
+            limpiarModoEdicion();
+        });
+    }
+</script>
+</body>
+</html>

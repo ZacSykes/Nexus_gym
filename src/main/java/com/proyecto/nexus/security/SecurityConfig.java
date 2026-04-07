@@ -65,7 +65,7 @@ public class SecurityConfig {
 
             switch (role) {
                 case "ROLE_ADMINISTRADOR":
-                    response.sendRedirect("/admin/usuarios");
+                    response.sendRedirect("/admin/dashboard");
                     break;
 
                 case "ROLE_USUARIO":

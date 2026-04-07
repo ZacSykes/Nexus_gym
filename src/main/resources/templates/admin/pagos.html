@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Pagos</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
+<div class="main-layout">
+    <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
+    <main class="main-content">
+        <h1>Gestion de Pagos</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Monto</th>
+                <th>Estado</th>
+                <th>Metodo</th>
+                <th>Referencia</th>
+                <th>Fecha</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pago : ${pagos}">
+                <td th:text="${pago.idPago}"></td>
+                <td th:text="${pago.usuario != null ? pago.usuario.nombre + ' ' + pago.usuario.apellido : 'N/A'}"></td>
+                <td th:text="${pago.monto}"></td>
+                <td th:text="${pago.estado}"></td>
+                <td th:text="${pago.metodoPago}"></td>
+                <td th:text="${pago.referencia}"></td>
+                <td th:text="${pago.fechaPago}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+</body>
+</html>

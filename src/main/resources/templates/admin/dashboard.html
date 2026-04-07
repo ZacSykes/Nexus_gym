@@ -11,12 +11,12 @@
 <body>
 
     <!-- NAVBAR ADMIN -->
-    <div th:replace="admin/fragments/navbar :: navbarAdmin"></div>
+    <div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
 
     <div class="main-layout">
 
         <!-- SIDEBAR ADMIN -->
-        <div th:replace="admin/fragments/sidebar :: sidebarAdmin"></div>
+        <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
 
         <!-- CONTENIDO -->
         <main class="main-content">
@@ -27,23 +27,31 @@
 
                 <a th:href="@{/admin/usuarios}" class="card-link">
                     <article class="card">
-                        <img th:src="@{/imagenes/gimnasia.png}" class="icon">
+                        <img th:src="@{/imagenes/Nexus.png}" class="icon">
                         <h3>Gestión de Usuarios</h3>
                         <p>Administra los usuarios registrados.</p>
                     </article>
                 </a>
 
-                <a th:href="@{/admin/gimnasios}" class="card-link">
+                <a th:href="@{/admin/planes}" class="card-link">
                     <article class="card">
-                        <img th:src="@{/imagenes/pesa.png}" class="icon">
-                        <h3>Gestión de gimnasios</h3>
-                        <p>Administra las instalaciones.</p>
+                        <img th:src="@{/imagenes/LogoN.png}" class="icon">
+                        <h3>Gestión de Planes</h3>
+                        <p>Administra los planes y paquetes activos.</p>
+                    </article>
+                </a>
+
+                <a th:href="@{/admin/clases}" class="card-link">
+                    <article class="card">
+                        <img th:src="@{/imagenes/Nexus.png}" class="icon">
+                        <h3>Gestión de Clases</h3>
+                        <p>Crea y administra clases, horarios y cupos.</p>
                     </article>
                 </a>
 
                 <a th:href="@{/admin/reservas}" class="card-link">
                     <article class="card">
-                        <img th:src="@{/imagenes/reserva.png}" class="icon">
+                        <img th:src="@{/imagenes/Nexus.png}" class="icon">
                         <h3>Reservas</h3>
                         <p>Controla las reservas.</p>
                     </article>
@@ -51,7 +59,7 @@
 
                 <a th:href="@{/admin/pagos}" class="card-link">
                     <article class="card">
-                        <img th:src="@{/imagenes/logout.svg}" class="icon">
+                        <img th:src="@{/imagenes/LogoN.png}" class="icon">
                         <h3>Pagos</h3>
                         <p>Administra pagos y transacciones.</p>
                     </article>
@@ -59,7 +67,7 @@
 
                 <a th:href="@{/admin/config}" class="card-link">
                     <article class="card">
-                        <img th:src="@{/imagenes/logout.svg}" class="icon">
+                        <img th:src="@{/imagenes/LogoN.png}" class="icon">
                         <h3>Ajustes</h3>
                         <p>Configuración del sistema.</p>
                     </article>
@@ -68,7 +76,7 @@
                 <!-- LOGOUT -->
                 <form th:action="@{/logout}" method="post">
                     <button class="card logout-card">
-                        <img th:src="@{/imagenes/logout.svg}" class="icon">
+                        <img th:src="@{/imagenes/LogoN.png}" class="icon">
                         <h3>Cerrar sesión</h3>
                         <p>Finaliza tu sesión</p>
                     </button>
@@ -80,7 +88,7 @@
     </div>
 
     <!-- FOOTER -->
-    <div th:replace="fragments/footer :: footerGlobal"></div>
+    <div th:replace="~{fragments/footer :: footerGlobal}"></div>
 
 </body>
 </html>

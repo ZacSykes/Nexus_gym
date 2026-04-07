@@ -10,12 +10,12 @@
 <body>
 
     <!-- NAVBAR -->
-    <div th:replace="admin/fragments/navbar :: navbarAdmin"></div>
+    <div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
 
     <div class="main-layout">
 
         <!-- SIDEBAR -->
-        <div th:replace="admin/fragments/sidebar :: sidebarAdmin"></div>
+        <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
 
         <!-- CONTENIDO -->
         <main class="main-content">
@@ -27,7 +27,7 @@
             <div th:if="${mensaje}" class="alert-success" th:text="${mensaje}"></div>
 
             <!-- BOTÓN -->
-            <button type="button" onclick="abrirModalCrear()">Crear Usuario</button>
+            <button type="button" class="btn-crear" onclick="abrirModalCrear()">Crear Usuario</button>
 
             <!-- TABLA -->
             <table>
@@ -49,16 +49,21 @@
                         <td th:text="${usuario.email}"></td>
 
                         <!-- ROL (ANTES FALTABA) -->
-                        <td th:text="${usuario.rol}"></td>
+                        <td>
+                            <span class="rol"
+                                  th:classappend="${usuario.rol == 'ROLE_ADMINISTRADOR'} ? ' admin' : ' alumno'"
+                                  th:text="${usuario.rol}"></span>
+                        </td>
 
                         <!-- ACCIONES -->
-                        <td>
+                                                <td class="acciones">
 
-                            <button type="button" onclick="abrirModalEditar(this)">Editar</button>
+                                                        <button type="button" class="btn-editar" onclick="abrirModalEditar(this)">Editar</button>
 
                             <form th:action="@{/admin/eliminar/{id}(id=${usuario.id})}"
+                                                                    style="display:inline;"
                                   method="post">
-                                <button type="submit">Eliminar</button>
+                                                                <button type="submit" class="btn-eliminar">Eliminar</button>
                             </form>
 
                         </td>
@@ -72,21 +77,9 @@
     </div>
 
     <!-- FOOTER -->
-    <div th:replace="fragments/footer :: footerGlobal"></div>
+    <div th:replace="~{fragments/footer :: footerGlobal}"></div>
 
 <script>
-/* ================== SIDEBAR ================== */
-const toggle = document.getElementById("menuToggle");
-const sidebar = document.getElementById("sidebar");
-const main = document.getElementById("main");
-
-if (toggle && sidebar && main) {
-    toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        main.classList.toggle("shift");
-    });
-}
-
 /* ================== MODAL CREAR ================== */
 function abrirModalCrear() {
     const form = document.getElementById('usuarioForm');

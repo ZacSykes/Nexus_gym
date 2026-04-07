@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Planes</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
+<div class="main-layout">
+    <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
+    <main class="main-content">
+        <h1>Gestion de Planes</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th>Total clases</th>
+                <th>Duracion (dias)</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="plan : ${planes}">
+                <td th:text="${plan.idPlanes}"></td>
+                <td th:text="${plan.nombre}"></td>
+                <td th:text="${plan.tipo}"></td>
+                <td th:text="${plan.precio}"></td>
+                <td th:text="${plan.totalClases}"></td>
+                <td th:text="${plan.duracionDias}"></td>
+                <td th:text="${plan.estado}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+</body>
+</html>

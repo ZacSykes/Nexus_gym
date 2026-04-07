@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Configuracion</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div th:replace="~{admin/fragments/navbar :: navbarAdmin}"></div>
+<div class="main-layout">
+    <div th:replace="~{admin/fragments/sidebar :: sidebarAdmin}"></div>
+    <main class="main-content">
+        <h1>Configuracion del Sistema</h1>
+        <p th:text="${mensajeModulo}">Modulo en construccion.</p>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footerGlobal}"></div>
+</body>
+</html>

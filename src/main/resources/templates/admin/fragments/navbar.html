@@ -4,7 +4,6 @@
 
         <!-- LOGO -->
         <div class="logo-nav">
-            <button id="menuToggle" class="menu-toggle">☰</button>
             <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
             <span class="logo-text">ADMIN NEXUS</span>
         </div>
@@ -16,15 +15,9 @@
 
                 <!-- AVATAR FIJO -->
                 <img class="avatar"
-                     th:src="@{/imagenes/default.png}"
+                     th:src="@{/imagenes/LogoN.png}"
+                     onerror="this.onerror=null;this.src='/imagenes/Nexus.png';"
                      alt="Avatar">
-
-                <!-- INFO USUARIO -->
-                <div class="user-info">
-                    <span class="user-name"
-                          th:text="${usuario != null ? usuario.nombre + ' ' + usuario.apellido : 'Administrador'}">
-                    </span>
-                </div>
 
                 <!-- LOGOUT -->
                 <form th:action="@{/logout}" method="post">
@@ -46,5 +39,4 @@
         </div>
 
     </div>
-
 </header>
