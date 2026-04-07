@@ -12,7 +12,7 @@
 
 <body>
 
-    <!-- NAVBAR (compacto, igual al resto) -->
+    <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
             <div class="logo-nav">
@@ -23,7 +23,6 @@
                 <span class="logo-text">NEXUS</span>
             </div>
             <div class="nav-actions">
-                <!-- NOTIFICACIONES -->
                 <div class="notifications-wrapper">
                     <button class="icon-btn notif-btn" id="notifBtn">
                         <i class="fas fa-bell"></i>
@@ -43,7 +42,6 @@
                     </div>
                 </div>
 
-                <!-- MENÚ USUARIO -->
                 <div class="user-menu" th:if="${usuario != null}">
                     <div class="avatar-wrapper">
                         <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
@@ -73,13 +71,11 @@
         <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
-        <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
-
-            <!-- Mensajes de alerta -->
+            <!-- ALERTAS MEJORADAS -->
             <div th:if="${mensaje}" class="alert-message" th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'">
                 <i th:if="${tipo == 'exito'}" class="fas fa-check-circle"></i>
-                <i th:unless="${tipo == 'exito'}" class="fas fa-exclamation-triangle"></i>
+                <i th:unless="${tipo == 'exito'}" class="fas fa-info-circle"></i>
                 <span th:text="${mensaje}"></span>
             </div>
 
@@ -88,9 +84,7 @@
                 <p>Administra tu información personal</p>
             </div>
 
-            <!-- Tarjeta de perfil (dos columnas) -->
             <div class="perfil-card">
-                <!-- Columna izquierda: avatar y datos estáticos -->
                 <div class="perfil-left">
                     <div class="avatar-container">
                         <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=120&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
@@ -109,9 +103,8 @@
                     </div>
                 </div>
 
-                <!-- Columna derecha: formulario editable -->
                 <div class="perfil-right">
-                    <form th:action="@{/usuario/perfil/actualizar}" method="post" class="perfil-form">
+                    <form th:action="@{/usuario/perfil/actualizar}" method="post" class="perfil-form" id="perfilForm">
                         <div class="form-row">
                             <div class="form-group">
                                 <label><i class="fas fa-user"></i> Nombre</label>
@@ -122,33 +115,138 @@
                                 <input type="text" name="apellido" th:value="${usuario.apellido}" required>
                             </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" id="emailGroup">
                             <label><i class="fas fa-envelope"></i> Correo electrónico</label>
-                            <input type="email" name="correo" th:value="${usuario.correo}" required>
+                            <input type="email" name="correo" id="correoInput" th:value="${usuario.correo}" required>
+                            <div class="error-message" id="emailError">
+                                <i class="fas fa-exclamation-circle"></i> <span>Ingresa un correo válido con @ y dominio (ej: usuario@dominio.com)</span>
+                            </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" id="telefonoGroup">
                             <label><i class="fas fa-phone"></i> Teléfono</label>
-                            <input type="tel" name="telefono" th:value="${usuario.telefono}">
+                            <input type="tel" name="telefono" id="telefonoInput" th:value="${usuario.telefono}" inputmode="numeric" placeholder="Ej: 3123456789">
+                            <div class="error-message" id="telefonoError">
+                                <i class="fas fa-exclamation-circle"></i> <span>El teléfono debe tener exactamente 10 dígitos numéricos</span>
+                            </div>
                         </div>
+
                         <div class="form-group">
                             <label><i class="fas fa-map-marker-alt"></i> Dirección</label>
                             <input type="text" name="direccion" th:value="${usuario.direccion}">
                         </div>
+
                         <button type="submit" class="btn-guardar">
                             <i class="fas fa-save"></i> Guardar cambios
                         </button>
                     </form>
                 </div>
             </div>
-
         </main>
     </div>
 
-    <!-- FOOTER (fragmento) -->
+    <!-- FOOTER -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('perfilForm');
+            const telefonoInput = document.getElementById('telefonoInput');
+            const correoInput = document.getElementById('correoInput');
+            const telefonoError = document.getElementById('telefonoError');
+            const emailError = document.getElementById('emailError');
+            const telefonoGroup = document.getElementById('telefonoGroup');
+            const emailGroup = document.getElementById('emailGroup');
+
+            // 1. Validación teléfono: solo números y máximo 10 dígitos
+            if (telefonoInput) {
+                telefonoInput.addEventListener('input', function(e) {
+                    let cleaned = this.value.replace(/\D/g, '');
+                    if (cleaned.length > 10) cleaned = cleaned.slice(0, 10);
+                    this.value = cleaned;
+
+                    if (cleaned.length === 10) {
+                        telefonoError.classList.remove('show');
+                        telefonoGroup.classList.remove('error');
+                    } else if (cleaned.length > 0) {
+                        telefonoError.classList.add('show');
+                        telefonoGroup.classList.add('error');
+                    } else {
+                        telefonoError.classList.remove('show');
+                        telefonoGroup.classList.remove('error');
+                    }
+                });
+            }
+
+            // 2. Validación correo (debe tener @ y dominio)
+            function validarEmail(email) {
+                if (!email || email.trim() === '') return false;
+                const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            if (correoInput) {
+                correoInput.addEventListener('input', function() {
+                    const isValid = validarEmail(this.value);
+                    if (isValid) {
+                        emailError.classList.remove('show');
+                        emailGroup.classList.remove('error');
+                    } else if (this.value.length > 0) {
+                        emailError.classList.add('show');
+                        emailGroup.classList.add('error');
+                    } else {
+                        emailError.classList.remove('show');
+                        emailGroup.classList.remove('error');
+                    }
+                });
+            }
+
+            // 3. Validación antes de enviar
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+
+                const telefonoValue = telefonoInput ? telefonoInput.value : '';
+                if (telefonoValue.trim() !== '' && !/^\d{10}$/.test(telefonoValue)) {
+                    isValid = false;
+                    telefonoError.classList.add('show');
+                    telefonoGroup.classList.add('error');
+                } else {
+                    telefonoError.classList.remove('show');
+                    telefonoGroup.classList.remove('error');
+                }
+
+                const correoValue = correoInput ? correoInput.value : '';
+                if (!validarEmail(correoValue)) {
+                    isValid = false;
+                    emailError.classList.add('show');
+                    emailGroup.classList.add('error');
+                } else {
+                    emailError.classList.remove('show');
+                    emailGroup.classList.remove('error');
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                    const firstError = document.querySelector('.form-group.error');
+                    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            // Limpiar errores al enfocar
+            if (telefonoInput) {
+                telefonoInput.addEventListener('focus', () => {
+                    telefonoError.classList.remove('show');
+                    telefonoGroup.classList.remove('error');
+                });
+            }
+            if (correoInput) {
+                correoInput.addEventListener('focus', () => {
+                    emailError.classList.remove('show');
+                    emailGroup.classList.remove('error');
+                });
+            }
+
             // Toggle notificaciones
             const notifBtn = document.getElementById('notifBtn');
             const notifDropdown = document.getElementById('notifDropdown');
@@ -186,4 +284,5 @@
         });
     </script>
 </body>
+
 </html>

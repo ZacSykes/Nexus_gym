@@ -360,26 +360,73 @@ body {
     margin-top: 0.3rem;
 }
 
+/* ===== ALERTAS MEJORADAS (MÁS ESTÉTICAS) ===== */
 .alert-message {
-    padding: 0.8rem 1rem;
-    border-radius: 0.8rem;
-    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .alert-exito {
-    background: rgba(16, 185, 129, 0.15);
-    border-left: 3px solid #10B981;
+    background: rgba(16, 185, 129, 0.12);
+    border-left-color: #10B981;
+    color: #A7F3D0;
+}
+
+.alert-exito i {
     color: #10B981;
+    font-size: 1.1rem;
 }
 
 .alert-error {
-    background: rgba(239, 68, 68, 0.15);
-    border-left: 3px solid #EF4444;
-    color: #F87171;
+    background: rgba(249, 115, 22, 0.12);
+    border-left-color: #F97316;
+    color: #FDBA74;
+}
+
+.alert-error i {
+    color: #F97316;
+    font-size: 1.1rem;
+}
+
+/* ===== ESTILOS PARA ERRORES DE VALIDACIÓN ===== */
+.error-message {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    margin-top: 6px;
+    padding: 6px 12px;
+    background: rgba(249, 115, 22, 0.15);
+    border-radius: 40px;
+    color: #FDBA74;
+    width: fit-content;
+    backdrop-filter: blur(4px);
+}
+
+.error-message i {
+    font-size: 0.7rem;
+    color: #F97316;
+}
+
+.error-message.show {
+    display: flex;
+}
+
+.form-group.error input,
+.form-group.error input:focus {
+    border-color: #F97316;
+    background: rgba(249, 115, 22, 0.08);
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
 /* Tarjeta de perfil (dos columnas) */
