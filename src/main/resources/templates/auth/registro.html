@@ -22,7 +22,7 @@
       <div class="welcome-title">Crear cuenta</div>
       <div class="welcome-sub">Completa tus datos para comenzar</div>
 
-      <form id="registerForm">
+      <form id="registerForm" th:action="@{/auth/registrar}" method="post">
         <!-- Datos personales -->
         <div class="form-section">
           <div class="section-title">
@@ -32,23 +32,33 @@
           
           <div class="input-group">
             <label class="input-label" for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" class="input-field" placeholder="Ej: Ana María García" autocomplete="name">
+            <input type="text" id="nombre" name="nombre" class="input-field" placeholder="Ej: Ana María" autocomplete="given-name" minlength="2" maxlength="60" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]{2,60}" required>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="apellido">Apellido</label>
+            <input type="text" id="apellido" name="apellido" class="input-field" placeholder="Ej: García" autocomplete="family-name" minlength="2" maxlength="60" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]{2,60}" required>
           </div>
 
           <div class="input-row">
             <div class="input-group half">
               <label class="input-label" for="documento">Documento</label>
-              <input type="text" id="documento" class="input-field" placeholder="Ej: 1234567890">
+              <input type="text" id="documento" name="cedula" class="input-field" placeholder="Ej: 1234567890" inputmode="numeric" minlength="6" maxlength="12" pattern="[0-9]{6,12}" required>
             </div>
             <div class="input-group half">
               <label class="input-label" for="telefono">Teléfono</label>
-              <input type="tel" id="telefono" class="input-field" placeholder="Ej: 3001234567">
+              <input type="tel" id="telefono" name="telefono" class="input-field" placeholder="Ej: 3001234567" inputmode="numeric" minlength="10" maxlength="10" pattern="3[0-9]{9}">
             </div>
           </div>
 
           <div class="input-group">
             <label class="input-label" for="fecha_nacimiento">Fecha de nacimiento</label>
-            <input type="date" id="fecha_nacimiento" class="input-field">
+            <input type="date" id="fecha_nacimiento" name="fechaNacimiento" class="input-field" required>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="direccion">Dirección (opcional)</label>
+            <input type="text" id="direccion" name="direccion" class="input-field" placeholder="Ej: Calle 10 # 20-30" maxlength="120">
           </div>
         </div>
 
@@ -61,24 +71,41 @@
 
           <div class="input-group">
             <label class="input-label" for="email">Correo electrónico</label>
-            <input type="email" id="email" class="input-field" placeholder="Ej: ana@email.com" autocomplete="email">
+            <input type="email" id="email" name="correo" class="input-field" placeholder="Ej: ana@email.com" autocomplete="email" maxlength="254" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" required>
           </div>
 
           <div class="input-row">
             <div class="input-group half">
               <label class="input-label" for="password">Contraseña</label>
-              <input type="password" id="password" class="input-field" placeholder="••••••••">
-              <span class="password-hint">Mínimo 6 caracteres</span>
+              <input type="password" id="password" name="password" class="input-field" placeholder="••••••••" minlength="8" maxlength="72" required>
+              <span class="password-hint">8-72: mayúscula, minúscula, número y símbolo</span>
             </div>
             <div class="input-group half">
               <label class="input-label" for="confirm_password">Confirmar contraseña</label>
-              <input type="password" id="confirm_password" class="input-field" placeholder="••••••••">
+              <input type="password" id="confirm_password" name="confirmarPassword" class="input-field" placeholder="••••••••" required>
             </div>
+          </div>
+
+          <div class="input-group">
+            <label class="checkbox-wrapper" for="showPasswordsCheck">
+              <input type="checkbox" id="showPasswordsCheck">
+              <span>Mostrar contraseñas</span>
+            </label>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="genero">Género (opcional)</label>
+            <select id="genero" name="genero" class="input-field">
+              <option value="">Prefiero no decirlo</option>
+              <option value="FEMENINO">Femenino</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="OTRO">Otro</option>
+            </select>
           </div>
         </div>
 
-        <!-- Datos del gimnasio -->
-        <div class="form-section">
+        <!-- Datos del gimnasio (oculto temporalmente) -->
+        <div class="form-section" hidden>
           <div class="section-title">
             <i class="fas fa-dumbbell"></i>
             <span>Selecciona tu gimnasio</span>
@@ -86,7 +113,7 @@
 
           <div class="input-group">
             <label class="input-label" for="gimnasio">Gimnasio al que perteneces</label>
-            <select id="gimnasio" class="input-field">
+            <select id="gimnasio" class="input-field" disabled>
               <option value="">-- Selecciona un gimnasio --</option>
               <!-- Los gimnasios se cargarán desde JavaScript -->
             </select>
@@ -112,7 +139,7 @@
         <div class="divider">
           <span>¿Ya tienes una cuenta?</span>
         </div>
-        <button th:href="@{/auth/login}" id="loginBtn" class="login-redirect-btn">
+        <button type="button" id="loginBtn" class="login-redirect-btn">
           <i class="fas fa-sign-in-alt"></i> Iniciar sesión
         </button>
       </div>
@@ -121,73 +148,73 @@
 </div>
 
 <script>
-  // ============================================
-  // LISTA DE GIMNASIOS (esto vendrá de la base de datos)
-  // ============================================
-  const gimnasios = [
-    { id: 1, nit: "900123456-1", nombre: "Fitness Center Premium", direccion: "Calle 123 #45-67", telefono: "3001234567" },
-    { id: 2, nit: "900123456-2", nombre: "Power Gym Elite", direccion: "Carrera 89 #23-45", telefono: "3012345678" },
-    { id: 3, nit: "900123456-3", nombre: "Muscle Zone", direccion: "Avenida 45 #67-89", telefono: "3023456789" },
-    { id: 4, nit: "900123456-4", nombre: "Yoga & Wellness Center", direccion: "Calle 78 #12-34", telefono: "3034567890" },
-    { id: 5, nit: "900123456-5", nombre: "CrossFit Revolution", direccion: "Diagonal 56 #78-90", telefono: "3045678901" },
-    { id: 6, nit: "900123456-6", nombre: "Smart Fit Plus", direccion: "Transversal 34 #56-78", telefono: "3056789012" },
-    { id: 7, nit: "900123456-7", nombre: "Body Tech Gym", direccion: "Calle 12 #34-56", telefono: "3067890123" },
-    { id: 8, nit: "900123456-8", nombre: "Iron Paradise", direccion: "Carrera 67 #89-01", telefono: "3078901234" },
-    { id: 9, nit: "900123456-9", nombre: "Fit Life Studio", direccion: "Avenida 90 #12-34", telefono: "3089012345" },
-    { id: 10, nit: "900123456-0", nombre: "Elite Sports Club", direccion: "Calle 45 #67-89", telefono: "3090123456" }
-  ];
-
-  // Elementos del DOM
   const registerForm = document.getElementById('registerForm');
   const nombreInput = document.getElementById('nombre');
+  const apellidoInput = document.getElementById('apellido');
   const documentoInput = document.getElementById('documento');
   const telefonoInput = document.getElementById('telefono');
-  const fechaNacimiento = document.getElementById('fecha_nacimiento');
+  const fechaNacimientoInput = document.getElementById('fecha_nacimiento');
+  const direccionInput = document.getElementById('direccion');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
   const confirmPasswordInput = document.getElementById('confirm_password');
-  const gimnasioSelect = document.getElementById('gimnasio');
+  const showPasswordsCheck = document.getElementById('showPasswordsCheck');
   const termsCheck = document.getElementById('termsCheck');
   const loginBtn = document.getElementById('loginBtn');
   const termsLink = document.getElementById('termsLink');
 
-  // Cargar gimnasios en el select
-  function cargarGimnasios() {
-    gimnasios.forEach(gimnasio => {
-      const option = document.createElement('option');
-      option.value = gimnasio.id;
-      option.setAttribute('data-nit', gimnasio.nit);
-      option.setAttribute('data-nombre', gimnasio.nombre);
-      option.setAttribute('data-direccion', gimnasio.direccion);
-      option.textContent = `${gimnasio.nombre} (NIT: ${gimnasio.nit})`;
-      gimnasioSelect.appendChild(option);
-    });
-  }
-
-  // Validar email
   function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   }
 
-  // Validar documento (solo números)
+  function isValidName(name) {
+    return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)*$/.test(name);
+  }
+
   function isValidDocument(doc) {
-    const docRegex = /^\d{6,12}$/;
-    return docRegex.test(doc);
+    return /^\d{6,12}$/.test(doc);
   }
 
-  // Validar teléfono
   function isValidPhone(phone) {
-    const phoneRegex = /^\d{7,12}$/;
-    return phoneRegex.test(phone);
+    return /^3\d{9}$/.test(phone);
   }
 
-  // Mostrar error
+  function isStrongPassword(password) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,72}$/.test(password);
+  }
+
+  function normalizeText(value) {
+    return value.trim().replace(/\s+/g, ' ');
+  }
+
+  function sanitizeNameInput(value) {
+    return value
+      .replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/^\s+/, '');
+  }
+
+  function isValidAge(dateString) {
+    const birthDate = new Date(dateString + 'T00:00:00');
+    const today = new Date();
+    if (Number.isNaN(birthDate.getTime()) || birthDate > today) {
+      return false;
+    }
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age -= 1;
+    }
+    return age >= 13;
+  }
+
   function showError(input, message) {
     const inputGroup = input.parentElement;
     const existingError = inputGroup.querySelector('.error-message');
     if (existingError) existingError.remove();
-    
+
     const errorSpan = document.createElement('span');
     errorSpan.className = 'error-message';
     errorSpan.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
@@ -195,12 +222,11 @@
     errorSpan.style.fontSize = '0.7rem';
     errorSpan.style.marginTop = '0.3rem';
     errorSpan.style.display = 'block';
-    
+
     input.style.borderColor = '#EF4444';
     inputGroup.appendChild(errorSpan);
   }
 
-  // Limpiar error
   function clearError(input) {
     const inputGroup = input.parentElement;
     const existingError = inputGroup.querySelector('.error-message');
@@ -208,143 +234,142 @@
     input.style.borderColor = 'rgba(124, 58, 237, 0.3)';
   }
 
-  // Eventos para limpiar errores
-  const inputs = [nombreInput, documentoInput, telefonoInput, emailInput, passwordInput, confirmPasswordInput, gimnasioSelect];
+  const inputs = [
+    nombreInput,
+    apellidoInput,
+    documentoInput,
+    telefonoInput,
+    fechaNacimientoInput,
+    direccionInput,
+    emailInput,
+    passwordInput,
+    confirmPasswordInput
+  ];
+
   inputs.forEach(input => {
     input.addEventListener('input', () => clearError(input));
     input.addEventListener('change', () => clearError(input));
   });
 
-  // Redirigir al login
+  // Evita letras y símbolos en campos numéricos.
+  [documentoInput, telefonoInput].forEach(input => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/g, '');
+    });
+  });
+
+  [nombreInput, apellidoInput].forEach(input => {
+    input.addEventListener('input', () => {
+      input.value = sanitizeNameInput(input.value);
+    });
+  });
+
+  showPasswordsCheck.addEventListener('change', () => {
+    const type = showPasswordsCheck.checked ? 'text' : 'password';
+    passwordInput.type = type;
+    confirmPasswordInput.type = type;
+  });
+
+  const correosDesechables = new Set([
+    'mailinator.com',
+    'yopmail.com',
+    'guerrillamail.com',
+    '10minutemail.com',
+    'tempmail.com'
+  ]);
+
+  const passwordsComunes = new Set([
+    '12345678',
+    'password',
+    'qwerty123',
+    'admin123',
+    '123456789',
+    'abc12345'
+  ]);
+
   loginBtn.addEventListener('click', () => {
     window.location.href = '/auth/login';
   });
 
-  // Términos y condiciones
   termsLink.addEventListener('click', (e) => {
     e.preventDefault();
     alert('📜 Términos y condiciones de Nexus Gym\n\n1. Uso responsable de las instalaciones\n2. Respeto hacia los demás miembros\n3. Cumplir con las normas del gimnasio\n4. Puntualidad en las clases agendadas\n5. Mantener actualizados tus datos');
   });
 
-  // Manejar envío del formulario
   registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
     let hasError = false;
-    
-    // Validar nombre
-    if (nombreInput.value.trim() === '') {
-      showError(nombreInput, 'El nombre completo es obligatorio');
-      hasError = true;
-    } else if (nombreInput.value.trim().length < 3) {
-      showError(nombreInput, 'El nombre debe tener al menos 3 caracteres');
+
+    nombreInput.value = normalizeText(nombreInput.value);
+    apellidoInput.value = normalizeText(apellidoInput.value);
+    direccionInput.value = normalizeText(direccionInput.value);
+    emailInput.value = emailInput.value.trim().toLowerCase();
+    documentoInput.value = documentoInput.value.trim();
+    telefonoInput.value = telefonoInput.value.trim();
+
+    if (nombreInput.value.length < 2 || nombreInput.value.length > 60 || !isValidName(nombreInput.value)) {
+      showError(nombreInput, 'Nombre inválido: 2-60 caracteres y solo letras');
       hasError = true;
     }
-    
-    // Validar documento
-    if (!isValidDocument(documentoInput.value.trim())) {
+
+    if (apellidoInput.value.length < 2 || apellidoInput.value.length > 60 || !isValidName(apellidoInput.value)) {
+      showError(apellidoInput, 'Apellido inválido: 2-60 caracteres y solo letras');
+      hasError = true;
+    }
+
+    if (!isValidDocument(documentoInput.value)
+      || /^([0-9])\1+$/.test(documentoInput.value)
+      || documentoInput.value === '123456'
+      || documentoInput.value === '123456789'
+      || documentoInput.value === '987654321') {
       showError(documentoInput, 'Documento inválido (mínimo 6 dígitos, solo números)');
       hasError = true;
     }
-    
-    // Validar teléfono (opcional)
-    if (telefonoInput.value.trim() !== '' && !isValidPhone(telefonoInput.value.trim())) {
-      showError(telefonoInput, 'Teléfono inválido (mínimo 7 dígitos)');
+
+    if (telefonoInput.value !== '' && !isValidPhone(telefonoInput.value)) {
+      showError(telefonoInput, 'Teléfono inválido: usa 10 dígitos y empieza por 3');
       hasError = true;
     }
-    
-    // Validar email
-    if (!isValidEmail(emailInput.value.trim())) {
+
+    if (!fechaNacimientoInput.value || !isValidAge(fechaNacimientoInput.value)) {
+      showError(fechaNacimientoInput, 'Debes ser mayor de 13 años y usar una fecha válida');
+      hasError = true;
+    }
+
+    if (!isValidEmail(emailInput.value)) {
       showError(emailInput, 'Correo electrónico inválido');
       hasError = true;
+    } else {
+      const dominio = emailInput.value.split('@')[1] || '';
+      if (correosDesechables.has(dominio)) {
+        showError(emailInput, 'No se permiten correos temporales');
+        hasError = true;
+      }
     }
-    
-    // Validar contraseña
-    if (passwordInput.value.trim().length < 6) {
-      showError(passwordInput, 'La contraseña debe tener al menos 6 caracteres');
+
+    if (!isStrongPassword(passwordInput.value.trim())) {
+      showError(passwordInput, 'Usa 8-72 caracteres con mayúscula, minúscula, número y símbolo');
       hasError = true;
     }
-    
-    // Validar confirmación de contraseña
+
+    if (passwordsComunes.has(passwordInput.value.trim().toLowerCase())) {
+      showError(passwordInput, 'La contraseña es demasiado común');
+      hasError = true;
+    }
+
     if (passwordInput.value.trim() !== confirmPasswordInput.value.trim()) {
       showError(confirmPasswordInput, 'Las contraseñas no coinciden');
       hasError = true;
     }
-    
-    // Validar gimnasio seleccionado
-    if (gimnasioSelect.value === '') {
-      showError(gimnasioSelect, 'Debes seleccionar un gimnasio');
-      hasError = true;
-    }
-    
-    // Validar términos
+
     if (!termsCheck.checked) {
       alert('✧ Debes aceptar los términos y condiciones para continuar.');
       hasError = true;
     }
-    
-    if (!hasError) {
-      // Obtener información del gimnasio seleccionado
-      const selectedOption = gimnasioSelect.options[gimnasioSelect.selectedIndex];
-      const gimnasioId = gimnasioSelect.value;
-      const gimnasioNombre = selectedOption.getAttribute('data-nombre');
-      const gimnasioNit = selectedOption.getAttribute('data-nit');
-      
-      // Datos para enviar a la base de datos
-      const datosRegistro = {
-        nombre: nombreInput.value.trim(),
-        documento: documentoInput.value.trim(),
-        telefono: telefonoInput.value.trim(),
-        fecha_nacimiento: fechaNacimiento.value,
-        email: emailInput.value.trim(),
-        password: passwordInput.value.trim(), // En producción, encriptar antes de enviar
-        gimnasio_id: parseInt(gimnasioId),
-        gimnasio_nombre: gimnasioNombre,
-        gimnasio_nit: gimnasioNit,
-        fecha_registro: new Date().toISOString()
-      };
-      
-      console.log('Datos a enviar a la base de datos:', datosRegistro);
-      
-      // Mostrar resumen del registro
-      const resumen = `
-✅ ¡Registro exitoso!
 
-📋 Datos registrados:
-• Nombre: ${datosRegistro.nombre}
-• Documento: ${datosRegistro.documento}
-• Email: ${datosRegistro.email}
-• Gimnasio: ${gimnasioNombre}
-• NIT: ${gimnasioNit}
-
-🎉 Bienvenido/a a Nexus Gym
-Ahora puedes iniciar sesión y comenzar a entrenar.
-      `;
-      
-      alert(resumen);
-      
-      // Aquí iría la llamada a la API para guardar en la base de datos
-      // fetch('/api/registro', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(datosRegistro)
-      // })
-      
-      // Limpiar formulario
-      registerForm.reset();
-      gimnasioSelect.value = '';
-      fechaNacimiento.value = '';
-      
-      // Redirigir al login después de 2 segundos
-      setTimeout(() => {
-        // window.location.href = '/index.html';
-        alert('🚀 Redirigiendo al inicio de sesión...');
-      }, 2000);
+    if (hasError) {
+      e.preventDefault();
     }
   });
-
-  // Cargar la lista de gimnasios al iniciar
-  cargarGimnasios();
 </script>
 </body>
 </html>
