@@ -5,86 +5,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus - Mi Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/Perfil.css}">
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <div th:replace="usuario/fragments/navbar :: navbarUsuario"></div>
+    <!-- NAVBAR (compacto, igual al resto) -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <button class="menu-toggle" id="menuToggleBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <img th:src="@{/imagenes/Nexus.png}" alt="Nexus Logo" class="logo-img">
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-actions">
+                <!-- NOTIFICACIONES -->
+                <div class="notifications-wrapper">
+                    <button class="icon-btn notif-btn" id="notifBtn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <span class="notif-badge" th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">0</span>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <div class="notif-header">
+                            <span>Notificaciones</span>
+                            <a th:href="@{/usuario/notificaciones}">Ver todas</a>
+                        </div>
+                        <div class="notif-list">
+                            <div class="notif-empty">
+                                <i class="fas fa-bell-slash"></i>
+                                <span>No hay notificaciones recientes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENÚ USUARIO -->
+                <div class="user-menu" th:if="${usuario != null}">
+                    <div class="avatar-wrapper">
+                        <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                             alt="Avatar" class="avatar">
+                        <div class="avatar-status online"></div>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</span>
+                        <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Sin rango</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" class="logout-form">
+                        <button type="submit" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Salir</span>
+                        </button>
+                    </form>
+                </div>
+                <div th:unless="${usuario != null}" class="user-menu fallback">
+                    <a th:href="@{/auth/login}" class="login-link">Iniciar sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <div class="main-layout" th:if="${usuario != null}">
 
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (fragmento) -->
         <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
-        <!-- CONTENIDO -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
 
-            <!-- MENSAJE -->
-            <div th:if="${mensaje}"
-                 th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'"
-                 style="padding:12px; border-radius:8px; margin-bottom:15px; text-align:center;">
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensaje}" class="alert-message" th:classappend="${tipo == 'exito'} ? 'alert-exito' : 'alert-error'">
+                <i th:if="${tipo == 'exito'}" class="fas fa-check-circle"></i>
+                <i th:unless="${tipo == 'exito'}" class="fas fa-exclamation-triangle"></i>
                 <span th:text="${mensaje}"></span>
             </div>
 
-            <div class="section-header">
-                <h1>👤 Mi Perfil</h1>
+            <div class="page-header">
+                <h1><i class="fas fa-user-circle"></i> Mi Perfil</h1>
                 <p>Administra tu información personal</p>
             </div>
 
+            <!-- Tarjeta de perfil (dos columnas) -->
             <div class="perfil-card">
-
-                <!-- IZQUIERDA -->
+                <!-- Columna izquierda: avatar y datos estáticos -->
                 <div class="perfil-left">
-
-                    <img th:src="@{'https://ui-avatars.com/api/?name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
-                         class="avatar-large">
-
-                    <p th:text="${usuario.nombre + ' ' + usuario.apellido}"></p>
-
-                    <p th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}"></p>
-
-                    <p>
-                        Clases totales:
-                        <strong th:text="${usuario.clasesTotales != null ? usuario.clasesTotales : 0}"></strong>
-                    </p>
-
+                    <div class="avatar-container">
+                        <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=120&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                             alt="Avatar" class="avatar-large">
+                        <div class="avatar-edit-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <h3 th:text="${usuario.nombre + ' ' + usuario.apellido}">Nombre Apellido</h3>
+                    <span class="perfil-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">Sin rango</span>
+                    <div class="perfil-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" th:text="${usuario.clasesTotales != null ? usuario.clasesTotales : 0}">0</span>
+                            <span class="stat-label">Clases totales</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- DERECHA -->
+                <!-- Columna derecha: formulario editable -->
                 <div class="perfil-right">
-
-                    <form th:action="@{/usuario/perfil/actualizar}" method="post">
-
-                        <input type="text" name="nombre" th:value="${usuario.nombre}" required>
-
-                        <input type="text" name="apellido" th:value="${usuario.apellido}" required>
-
-                        <input type="email" name="correo" th:value="${usuario.correo}" required>
-
-                        <input type="tel" name="telefono" th:value="${usuario.telefono}">
-
-                        <input type="text" name="direccion" th:value="${usuario.direccion}">
-
-                        <button type="submit">Guardar cambios</button>
-
+                    <form th:action="@{/usuario/perfil/actualizar}" method="post" class="perfil-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Nombre</label>
+                                <input type="text" name="nombre" th:value="${usuario.nombre}" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Apellido</label>
+                                <input type="text" name="apellido" th:value="${usuario.apellido}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                            <input type="email" name="correo" th:value="${usuario.correo}" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Teléfono</label>
+                            <input type="tel" name="telefono" th:value="${usuario.telefono}">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Dirección</label>
+                            <input type="text" name="direccion" th:value="${usuario.direccion}">
+                        </div>
+                        <button type="submit" class="btn-guardar">
+                            <i class="fas fa-save"></i> Guardar cambios
+                        </button>
                     </form>
-
                 </div>
-
             </div>
 
         </main>
     </div>
 
-    <!-- ERROR -->
-    <div th:unless="${usuario != null}">
-        <p>Error cargando perfil</p>
-    </div>
-
-    <!-- FOOTER -->
+    <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle notificaciones
+            const notifBtn = document.getElementById('notifBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+            if (notifBtn && notifDropdown) {
+                notifBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notifDropdown.classList.toggle('show');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+                        notifDropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            // Toggle sidebar móvil
+            const menuToggle = document.getElementById('menuToggleBtn');
+            const sidebar = document.querySelector('.sidebar');
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                            sidebar.classList.remove('active');
+                        }
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) sidebar.classList.remove('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

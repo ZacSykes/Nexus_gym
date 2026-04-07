@@ -11,5 +11,7 @@ public interface PerfilRepository extends JpaRepository<Perfil, Integer> {
 
     Optional<Perfil> findByNombreUsuario(String nombreUsuario);
 
+    Optional<Perfil> findFirstByRolNombreOrderByIdPerfilAsc(String nombreRol);
+
     Optional<Perfil> findByUsuario(DatosUsuario usuario); // 🔥 ESTE FALTABA
 }

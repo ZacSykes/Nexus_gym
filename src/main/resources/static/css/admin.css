@@ -12,6 +12,108 @@ body {
     min-height: 100vh;
 }
 
+/* ADMIN SHELL */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 1100;
+    background: rgba(18, 0, 34, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(148, 0, 211, 0.25);
+}
+
+.nav-container {
+    height: 100%;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-nav img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #fff, #c300ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav-actions,
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.92rem;
+}
+
+.user-name {
+    color: #fff;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: linear-gradient(135deg, #7902ad, #9b2fe0);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(121, 2, 173, 0.35);
+}
+
+.main-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content,
+.main {
+    flex: 1;
+    padding: 120px 40px 40px;
+    transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-content.shift,
+.main.shift {
+    margin-left: 260px;
+}
+
 /* BOTÓN HAMBURGUESA */
 .hamburger {
     cursor: pointer;

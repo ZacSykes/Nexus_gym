@@ -1,52 +1,72 @@
 <header class="navbar" th:fragment="navbarUsuario">
-
     <div class="nav-container">
 
-        <!-- LOGO -->
+        <!-- LOGO + MENU TOGGLE -->
         <div class="logo-nav">
-            <button class="menu-toggle">☰</button>
-            <img th:src="@{/imagenes/Login.png}" alt="Nexus Logo">
+            <button class="menu-toggle" id="menuToggleBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <img th:src="@{/imagenes/Nexus.png}" alt="Nexus Logo" class="logo-img">
             <span class="logo-text">NEXUS</span>
         </div>
 
-        <!-- ACCIONES -->
+        <!-- ACCIONES (NOTIFICACIONES + USUARIO) -->
         <div class="nav-actions">
 
             <!-- NOTIFICACIONES -->
-            <div class="notifications">
-                <button class="icon-btn notif-btn">🔔</button>
-                <span class="notif-badge">3</span>
+            <div class="notifications-wrapper">
+                <button class="icon-btn notif-btn" id="notifBtn">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <span class="notif-badge" th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">0</span>
+                <!-- Dropdown de notificaciones (opcional) -->
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">
+                        <span>Notificaciones</span>
+                        <a href="#" th:href="@{/usuario/notificaciones}">Ver todas</a>
+                    </div>
+                    <div class="notif-list">
+                        <div class="notif-item" th:each="notif : ${ultimasNotificaciones}">
+                            <i class="fas fa-circle" th:classappend="${notif.leida ? 'read' : 'unread'}"></i>
+                            <div class="notif-content">
+                                <p th:text="${notif.mensaje}">Mensaje</p>
+                                <span class="notif-time" th:text="${#temporals.format(notif.fecha, 'HH:mm')}"></span>
+                            </div>
+                        </div>
+                        <div th:if="${#lists.isEmpty(ultimasNotificaciones)}" class="notif-empty">
+                            No hay notificaciones recientes
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- USUARIO -->
+            <!-- MENÚ DE USUARIO -->
             <div class="user-menu" th:if="${usuario != null}">
-
-                <img th:src="@{'https://ui-avatars.com/api/?background=7b00ff&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
-                     alt="Avatar" class="avatar">
-
-                <div class="user-info">
-                    <span class="user-name"
-                          th:text="${usuario.nombre + ' ' + usuario.apellido}">
-                    </span>
-
-                    <span class="user-rank"
-                          th:text="${usuario.rango != null ? usuario.rango.nombre : 'Sin rango'}">
-                    </span>
+                <!-- Avatar con iniciales (fallback si no hay imagen) -->
+                <div class="avatar-wrapper">
+                    <img th:src="@{'https://ui-avatars.com/api/?background=7C3AED&color=fff&bold=true&size=40&name=' + ${usuario.nombre} + '+' + ${usuario.apellido}}"
+                         alt="Avatar" class="avatar">
+                    <div class="avatar-status online"></div>
                 </div>
 
-                <form th:action="@{/logout}" method="post">
-                    <button type="submit" class="logout-btn">🚪 Salir</button>
-                </form>
+                <div class="user-info">
+                    <span class="user-name" th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario Demo</span>
+                    <span class="user-rank" th:text="${usuario.rango != null ? usuario.rango.nombre : 'Miembro'}">Miembro</span>
+                </div>
 
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Salir</span>
+                    </button>
+                </form>
             </div>
 
-            <!-- FALLBACK -->
-            <div th:unless="${usuario != null}" class="user-menu">
-                <span>No autenticado</span>
+            <!-- FALLBACK (usuario no autenticado) -->
+            <div th:unless="${usuario != null}" class="user-menu fallback">
+                <a th:href="@{/auth/login}" class="login-link">Iniciar sesión</a>
             </div>
 
         </div>
-
     </div>
-
 </header>

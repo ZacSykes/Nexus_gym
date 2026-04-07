@@ -8,8 +8,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.util.StringUtils;
 
 import com.proyecto.nexus.usuario.service.UsuarioDetailsService;
 
@@ -50,6 +52,16 @@ public class SecurityConfig {
                     .findFirst()
                     .get()
                     .getAuthority();
+
+            String expectedRole = request.getParameter("expectedRole");
+
+            // If the selected tab role and authenticated role don't match,
+            // invalidate the session and force login in the proper role tab.
+            if (StringUtils.hasText(expectedRole) && !expectedRole.equals(role)) {
+                new SecurityContextLogoutHandler().logout(request, response, authentication);
+                response.sendRedirect("/auth/login?error=role_mismatch");
+                return;
+            }
 
             switch (role) {
                 case "ROLE_ADMINISTRADOR":

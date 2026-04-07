@@ -1,3 +1,5 @@
+@import url('/css/admin.css');
+
 /* RESET */
 *{
 margin:0;
@@ -16,6 +18,7 @@ flex-direction:column;
 }
 
 /* DASHBOARD */
+.main-content,
 .dashboard{
 margin-top:80px;
 flex:1;
