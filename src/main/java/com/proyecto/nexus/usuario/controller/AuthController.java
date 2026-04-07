@@ -139,8 +139,8 @@ public class AuthController {
                     .orElseThrow(() -> new RuntimeException("Gimnasio no encontrado con ID: " + registro.getGimnasioId()));
             usuario.setGimnasio(gimnasio);   // ← Relación ManyToOne
 
-            usuario = datosUsuarioRepository.save(usuario);
-            System.out.println("✅ Usuario guardado con ID: " + usuario.getIdUsuario() + " y gimnasio ID: " + gimnasio.getIdGimnasio());
+           usuario = datosUsuarioRepository.save(usuario);
+            System.out.println("✅ Usuario guardado con ID: " + usuario.getIdUsuario());
 
             // ===== CREAR PERFIL =====
             Rol rol = rolRepository.findByNombre("ROLE_USUARIO")
