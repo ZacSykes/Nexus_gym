@@ -49,7 +49,7 @@
 
             <!-- Lista de reservas -->
             <div th:if="${not #lists.isEmpty(reservas)}" class="reservas-grid">
-                <div th:each="reserva : ${reservas}" class="reserva-card">
+                <div th:each="reserva : ${reservas}" class="reserva-card" data-reserva-id="${reserva.idReserva}">
                     <div class="reserva-header">
                         <h3 th:text="${reserva.clase.nombre}">Clase de Boxeo</h3>
                         <span class="reserva-status" 
@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            <!-- Estado vacío (sin lupa) -->
+            <!-- Estado vacío -->
             <div th:if="${#lists.isEmpty(reservas)}" class="empty-state">
                 <i class="fas fa-calendar-times"></i>
                 <p>No tienes reservas aún</p>
@@ -91,6 +91,136 @@
 
     <!-- FOOTER (fragmento) -->
     <div th:replace="fragments/footer :: footerGlobal"></div>
+
+    <!-- MODAL DE CONFIRMACIÓN PARA CANCELAR -->
+    <div id="cancelModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Cancelar reserva</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-detail" id="modalDetails">
+                    <!-- Los datos se llenan dinámicamente -->
+                </div>
+                <div class="modal-question">
+                    ¿Estás seguro de que deseas cancelar esta reserva?
+                </div>
+                <div class="modal-warning">
+                    <i class="fas fa-info-circle"></i> Esta acción no se puede deshacer.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" id="cancelModalBtn">No, mantener</button>
+                <button class="modal-btn modal-btn-confirm-cancel" id="confirmModalBtn">Sí, cancelar reserva</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ========== NOTIFICACIONES (si el navbar no las incluye) ==========
+            const notifBtn = document.getElementById('notifBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+            if (notifBtn && notifDropdown) {
+                notifBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notifDropdown.classList.toggle('show');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+                        notifDropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            // ========== SIDEBAR MÓVIL ==========
+            const menuToggle = document.getElementById('menuToggleBtn');
+            const sidebar = document.querySelector('.sidebar');
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                            sidebar.classList.remove('active');
+                        }
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) sidebar.classList.remove('active');
+                });
+            }
+
+            // ========== MODAL DE CONFIRMACIÓN PARA CANCELAR ==========
+            const modal = document.getElementById('cancelModal');
+            const modalDetails = document.getElementById('modalDetails');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelModalBtn = document.getElementById('cancelModalBtn');
+            const confirmModalBtn = document.getElementById('confirmModalBtn');
+            let currentForm = null;
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
+            }
+
+            function openModal(formElement) {
+                const card = formElement.closest('.reserva-card');
+                if (!card) return;
+
+                // Extraer datos de la tarjeta
+                const nombreClase = card.querySelector('.reserva-header h3')?.innerText || 'Clase';
+                const coach = card.querySelector('.reserva-info strong')?.innerText || '';
+                const fecha = card.querySelector('.reserva-info:nth-of-type(2) span')?.innerText || '';
+                const hora = card.querySelector('.reserva-info:nth-of-type(3) span')?.innerText || '';
+
+                modalDetails.innerHTML = `
+                    <p><i class="fas fa-dumbbell"></i> <strong>${escapeHtml(nombreClase)}</strong></p>
+                    <p><i class="fas fa-chalkboard-user"></i> Coach: ${escapeHtml(coach)}</p>
+                    <p><i class="fas fa-calendar-day"></i> Fecha: ${escapeHtml(fecha)}</p>
+                    <p><i class="fas fa-clock"></i> Hora: ${escapeHtml(hora)}</p>
+                `;
+                currentForm = formElement;
+                modal.classList.add('active');
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                currentForm = null;
+            }
+
+            function confirmCancel() {
+                if (currentForm) {
+                    currentForm.submit();
+                }
+                closeModal();
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelModalBtn.addEventListener('click', closeModal);
+            confirmModalBtn.addEventListener('click', confirmCancel);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Interceptar todos los formularios de cancelación
+            const cancelForms = document.querySelectorAll('.cancelar-form');
+            cancelForms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    openModal(form);
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

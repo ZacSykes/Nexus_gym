@@ -24,16 +24,11 @@
         </div>
 
         <div class="nav-actions">
-
-            <!-- Notificaciones -->
             <div class="notifications-wrapper">
                 <button class="icon-btn notif-btn" id="notifBtn">
                     <i class="fas fa-bell"></i>
                 </button>
-
-                <span class="notif-badge"
-                      th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">0</span>
-
+                <span class="notif-badge" th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas : 0}">0</span>
                 <div class="notif-dropdown" id="notifDropdown">
                     <div class="notif-header">
                         <span>Notificaciones</span>
@@ -48,112 +43,83 @@
                 </div>
             </div>
 
-            <!-- Usuario -->
             <div class="user-menu" th:if="${usuario != null}">
                 <span th:text="${usuario.nombre + ' ' + usuario.apellido}"></span>
-
                 <form th:action="@{/logout}" method="post">
                     <button type="submit">Salir</button>
                 </form>
             </div>
-
         </div>
     </div>
 </header>
 
 <div class="main-layout">
-
-    <!-- Sidebar -->
     <div th:replace="usuario/fragments/sidebar :: sidebarUsuario"></div>
 
     <main class="main-content">
-
-        <!-- MENSAJES -->
         <div th:if="${mensaje}" class="alert-message">
             <span th:text="${mensaje}"></span>
         </div>
 
-        <!-- HEADER -->
         <div class="page-header">
             <h1>Clases Disponibles</h1>
         </div>
 
-        <!-- PLAN -->
         <div th:if="${paquete != null}">
-            <p>
-                Clases restantes:
-                <strong th:text="${paquete.clasesRestantes}"></strong>
-            </p>
+            <p>Clases restantes: <strong th:text="${paquete.clasesRestantes}"></strong></p>
         </div>
 
-        <!-- RESULTADOS -->
-        <div class="results-header"
-             th:if="${clasesSemana != null}">
-            Mostrando
-            <strong th:text="${#lists.size(clasesSemana)}"></strong>
-            clases
+        <div class="results-header" th:if="${clasesSemana != null}">
+            Mostrando <strong th:text="${#lists.size(clasesSemana)}"></strong> clases
         </div>
 
-        <!-- LISTA DE CLASES -->
-        <div class="clases-grid"
-             th:if="${clasesSemana != null and !clasesSemana.isEmpty()}">
-
-            <div th:each="item : ${clasesSemana}" class="clase-card">
-
+        <div class="clases-grid" th:if="${clasesSemana != null and !clasesSemana.isEmpty()}">
+            <div th:each="item : ${clasesSemana}" class="clase-card" data-clase-id="${item.clase.idClases}">
                 <h3 th:text="${item.clase.nombre}"></h3>
-
                 <p th:text="${item.clase.nivel}"></p>
+                <p>Coach: <strong th:text="${item.clase.profesor.nombre}"></strong></p>
+                <p><span th:text="${item.clase.diaSemana}"></span> - <span th:text="${#temporals.format(item.clase.horaInicio, 'hh:mm a')}"></span></p>
+                <p>Fecha: <span th:text="${#temporals.format(item.fecha, 'dd/MM/yyyy')}"></span></p>
 
-                <p>
-                    Coach:
-                    <strong th:text="${item.clase.profesor.nombre}"></strong>
-                </p>
-
-                <p>
-                    <span th:text="${item.clase.diaSemana}"></span> -
-                    <span th:text="${#temporals.format(item.clase.horaInicio, 'hh:mm a')}"></span>
-                </p>
-
-                <p>
-                    Fecha:
-                    <span th:text="${#temporals.format(item.fecha, 'dd/MM/yyyy')}"></span>
-                </p>
-
-                <!-- FORM RESERVA -->
-                <form th:action="@{/usuario/reservar}" method="post">
-
-                    <input type="hidden" name="idClase"
-                           th:value="${item.clase.idClases}">
-
-                    <input type="hidden" name="fechaClase"
-                           th:value="${#temporals.format(item.fecha, 'yyyy-MM-dd')}">
-
-                    <button type="submit"
-                            th:disabled="${paquete == null}">
+                <form th:action="@{/usuario/reservar}" method="post" class="reserva-form">
+                    <input type="hidden" name="idClase" th:value="${item.clase.idClases}">
+                    <input type="hidden" name="fechaClase" th:value="${#temporals.format(item.fecha, 'yyyy-MM-dd')}">
+                    <button type="submit" th:disabled="${paquete == null}">
                         <i class="fas fa-calendar-check"></i> Reservar
                     </button>
-
                 </form>
-
             </div>
-
         </div>
 
-        <!-- VACIO -->
         <div th:if="${clasesSemana == null or clasesSemana.isEmpty()}">
             <p>No hay clases disponibles</p>
         </div>
-
     </main>
-
 </div>
 
-<!-- FOOTER (fragmento) -->
 <div th:replace="fragments/footer :: footerGlobal"></div>
+
+<!-- MODAL DE CONFIRMACIÓN -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3><i class="fas fa-question-circle"></i> Confirmar reserva</h3>
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-detail" id="modalDetails"></div>
+            <div class="modal-question">¿Estás seguro de reservar esta clase?</div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" id="cancelModalBtn">Cancelar</button>
+            <button class="modal-btn modal-btn-confirm" id="confirmModalBtn">Sí, reservar</button>
+        </div>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Toggle notificaciones
+        // Notificaciones
         const notifBtn = document.getElementById('notifBtn');
         const notifDropdown = document.getElementById('notifDropdown');
         if (notifBtn && notifDropdown) {
@@ -168,7 +134,7 @@
             });
         }
 
-        // Toggle sidebar movil
+        // Sidebar móvil
         const menuToggle = document.getElementById('menuToggleBtn');
         const sidebar = document.querySelector('.sidebar');
         if (menuToggle && sidebar) {
@@ -187,6 +153,69 @@
                 if (window.innerWidth > 768) sidebar.classList.remove('active');
             });
         }
+
+        // Modal de confirmación
+        const modal = document.getElementById('confirmModal');
+        const modalDetails = document.getElementById('modalDetails');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const confirmModalBtn = document.getElementById('confirmModalBtn');
+        let currentForm = null;
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function openModal(formElement) {
+            const card = formElement.closest('.clase-card');
+            if (!card) return;
+            const nombre = card.querySelector('h3')?.innerText || 'Clase';
+            const nivel = card.querySelector('p:nth-of-type(1)')?.innerText || '';
+            const coach = card.querySelector('p:nth-of-type(2) strong')?.innerText || '';
+            const diaHora = card.querySelector('p:nth-of-type(3)')?.innerText || '';
+            const fechaSpan = card.querySelector('p:nth-of-type(4) span')?.innerText || '';
+            modalDetails.innerHTML = `
+                <p><i class="fas fa-dumbbell"></i> <strong>${escapeHtml(nombre)}</strong> (${escapeHtml(nivel)})</p>
+                <p><i class="fas fa-chalkboard-user"></i> Coach: ${escapeHtml(coach)}</p>
+                <p><i class="fas fa-calendar-week"></i> ${escapeHtml(diaHora)}</p>
+                <p><i class="fas fa-calendar-day"></i> Fecha: ${escapeHtml(fechaSpan)}</p>
+            `;
+            currentForm = formElement;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            currentForm = null;
+        }
+
+        function confirmReservation() {
+            if (currentForm) currentForm.submit();
+            closeModal();
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelModalBtn.addEventListener('click', closeModal);
+        confirmModalBtn.addEventListener('click', confirmReservation);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        const forms = document.querySelectorAll('.reserva-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                if (btn && btn.disabled) return;
+                openModal(form);
+            });
+        });
     });
 </script>
 
